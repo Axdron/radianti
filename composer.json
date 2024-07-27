@@ -1,0 +1,17 @@
+{
+    "name": "axdron/radianti",
+    "description": "Biblioteca Auxiliar para Adianti Framework",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Axdron\\Radianti\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ramiro",
+            "email": "axdron@hotmail.com"
+        }
+    ],
+    "require": {}
+}
