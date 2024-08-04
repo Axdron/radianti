@@ -4,6 +4,15 @@ namespace Axdron\Radianti\SoftDelete;
 
 use Adianti\Database\TRecord;
 
+/**
+ * @property int $id
+ * @property string $data_cadastro
+ * @property int $usuario_cadastro_id
+ * @property string $data_atualizacao
+ * @property int $usuario_atualizacao_id
+ * @property string $data_exclusao
+ * @property int $usuario_exclusao_id
+ */
 abstract class RadiantiSoftModel extends TRecord
 {
 
