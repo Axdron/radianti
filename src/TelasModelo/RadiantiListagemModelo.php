@@ -1,5 +1,7 @@
 <?php
 
+namespace Axdron\Radianti\TelasModelo;
+
 use Adianti\Control\TAction;
 use Adianti\Control\TPage;
 use Adianti\Database\TCriteria;
@@ -15,8 +17,9 @@ use Adianti\Widget\Dialog\TQuestion;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormBuilder;
+use Axdron\Radianti\Services\RadiantiTransaction;
 
-abstract class RAdiantiListagemModelo extends TPage
+abstract class RadiantiListagemModelo extends TPage
 {
     protected $formularioBusca;
     protected $datagrid;
@@ -201,7 +204,7 @@ abstract class RAdiantiListagemModelo extends TPage
 
     public function carregar($param = null)
     {
-        RAdiantiTransaction::encapsularTransacao(callback: function () use ($param) {
+        RadiantiTransaction::encapsularTransacao(callback: function () use ($param) {
             $this->formularioBusca->setData(TSession::getValue(get_called_class() . '_dados_formulario'));
 
             if (empty($criteria = TSession::getValue(get_called_class() . '_criteria'))) {
@@ -237,7 +240,7 @@ abstract class RAdiantiListagemModelo extends TPage
             $acaoExclusao = new TAction([$this, 'excluir'], $param);
             new TQuestion('Deseja realmente excluir o registro?', $acaoExclusao);
         } else {
-            RAdiantiTransaction::encapsularTransacao(callback: function () use ($param) {
+            RadiantiTransaction::encapsularTransacao(callback: function () use ($param) {
                 $model = $this->getModel();
                 $objeto = new $model($param['id']);
                 $objeto->delete();

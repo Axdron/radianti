@@ -1,9 +1,11 @@
 <?php
 
+namespace Axdron\Radianti\Services;
+
 use Adianti\Database\TTransaction;
 use Adianti\Widget\Dialog\TMessage;
 
-class RAdiantiTransaction
+class RadiantiTransaction
 {
     public static function consultar($callback, $snEmiteTMessage = true)
     {
@@ -22,7 +24,7 @@ class RAdiantiTransaction
 
     public static function salvar($callback, $snEmiteTMessage = true)
     {
-        return self::encapsularTransacao($callback. $snEmiteTMessage);
+        return self::encapsularTransacao($callback . $snEmiteTMessage);
     }
 
     public static function encapsularTransacao($callback, $snEmiteTMessage = true, $snAbrirTransacao = true)

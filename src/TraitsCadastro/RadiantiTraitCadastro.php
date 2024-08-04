@@ -1,5 +1,7 @@
 <?php
 
+namespace Axdron\Radianti\TraitsCadastro;
+
 use Adianti\Control\TAction;
 use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Database\TRecord;
@@ -9,8 +11,10 @@ use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapFormBuilder;
 use Adianti\Wrapper\BootstrapNotebookWrapper;
+use Axdron\Radianti\Services\RadiantiTransaction;
+use Exception;
 
-trait RAdiantiTraitCadastro
+trait RadiantiTraitCadastro
 {
     protected BootstrapFormBuilder $formCadastro;
     protected TRecord $objetoEdicao;
@@ -53,7 +57,7 @@ trait RAdiantiTraitCadastro
 
     private function carregarObjetoEdicao($id)
     {
-        $this->objetoEdicao = RAdiantiTransaction::encapsularTransacao(function () use ($id) {
+        $this->objetoEdicao = RadiantiTransaction::encapsularTransacao(function () use ($id) {
             $model = get_called_class()::getModel();
 
             $objeto = new $model($id);
@@ -119,7 +123,7 @@ trait RAdiantiTraitCadastro
         }
 
 
-        RAdiantiTransaction::encapsularTransacao(function () use ($param) {
+        RadiantiTransaction::encapsularTransacao(function () use ($param) {
             $this->formCadastro->setData($this->objetoEdicao);
             $this->carregarDetalhes($param['id']);
         }, snAbrirTransacao: false);
@@ -128,7 +132,7 @@ trait RAdiantiTraitCadastro
     public function salvar($param, $snEmiteMensagemSalvou = true, $snRedirecionaListagem = true)
     {
         try {
-            return RAdiantiTransaction::encapsularTransacao(
+            return RadiantiTransaction::encapsularTransacao(
                 function () use ($param, $snEmiteMensagemSalvou, $snRedirecionaListagem) {
                     $dadosFormulario = $this->formCadastro->getData();
                     $this->formCadastro->validate();

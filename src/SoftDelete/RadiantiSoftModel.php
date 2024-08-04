@@ -1,6 +1,6 @@
 <?php
 
-namespace RadiantiSoftDelete;
+namespace Axdron\Radianti\SoftDelete;
 
 use Adianti\Database\TRecord;
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Axdron\Radianti\Componentes;
+
 use Adianti\Widget\Form\TRadioGroup;
 
 class RAdiantiElementoBotaoOpcoes extends TRadioGroup
