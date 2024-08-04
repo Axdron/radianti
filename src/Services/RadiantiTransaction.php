@@ -32,9 +32,9 @@ class RadiantiTransaction
 
         try {
             if ($snAbrirTransacao)
-                TTransaction::open('sample');
+                TTransaction::open(getenv('DB_NAME_RADIANTI'));
             else
-                TTransaction::openFake('sample');
+                TTransaction::openFake(getenv('DB_NAME_RADIANTI'));
             $retorno = $callback();
             TTransaction::close();
             return $retorno;
