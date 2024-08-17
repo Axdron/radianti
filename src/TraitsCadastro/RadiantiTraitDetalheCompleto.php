@@ -1,5 +1,7 @@
 <?php
 
+namespace Axdron\Radianti\TraitsCadastro;
+
 use Adianti\Database\TRecord;
 use Adianti\Widget\Base\TScript;
 use Adianti\Widget\Datagrid\TDataGrid;
@@ -7,11 +9,12 @@ use Adianti\Widget\Form\TForm;
 use Adianti\Widget\Form\TFormSeparator;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormBuilder;
+use Exception;
 
-trait RAdiantiTraitDetalheCompleto
+trait RadiantiTraitDetalheCompleto
 {
 
-    use TraitDetalheDatagrid;
+    use RadiantiTraitDetalheDatagrid;
 
     abstract protected static function getNomeTelaPrincipal(): string;
     abstract protected static function getNomeDetalhe(): string;
@@ -112,9 +115,7 @@ trait RAdiantiTraitDetalheCompleto
     /**
      * Aplica algum tratamento especial em valores do item
      */
-    protected static function tratarItemSalvamento(&$item)
-    {
-    }
+    protected static function tratarItemSalvamento(&$item) {}
 
     /**
      * Adiciona um item a datagrid
@@ -313,9 +314,7 @@ trait RAdiantiTraitDetalheCompleto
         }
     }
 
-    protected static function formatarCamposCarregar(TRecord &$item)
-    {
-    }
+    protected static function formatarCamposCarregar(TRecord &$item) {}
 
     static function recarregarDatagrid($param, &$datagrid)
     {
@@ -379,7 +378,5 @@ trait RAdiantiTraitDetalheCompleto
      * {
      *       
      */
-    protected static function prepararItemAdicionarDatagrid(object &$itemAdicionando)
-    {
-    }
+    protected static function prepararItemAdicionarDatagrid(object &$itemAdicionando) {}
 }

@@ -1,15 +1,20 @@
 <?php
 
+namespace Axdron\Radianti\TraitsCadastro;
+
 use Adianti\Widget\Datagrid\TDataGrid;
 use Adianti\Widget\Datagrid\TDataGridAction;
 use Adianti\Widget\Form\TFormSeparator;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 
-trait TraitDetalheDatagrid
+trait RadiantiTraitDetalheDatagrid
 {
+
+    use RadiantiTraitFormatacaoDetalhes;
+
+
     abstract protected static function getNomeTelaPrincipal(): string;
     abstract protected static function getNomeForm(): string;
-    abstract protected static function getNomeDetalhe(): string;
 
     protected static function getNomeDatagrid(): string
     {
@@ -191,35 +196,8 @@ trait TraitDetalheDatagrid
         return ['form' => $form, 'datagrid' => $datagrid];
     }
 
-    protected static function getPrefixoDetalhe()
-    {
-        return 'detalhe_' . self::formatarNomeDetalhe(true) . '_';
-    }
-
-    protected static function getNomeCampo(string $nomeCampo)
-    {
-        return self::getPrefixoDetalhe() . $nomeCampo;
-    }
-
     protected static function getNomeCampoDatagrid(string $nomeCampo)
     {
         return get_called_class()::getNomeDatagrid() . '_' . get_called_class()::getNomeCampo($nomeCampo);
-    }
-
-    protected static function formatarNomeDetalhe($snMinusculo = false)
-    {
-        $nomeDetalhe = get_called_class()::getNomeDetalhe();
-
-        $nomeSemCarateresEspeciais = Format::desformataCaracteresEspeciais($nomeDetalhe);
-
-        if ($snMinusculo) {
-            $nomeMinusculo = strtolower($nomeSemCarateresEspeciais);
-            $nomeComUnderline = str_replace(' ', '_', $nomeMinusculo);
-            return $nomeComUnderline;
-        }
-
-        $nomeSemEspacos = str_replace(' ', '', $nomeSemCarateresEspeciais);
-
-        return $nomeSemEspacos;
     }
 }
