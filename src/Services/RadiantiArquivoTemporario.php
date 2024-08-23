@@ -1,6 +1,6 @@
 <?php
 
-namespace Services;
+namespace Axdron\Radianti\Services;
 
 use Adianti\Widget\Dialog\TMessage;
 
