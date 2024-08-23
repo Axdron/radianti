@@ -11,7 +11,7 @@ class RadiantiDatagridColunaPercentual extends TDataGridColumn
         parent::__construct($name, $label, $align, $width);
         $this->setTransformer(function ($value) {
             if (!is_numeric($value)) {
-                return '';
+                return $value;
             }
             return number_format($value, 2, ',', '.') . '%';
         });
