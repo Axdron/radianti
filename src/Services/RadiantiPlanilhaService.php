@@ -50,7 +50,7 @@ class RadiantiPlanilhaService
         }
     }
 
-    public static function gerarXLSXDatagrid($nomeArquivo, TDataGrid $datagrid)
+    public static function gerarXLSXDatagrid(string $nomeArquivo, TDataGrid $datagrid)
     {
         $conteudoDatagrid = $datagrid->getOutputData();
         return self::gerarXLSX($nomeArquivo, $conteudoDatagrid);
