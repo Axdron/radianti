@@ -14,5 +14,6 @@ Aqui estão alguns dos principais recursos do Radianti:
 
 1. **Datagrids**: Existem recursos para a criação de colunas de Datagrids que são frequentemente utilizadas, como colunas de dinheiro (em R$) e colunas de percentual. As duas classes disponíveis são:
 
-- RadiantiDatagridColunaDinheiro;
-- RadiantiDatagridColunaPercentual;
+- RadiantiDatagridColunaDinheiro - Formata para R$;
+- RadiantiDatagridColunaPercentual - Inclui % no final, desde que seja um número, senão retorna o próprio valor;
+- RadiantiDatagridColunaSimNao - Se tiver valor informado, então SIM, senão, NÃO;
