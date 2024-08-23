@@ -20,4 +20,6 @@ Aqui estão alguns dos principais recursos do Radianti:
 
 2. **Serviços**: Serviços de uso geral:
 
+- RadiantiArquivoTemporario - Cria arquivos temporários na pasta temporária, para não utilizar as pastas de output (importante quando utiliza serviços como o Google App Engine);
 - RadiantiNavegacao - Funções para abrir telas e guias novas;
+- RadiantiPlanilhaService - Funções para criar XLSX e CSV;

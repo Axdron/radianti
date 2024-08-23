@@ -13,6 +13,8 @@
             "email": "axdron@hotmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "shuchkin/simplexlsxgen": "^1.4"
+    },
     "version": "2.2.0"
 }
