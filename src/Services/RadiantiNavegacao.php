@@ -1,5 +1,7 @@
 <?php
 
+namespace Axdron\Radianti\Services;
+
 use Adianti\Core\AdiantiCoreApplication;
 
 class RadiantiNavegacao

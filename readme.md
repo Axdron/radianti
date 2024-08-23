@@ -17,3 +17,7 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiDatagridColunaDinheiro - Formata para R$;
 - RadiantiDatagridColunaPercentual - Inclui % no final, desde que seja um número, senão retorna o próprio valor;
 - RadiantiDatagridColunaSimNao - Se tiver valor informado, então SIM, senão, NÃO;
+
+2. **Serviços**: Serviços de uso geral:
+
+- RadiantiNavegação - Funções para abrir telas e guias novas;
