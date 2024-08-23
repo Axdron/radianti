@@ -3,16 +3,21 @@
 namespace Axdron\Radianti\TraitsCadastro;
 
 use Adianti\Widget\Form\TFieldList;
+use stdClass;
 
 trait RadiantiTraitDetalheFieldList
 {
 
     use RadiantiTraitFormatacaoDetalhes;
 
-    abstract protected static function getNomeTelaPrincipal(): string;
-    abstract protected static function getNomeForm(): string;
+    private $fieldlist;
 
     protected static function getSnPermiteExcluir(): bool
+    {
+        return true;
+    }
+
+    protected static function getSnPermiteAdicionar(): bool
     {
         return true;
     }
@@ -26,7 +31,7 @@ trait RadiantiTraitDetalheFieldList
      * Cria a FieldList
      * @param $form
      */
-    protected function criarFieldList(&$form)
+    public function criarFieldList(&$form)
     {
         $this->fieldlist = new TFieldList;
         $this->fieldlist->generateAria();
@@ -38,6 +43,11 @@ trait RadiantiTraitDetalheFieldList
 
         if (!self::getSnPermiteExcluir())
             $this->fieldlist->disableRemoveButton();
+
+        if (self::getSnPermiteAdicionar()) {
+            $this->fieldlist->addDetail(new stdClass());
+            $this->fieldlist->addCloneAction();
+        }
 
         $this->fieldlist->addHeader();
 
@@ -90,5 +100,5 @@ trait RadiantiTraitDetalheFieldList
      * }
      * 
      */
-    abstract function carregar($mestreId);
+    abstract function carregar(int|null $mestreId);
 }
