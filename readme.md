@@ -20,4 +20,4 @@ Aqui estão alguns dos principais recursos do Radianti:
 
 2. **Serviços**: Serviços de uso geral:
 
-- RadiantiNavegação - Funções para abrir telas e guias novas;
+- RadiantiNavegacao - Funções para abrir telas e guias novas;
