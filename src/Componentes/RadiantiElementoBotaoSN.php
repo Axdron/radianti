@@ -15,8 +15,15 @@ class RadiantiElementoBotaoSN extends RadiantiElementoBotaoOpcoes
     function ativarOpcaoTodos()
     {
         $opcoes = RadiantiDatasets::ARRAY_SN;
-        $opcoes[''] = 'Todos';
+        $opcoes['Todos'] = 'Todos';
         $this->addItems($opcoes);
-        $this->setValue('');
+        $this->setValue('Todos');
+    }
+
+    static function tratarFiltroTodos($valor)
+    {
+        if (empty($valor) || $valor == 'Todos') {
+            return false;
+        }
     }
 }
