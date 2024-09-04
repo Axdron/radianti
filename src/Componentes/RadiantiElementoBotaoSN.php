@@ -20,10 +20,11 @@ class RadiantiElementoBotaoSN extends RadiantiElementoBotaoOpcoes
         $this->setValue('Todos');
     }
 
-    static function tratarFiltroTodos($valor)
+    static function tratarFiltroTodos($valor): bool
     {
-        if (empty($valor) || $valor == 'Todos') {
+        if ($valor == '' || $valor == 'Todos') {
             return false;
         }
+        return true;
     }
 }

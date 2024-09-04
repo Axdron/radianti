@@ -23,3 +23,8 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiArquivoTemporario - Cria arquivos temporários na pasta temporária, para não utilizar as pastas de output (importante quando utiliza serviços como o Google App Engine);
 - RadiantiNavegacao - Funções para abrir telas e guias novas;
 - RadiantiPlanilhaService - Funções para criar XLSX e CSV;
+
+3. **Componentes de tela**: Atalhos para componentes com propriedades usadas com grande recorrência:
+
+- RadiantiElementoBotaoOpcoes: TRadioGroup convertido em botões;
+- RadiantiElementoBotaoSN: RadiantiElementoBotaoOpcoes, só que já com os campos boolenos;
