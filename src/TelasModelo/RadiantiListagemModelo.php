@@ -44,6 +44,8 @@ abstract class RadiantiListagemModelo extends TPage
      */
     abstract protected static function getNomeTelaCadastro(): string | false;
 
+    protected $snPermiteCadastrarNovo = true;
+
     public function __construct($param)
     {
         parent::__construct();
@@ -69,9 +71,7 @@ abstract class RadiantiListagemModelo extends TPage
             $this->carregar($param);
     }
 
-    public function abrir()
-    {
-    }
+    public function abrir() {}
 
     /**
      * Cria os campos do formulário de busca
@@ -134,7 +134,7 @@ abstract class RadiantiListagemModelo extends TPage
         $this->criarCamposBusca();
 
         $this->formularioBusca->addAction('Buscar', new TAction([$this, 'buscar']), 'fa:search blue');
-        if ($nomeTelaCadastro = $this->getNomeTelaCadastro())
+        if ($nomeTelaCadastro = $this->getNomeTelaCadastro() && $this->snPermiteCadastrarNovo)
             $this->formularioBusca->addActionLink('Novo', new TAction([$nomeTelaCadastro, 'abrirEdicao']), 'fa:plus green');
 
         $this->criarBotoesExtras();
@@ -144,9 +144,7 @@ abstract class RadiantiListagemModelo extends TPage
      * Cria os botões extras do formulário de busca
      * @return void
      */
-    protected function criarBotoesExtras()
-    {
-    }
+    protected function criarBotoesExtras() {}
 
     private function criarDatagrid()
     {
@@ -181,9 +179,7 @@ abstract class RadiantiListagemModelo extends TPage
         $this->pageNavigation->setLimit($this->limitDatagrid);
     }
 
-    protected function criarAcoesDatagrid()
-    {
-    }
+    protected function criarAcoesDatagrid() {}
 
 
     public function buscar()
