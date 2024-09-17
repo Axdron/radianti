@@ -4,6 +4,7 @@ namespace Axdron\Radianti\Services;
 
 use Adianti\Widget\Datagrid\TDataGrid;
 use Adianti\Widget\Dialog\TMessage;
+use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Exception;
 use Shuchkin\SimpleXLSXGen;
 
@@ -50,7 +51,7 @@ class RadiantiPlanilhaService
         }
     }
 
-    public static function gerarXLSXDatagrid(string $nomeArquivo, TDataGrid $datagrid)
+    public static function gerarXLSXDatagrid(string $nomeArquivo, TDataGrid|BootstrapDatagridWrapper $datagrid)
     {
         $conteudoDatagrid = $datagrid->getOutputData();
         return self::gerarXLSX($nomeArquivo, $conteudoDatagrid);
