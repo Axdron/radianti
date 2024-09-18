@@ -134,7 +134,7 @@ abstract class RadiantiListagemModelo extends TPage
         $this->criarCamposBusca();
 
         $this->formularioBusca->addAction('Buscar', new TAction([$this, 'buscar']), 'fa:search blue');
-        if ($nomeTelaCadastro = $this->getNomeTelaCadastro() && $this->snPermiteCadastrarNovo)
+        if (($nomeTelaCadastro = $this->getNomeTelaCadastro()) && $this->snPermiteCadastrarNovo)
             $this->formularioBusca->addActionLink('Novo', new TAction([$nomeTelaCadastro, 'abrirEdicao']), 'fa:plus green');
 
         $this->criarBotoesExtras();
