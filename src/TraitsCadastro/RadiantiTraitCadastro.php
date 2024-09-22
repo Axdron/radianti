@@ -89,18 +89,12 @@ trait RadiantiTraitCadastro
      */
     abstract protected function criarCamposFormularioMestre();
 
-    protected function criarDetalhes()
-    {
-    }
+    protected function criarDetalhes() {}
 
-    protected function carregarDetalhes($idMestre)
-    {
-    }
+    protected function carregarDetalhes($idMestre) {}
 
 
-    protected function adicionarAcoesExtrasFormularioMestre()
-    {
-    }
+    protected function adicionarAcoesExtrasFormularioMestre() {}
 
     protected function adicionarAcoesPadraoFormularioMestre()
     {
@@ -167,22 +161,16 @@ trait RadiantiTraitCadastro
         } catch (\Throwable $th) {
             $this->formCadastro->setData($this->formCadastro->getData());
             $this->recarregarDatagridsDetalhes($param);
-            new TMessage('error', "Não foi possível salvar " . get_called_class()::getTitulo() . ": " . $th->getMessage());
+            new TMessage('error', "Não foi possível salvar " . get_called_class()::getTitulo() . ":<br><br>" . $th->getMessage());
             return false;
         }
     }
 
-    protected function executarAposSalvar($objetoAntesSalvar, $objetoAposSalvamento)
-    {
-    }
+    protected function executarAposSalvar($objetoAntesSalvar, $objetoAposSalvamento) {}
 
 
 
-    protected function salvarDetalhes(TRecord $objetoMestre, $param)
-    {
-    }
+    protected function salvarDetalhes(TRecord $objetoMestre, $param) {}
 
-    protected function recarregarDatagridsDetalhes($param)
-    {
-    }
+    protected function recarregarDatagridsDetalhes($param) {}
 }
