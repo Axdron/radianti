@@ -24,7 +24,7 @@ class RadiantiTransaction
 
     public static function salvar($callback, $snEmiteTMessage = true)
     {
-        return self::encapsularTransacao($callback . $snEmiteTMessage);
+        return self::encapsularTransacao($callback, $snEmiteTMessage);
     }
 
     public static function encapsularTransacao($callback, $snEmiteTMessage = true, $snAbrirTransacao = true)
