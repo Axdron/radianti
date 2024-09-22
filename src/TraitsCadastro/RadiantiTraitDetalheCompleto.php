@@ -42,6 +42,11 @@ trait RadiantiTraitDetalheCompleto
         return self::getCampos()[1];
     }
 
+    protected static function getSnDetalheObrigatorio(): bool
+    {
+        return false;
+    }
+
     /**
      * Cria os campos do formulário do detalhe
      * @param BootstrapFormBuilder $form
@@ -84,6 +89,14 @@ trait RadiantiTraitDetalheCompleto
      */
     public static function salvar($mestreId, $param)
     {
+
+        $itensDatagrid = $param[self::getNomeCampoDatagrid(
+            get_called_class()::getCampos()[0]
+        )] ?? null;
+
+        if (empty($itensDatagrid) && self::getSnDetalheObrigatorio())
+            throw new Exception('É obrigatório informar ao menos um item em ' . self::getNomeDetalhe());
+
         $model = get_called_class()::getModel();
         $itensSalvosAnteriormente = $model::where(
             get_called_class()::getCampos()[1],
@@ -93,9 +106,7 @@ trait RadiantiTraitDetalheCompleto
 
         $itensASeremMantidos = [];
 
-        if (!empty($itensDatagrid = $param[self::getNomeCampoDatagrid(
-            get_called_class()::getCampos()[0]
-        )] ?? null)) {
+        if (!empty($itensDatagrid)) {
             foreach ($itensDatagrid as $indice => $valorInicial) {
                 $item = $model::firstOrNew(['id' => $param[self::getNomeCampoDatagrid('id')][$indice] ?? null]);
                 foreach (get_called_class()::getCampos() as $campo) {
