@@ -15,7 +15,7 @@
     ],
     "require": {
         "shuchkin/simplexlsxgen": "^1.4",
-        "dompdf/dompdf": "^3.0"
+        "dompdf/dompdf": "^2.0"
     },
-    "version": "2.6.0"
+    "version": "2.6.1"
 }
