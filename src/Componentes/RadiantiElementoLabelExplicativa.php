@@ -1,8 +1,10 @@
 <?php
 
+namespace Axdron\Radianti\Componentes;
+
 use Adianti\Widget\Form\TLabel;
 
-class RadiantiLabelExplicativa extends TLabel
+class RadiantiElementoLabelExplicativa extends TLabel
 {
 
     public function __construct($explicacao)

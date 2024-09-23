@@ -12,11 +12,11 @@ use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Widget\Wrapper\TQuickForm;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormWrapper;
+use Axdron\Radianti\Componentes\RadiantiElementoLabelExplicativa;
 use Axdron\Radianti\Services\RadiantiArrayService;
 use Axdron\Radianti\Services\RadiantiPDFService;
 use Axdron\Radianti\Services\RadiantiPlanilhaService;
 use Exception;
-use RadiantiLabelExplicativa;
 
 abstract class RadiantiRelatorioModelo extends TPage
 {
@@ -47,7 +47,7 @@ abstract class RadiantiRelatorioModelo extends TPage
         $container = new TVBox;
         $container->style = 'width: 100%';
         $container->add(new TXMLBreadCrumb('menu.xml', get_class($this)));
-        $container->add(new RadiantiLabelExplicativa(get_called_class()::getExplicacao()));
+        $container->add(new RadiantiElementoLabelExplicativa(get_called_class()::getExplicacao()));
         $container->add(TPanelGroup::pack(get_called_class()::getNomeRelatorio(), $this->form));
         $container->add($panelDataGrid);
 

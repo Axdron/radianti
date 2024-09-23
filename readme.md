@@ -35,6 +35,7 @@ Aqui estão alguns dos principais recursos do Radianti:
 
 - RadiantiElementoBotaoOpcoes: TRadioGroup convertido em botões;
 - RadiantiElementoBotaoSN: RadiantiElementoBotaoOpcoes, só que já com os campos boolenos;
+- RadiantiElementoLabelExplicativa: Cria uma label utilizada para explicar o funcionamento de alguma tela, para ser utilizada, principalmente, em relatórios;
 
 4. **Telas modelo**: Telas prontas para agilizar na criação de outras telas:
 
