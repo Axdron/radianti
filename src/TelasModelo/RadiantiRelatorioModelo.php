@@ -1,5 +1,7 @@
 <?php
 
+namespace Axdron\Radianti\TelasModelo;
+
 use Adianti\Control\TAction;
 use Adianti\Control\TPage;
 use Adianti\Widget\Container\TPanelGroup;
@@ -10,8 +12,13 @@ use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Widget\Wrapper\TQuickForm;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormWrapper;
+use Axdron\Radianti\Services\RadiantiArrayService;
+use Axdron\Radianti\Services\RadiantiPDFService;
+use Axdron\Radianti\Services\RadiantiPlanilhaService;
+use Exception;
+use RadiantiLabelExplicativa;
 
-abstract class RAdiantiRelatorioModelo extends TPage
+abstract class RadiantiRelatorioModelo extends TPage
 {
 
     abstract protected static function getNomeRelatorio(): string;
@@ -40,7 +47,7 @@ abstract class RAdiantiRelatorioModelo extends TPage
         $container = new TVBox;
         $container->style = 'width: 100%';
         $container->add(new TXMLBreadCrumb('menu.xml', get_class($this)));
-        $container->add(new RAdiantiLabelExplicativa(get_called_class()::getExplicacao()));
+        $container->add(new RadiantiLabelExplicativa(get_called_class()::getExplicacao()));
         $container->add(TPanelGroup::pack(get_called_class()::getNomeRelatorio(), $this->form));
         $container->add($panelDataGrid);
 
@@ -153,9 +160,7 @@ abstract class RAdiantiRelatorioModelo extends TPage
     /**
      * Cria botões extras no formulário
      */
-    protected function criarBotoesExtras()
-    {
-    }
+    protected function criarBotoesExtras() {}
 
     private function criarDataGridResultados()
     {
@@ -186,9 +191,9 @@ abstract class RAdiantiRelatorioModelo extends TPage
     private function gerarPDFDatagrid($dadosFormulario)
     {
         $conteudoDatagrid = file_get_contents('app/resources/styles-print.html') . $this->datagrid->getContents();
-        $conteudoDatagrid .= "<br><br>Filtros:<br>" . RAdiantiArrayService::converterEmTexto((array) $dadosFormulario);
+        $conteudoDatagrid .= "<br><br>Filtros:<br>" . RadiantiArrayService::converterEmTexto((array) $dadosFormulario);
 
-        $arquivo = RAdiantiPDFService::gerarPDFHTML(get_called_class()::getNomeRelatorio(), $conteudoDatagrid, orientacao: get_called_class()::getOrientacaoPDF());
+        $arquivo = RadiantiPDFService::gerarPDFHTML(get_called_class()::getNomeRelatorio(), $conteudoDatagrid, orientacao: get_called_class()::getOrientacaoPDF());
         if ($arquivo)
             parent::openFile($arquivo);
     }
@@ -196,12 +201,10 @@ abstract class RAdiantiRelatorioModelo extends TPage
     private function gerarXLSXDatagrid()
     {
         $conteudoDatagrid = $this->datagrid->getOutputData();
-        $arquivo = RAdiantiXLSXService::gerarXLSX(get_called_class()::getNomeRelatorio(), $conteudoDatagrid);
+        $arquivo = RadiantiPlanilhaService::gerarXLSX(get_called_class()::getNomeRelatorio(), $conteudoDatagrid);
         if ($arquivo)
             parent::openFile($arquivo);
     }
 
-    function abrir()
-    {
-    }
+    function abrir() {}
 }

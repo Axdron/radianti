@@ -29,12 +29,14 @@ class RadiantiTransaction
 
     public static function encapsularTransacao($callback, $snEmiteTMessage = true, $snAbrirTransacao = true)
     {
-
         try {
+            if (empty(getenv('RADIANTI_DB_NAME')))
+                throw new \Exception('Variável de ambiente RADIANTI_DB_NAME não definida');
+
             if ($snAbrirTransacao)
-                TTransaction::open(getenv('DB_NAME_RADIANTI'));
+                TTransaction::open(getenv('RADIANTI_DB_NAME'));
             else
-                TTransaction::openFake(getenv('DB_NAME_RADIANTI'));
+                TTransaction::openFake(getenv('RADIANTI_DB_NAME'));
             $retorno = $callback();
             TTransaction::close();
             return $retorno;

@@ -8,6 +8,11 @@ Esta biblioteca tem como objetivo simplificar objetos e funções frequentemente
 
 Recomendamos que você inclua a pasta `lib` em seu projeto para mapear os objetos do Adianti. Essa pasta contém as bibliotecas e componentes necessários para o correto funcionamento do framework.
 
+## Variáveis de ambiente cuja declaração é necessária para o funcionamento da biblioteca
+
+- RADIANTI_DB_NAME: Necessário declarar para utilizar as Transactions corretamento. Deve conter o nome do DB principal;
+- RADIANTI_VARIAVEL_LOGIN: Necessário declarar para que o serviço de PDF saiba qual usuário informar no rodapé;
+
 ## Componentes Principais
 
 Aqui estão alguns dos principais recursos do Radianti:
@@ -23,8 +28,14 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiArquivoTemporario - Cria arquivos temporários na pasta temporária, para não utilizar as pastas de output (importante quando utiliza serviços como o Google App Engine);
 - RadiantiNavegacao - Funções para abrir telas e guias novas;
 - RadiantiPlanilhaService - Funções para criar XLSX e CSV;
+- RadiantiArrayService - Funções para manipulação de arrays;
+- RadiantiPDFService - Funções para geração de arquivos PDF a partir de HTMLs;
 
 3. **Componentes de tela**: Atalhos para componentes com propriedades usadas com grande recorrência:
 
 - RadiantiElementoBotaoOpcoes: TRadioGroup convertido em botões;
 - RadiantiElementoBotaoSN: RadiantiElementoBotaoOpcoes, só que já com os campos boolenos;
+
+4. **Telas modelo**: Telas prontas para agilizar na criação de outras telas:
+
+- RadiantiRelatorioModelo: Relatório contendo filtros, datagrid de dados, geração de XLSX e PDF;
