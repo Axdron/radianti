@@ -29,4 +29,9 @@ class RadiantiElementoData extends TDate
     {
         $this->setValue(date('Y-m-01'));
     }
+
+    public static function converterParaPadraoAmericano($data)
+    {
+        return implode('-', array_reverse(explode('/', $data)));
+    }
 }
