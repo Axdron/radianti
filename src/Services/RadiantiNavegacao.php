@@ -11,8 +11,15 @@ class RadiantiNavegacao
         AdiantiCoreApplication::loadPage($classe, $metodo, $parametros);
     }
 
-    static function abrirNovaGuia($classe, $method, $key)
+    static function abrirNovaGuia(string $classe, ?string $method = null, $key = null)
     {
-        echo "<script>window.open('index.php?class={$classe}&method={$method}&key={$key}&id={$key}', '_blank');</script>";
+        $endereco = "index.php?class={$classe}";
+        if ($method) {
+            $endereco .= "&method={$method}";
+        }
+        if ($key) {
+            $endereco .= "&key={$key}";
+        }
+        echo "<script>window.open('$endereco', '_blank');</script>";
     }
 }
