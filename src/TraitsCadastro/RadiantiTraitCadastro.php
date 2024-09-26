@@ -139,6 +139,8 @@ trait RadiantiTraitCadastro
                         throw new Exception('Objeto não é uma instância de TRecord!');
                     }
 
+                    $this->tratarDadosFormulario($dadosFormulario);
+
                     $objeto->fromArray((array) $dadosFormulario);
                     $objeto->store();
 
@@ -173,4 +175,6 @@ trait RadiantiTraitCadastro
     protected function salvarDetalhes(TRecord $objetoMestre, $param) {}
 
     protected function recarregarDatagridsDetalhes($param) {}
+
+    protected function tratarDadosFormulario(&$dadosFormulario) {}
 }
