@@ -67,6 +67,8 @@ trait RadiantiTraitCadastro
                 throw new Exception('Registro não encontrado!');
             }
 
+            $this->tratarObjetoCarregado($objeto);
+
             return $objeto;
         });
 
@@ -177,4 +179,6 @@ trait RadiantiTraitCadastro
     protected function recarregarDatagridsDetalhes($param) {}
 
     protected function tratarDadosFormulario(&$dadosFormulario) {}
+
+    protected function tratarObjetoCarregado(&$objeto) {}
 }
