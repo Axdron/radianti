@@ -114,7 +114,7 @@ trait RadiantiTraitCadastro
 
     function abrirEdicao($param)
     {
-        if (empty($param['id']) || !empty(['snCadastroNovo'])) {
+        if (empty($param['id']) || !empty($param['snCadastroNovo'])) {
             return null;
         }
 
