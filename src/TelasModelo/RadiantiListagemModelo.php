@@ -187,6 +187,8 @@ abstract class RadiantiListagemModelo extends TPage
         $dadosFormulario = (array) $this->formularioBusca->getData();
         $this->formularioBusca->setData($dadosFormulario);
 
+        $this->formularioBusca->validate();
+
         $criteria = new TCriteria;
         $criteria->setProperty('limit', $this->limitDatagrid);
         $criteria->setProperty('order', $this->ordenacao);
