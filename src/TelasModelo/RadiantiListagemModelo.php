@@ -184,20 +184,24 @@ abstract class RadiantiListagemModelo extends TPage
 
     public function buscar()
     {
-        $dadosFormulario = (array) $this->formularioBusca->getData();
-        $this->formularioBusca->setData($dadosFormulario);
+        try {
+            $dadosFormulario = (array) $this->formularioBusca->getData();
+            $this->formularioBusca->setData($dadosFormulario);
 
-        $this->formularioBusca->validate();
+            $this->formularioBusca->validate();
 
-        $criteria = new TCriteria;
-        $criteria->setProperty('limit', $this->limitDatagrid);
-        $criteria->setProperty('order', $this->ordenacao);
-        $criteria = $this->adicionarFiltrosCriteria($dadosFormulario, $criteria);
+            $criteria = new TCriteria;
+            $criteria->setProperty('limit', $this->limitDatagrid);
+            $criteria->setProperty('order', $this->ordenacao);
+            $criteria = $this->adicionarFiltrosCriteria($dadosFormulario, $criteria);
 
-        TSession::setValue(get_called_class() . '_dados_formulario', (object)$dadosFormulario);
-        TSession::setValue(get_called_class() . '_criteria', $criteria);
+            TSession::setValue(get_called_class() . '_dados_formulario', (object)$dadosFormulario);
+            TSession::setValue(get_called_class() . '_criteria', $criteria);
 
-        $this->carregar(['first_page' => 1]);
+            $this->carregar(['first_page' => 1]);
+        } catch (\Throwable $th) {
+            new TMessage('error', $th->getMessage());
+        }
     }
 
     public function carregar($param = null)
