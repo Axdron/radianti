@@ -34,7 +34,11 @@ abstract class RadiantiListagemModelo extends TPage
      * Retorna o nome da tela de cadastro ou false caso não possua
      * @return string|false
      */
-    abstract protected static function getNomeFormularioBusca(): string|false;
+    protected static function getNomeFormularioBusca(): string|false
+    {
+        return get_called_class()::class . 'FormBusca';
+    }
+
     abstract protected static function getTitulo(): string;
     abstract protected static function getModel(): string;
 
