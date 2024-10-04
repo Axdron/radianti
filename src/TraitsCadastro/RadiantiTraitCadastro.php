@@ -19,7 +19,13 @@ trait RadiantiTraitCadastro
     protected BootstrapFormBuilder $formCadastro;
     protected TRecord $objetoEdicao;
 
-    abstract static function getNomeForm(): string;
+    static function getNomeForm(): string
+    {
+        $className = get_called_class();
+        $snakeCaseName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $className));
+        return $snakeCaseName . '_form';
+    }
+
     abstract protected static function getTitulo(): string;
     abstract protected static function getNomeTelaListagem(): string;
     abstract protected static function getModel(): string;
