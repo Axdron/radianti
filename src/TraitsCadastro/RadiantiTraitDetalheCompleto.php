@@ -269,7 +269,7 @@ trait RadiantiTraitDetalheCompleto
     }
 
     /**
-     * Valida se há duplicidade de valor na datagrid, retornando true caso for válido (sem duplicidade)
+     * Valida se há duplicidade de valor na datagrid, retornando true caso for válido (sem duplicidade), e false caso contrário. 
      * @param array $param
      * @param String $campo
      * @param $valor
@@ -277,6 +277,13 @@ trait RadiantiTraitDetalheCompleto
      */
     protected static function validarDuplicidadeDeValorDatagrid(object $itemAdicionado, String $campo)
     {
+        if (strpos($campo, get_called_class()::getPrefixoDetalhe()) === 0) {
+            $campo = substr($campo, strlen(get_called_class()::getPrefixoDetalhe()));
+        }
+
+        if (strpos($campo, get_called_class()::getNomeDatagrid()) === 0) {
+            $campo = substr($campo, strlen(get_called_class()::getNomeDatagrid()));
+        }
 
         $itemAdicionado = (array) $itemAdicionado;
 
@@ -363,7 +370,8 @@ trait RadiantiTraitDetalheCompleto
         self::prepararItemAdicionarDatagrid($itemAdicionado);
 
         foreach (self::getCampos() as $campo) {
-            $itemDatagrid[self::getNomeCampo($campo)] = $itemAdicionado->{self::getNomeCampo($campo)};
+            if (!empty($itemAdicionado->{self::getNomeCampo($campo)}))
+                $itemDatagrid[self::getNomeCampo($campo)] = $itemAdicionado->{self::getNomeCampo($campo)};
         }
 
         if (empty($itemDatagrid))

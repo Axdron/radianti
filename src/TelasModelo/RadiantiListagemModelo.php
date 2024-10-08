@@ -36,7 +36,7 @@ abstract class RadiantiListagemModelo extends TPage
      */
     protected static function getNomeFormularioBusca(): string|false
     {
-        return get_called_class()::class . 'FormBusca';
+        return get_called_class() . 'FormBusca';
     }
 
     abstract protected static function getTitulo(): string;
