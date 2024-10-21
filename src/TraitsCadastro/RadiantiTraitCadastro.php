@@ -141,7 +141,7 @@ trait RadiantiTraitCadastro
 
                     $model = get_called_class()::getModel();
 
-                    $objeto = new $model($dadosFormulario->id);
+                    $objeto = new $model($dadosFormulario->id ?? null);
                     $objetoOriginal = clone $objeto;
                     if (!($objeto instanceof TRecord)) {
                         throw new Exception('Objeto não é uma instância de TRecord!');
