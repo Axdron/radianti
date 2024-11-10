@@ -370,8 +370,10 @@ trait RadiantiTraitDetalheCompleto
         self::prepararItemAdicionarDatagrid($itemAdicionado);
 
         foreach (self::getCampos() as $campo) {
-            if (!empty($itemAdicionado->{self::getNomeCampo($campo)}))
+            if (isset($itemAdicionado->{self::getNomeCampo($campo)}) && ($itemAdicionado->{self::getNomeCampo($campo)} !== ''))
                 $itemDatagrid[self::getNomeCampo($campo)] = $itemAdicionado->{self::getNomeCampo($campo)};
+            else
+                $itemDatagrid[self::getNomeCampo($campo)] = null;
         }
 
         if (empty($itemDatagrid))
