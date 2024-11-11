@@ -3,6 +3,7 @@
 namespace Axdron\Radianti\TraitsCadastro;
 
 use Adianti\Control\TAction;
+use Adianti\Control\TWindow;
 use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Database\TRecord;
 use Adianti\Widget\Container\TNotebook;
@@ -33,6 +34,11 @@ trait RadiantiTraitCadastro
     public function __construct($param)
     {
         parent::__construct();
+
+        if ($this instanceof TWindow) {
+            $this->setTitle(get_called_class()::getTitulo());
+            parent::setSize(0.9, null);
+        }
 
         parent::add($this->criarTela($param));
     }
@@ -113,7 +119,10 @@ trait RadiantiTraitCadastro
     private function criarFormularioMestre()
     {
         $this->formCadastro = new BootstrapFormBuilder(get_called_class()::getNomeForm());
-        $this->formCadastro->setFormTitle(get_called_class()::getTitulo());
+
+        if (!($this instanceof TWindow)) {
+            $this->formCadastro->setFormTitle(get_called_class()::getTitulo());
+        }
 
         $this->criarCamposFormularioMestre();
     }
