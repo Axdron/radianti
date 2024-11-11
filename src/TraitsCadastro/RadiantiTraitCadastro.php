@@ -9,9 +9,11 @@ use Adianti\Database\TRecord;
 use Adianti\Widget\Container\TNotebook;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Dialog\TMessage;
+use Adianti\Widget\Form\THidden;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapFormBuilder;
 use Adianti\Wrapper\BootstrapNotebookWrapper;
+use Axdron\Radianti\Services\RadiantiNavegacao;
 use Axdron\Radianti\Services\RadiantiTransaction;
 use Exception;
 
@@ -50,6 +52,10 @@ trait RadiantiTraitCadastro
         }
 
         $this->criarFormularioMestre();
+
+        $campoOcultoOrigem = new THidden('snOrigemListagem');
+        $campoOcultoOrigem->setValue($param['snOrigemListagem'] ?? true);
+        $this->formCadastro->addFields([$campoOcultoOrigem]);
 
         $this->criarDetalhes();
 
@@ -129,10 +135,9 @@ trait RadiantiTraitCadastro
 
     function abrirEdicao($param)
     {
-        if (empty($param['id']) || !empty($param['snCadastroNovo'])) {
+        if (empty($param['id'])) {
             return null;
         }
-
 
         RadiantiTransaction::encapsularTransacao(function () use ($param) {
             $this->formCadastro->setData($this->objetoEdicao);
@@ -170,8 +175,12 @@ trait RadiantiTraitCadastro
                     if ($snEmiteMensagemSalvou)
                         new TMessage('info', 'Salvou ' . get_called_class()::getTitulo() . ' com sucesso!');
 
-                    if ($snRedirecionaListagem)
+                    if ($snRedirecionaListagem && ($param['snOrigemListagem'] ?? true))
                         AdiantiCoreApplication::loadPage(get_called_class()::getNomeTelaListagem(), 'carregar');
+
+                    if ($this instanceof TWindow) {
+                        parent::closeWindow();
+                    }
 
                     return $objeto;
                 },
@@ -196,4 +205,15 @@ trait RadiantiTraitCadastro
     protected function tratarDadosFormulario(&$dadosFormulario) {}
 
     protected function tratarObjetoCarregado(&$objeto) {}
+
+    public static function abrirJanelaAvulsa($param)
+    {
+        $campoId = $param['campoId'];
+
+        if (empty($campoId)) {
+            throw new Exception('Campo do ID não informado!');
+        }
+
+        RadiantiNavegacao::carregarPagina(get_called_class(), 'abrirEdicao', ['id' => $param[$campoId], 'snOrigemListagem' => false]);
+    }
 }
