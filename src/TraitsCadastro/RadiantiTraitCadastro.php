@@ -214,6 +214,9 @@ trait RadiantiTraitCadastro
             throw new Exception('Campo do ID não informado!');
         }
 
-        RadiantiNavegacao::carregarPagina(get_called_class(), 'abrirEdicao', ['id' => $param[$campoId], 'snOrigemListagem' => false]);
+        if ($campoId != 'somenteCadastro')
+            RadiantiNavegacao::carregarPagina(get_called_class(), 'abrirEdicao', ['id' => $param[$campoId], 'snOrigemListagem' => false]);
+        else
+            RadiantiNavegacao::carregarPagina(get_called_class(), 'abrirEdicao', ['snOrigemListagem' => false]);
     }
 }
