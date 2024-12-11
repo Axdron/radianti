@@ -15,7 +15,7 @@ class RadiantiPDFService
             if ($snIncluiTextoRodape) {
                 if (empty(getenv('RADIANTI_VARIAVEL_LOGIN')))
                     throw new Exception('Variável de ambiente RADIANTI_VARIAVEL_LOGIN não definida');
-                $conteudoHtml .= "<br><br> Gerado em: " . date('d/m/y H:i') . " por " . TSession::getValue(getenv('RADIANTI_VARIAVEL_LOGIN'));
+                $conteudoHtml .= self::gerarTextoRodape(TSession::getValue(getenv('RADIANTI_VARIAVEL_LOGIN')));
             }
 
             $dompdf = new \Dompdf\Dompdf();
@@ -42,5 +42,10 @@ class RadiantiPDFService
             new TMessage('error', $e->getMessage());
             return false;
         }
+    }
+
+    public static function gerarTextoRodape($nomeUsuario)
+    {
+        return "<br><br> Gerado em: " . date('d/m/y H:i') . " por " . $nomeUsuario;
     }
 }
