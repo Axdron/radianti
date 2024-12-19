@@ -22,12 +22,17 @@ abstract class RadiantiRelatorioModelo extends TPage
 {
 
     abstract protected static function getNomeRelatorio(): string;
-    abstract protected static function getNomeForm(): string;
+
     abstract protected static function getExplicacao(): string;
 
     protected static function getOrientacaoPDF(): string
     {
         return 'retrato';
+    }
+
+    protected static function getNomeForm(): string
+    {
+        return get_called_class() . 'Form';
     }
 
     protected $form;
