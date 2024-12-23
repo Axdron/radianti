@@ -18,6 +18,7 @@ class RadiantiElementoData extends TDate
     {
         $this->setMask('mm/yyyy');
         $this->setDatabaseMask('yyyy-mm');
+        $this->setOption('minViewMode', 'months');
     }
 
     public function definirValorComoHoje()
