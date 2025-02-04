@@ -59,6 +59,8 @@ trait RadiantiTraitDetalheDatagrid
 
         self::criarAcoesDatagrid($datagrid, $param);
 
+        self::criarAcoesExtrasDatagrid($datagrid, $param);
+
         $datagrid->createModel();
 
         return $datagrid;
@@ -94,6 +96,11 @@ trait RadiantiTraitDetalheDatagrid
         $acaoExclusao->setField(self::getNomeCampo('uniqid'));
         $acaoExclusao->setImage('fa:trash red fa-lg');
         $datagrid->addAction($acaoExclusao);
+    }
+
+    protected static function criarAcoesExtrasDatagrid(&$datagrid, $param = null)
+    {
+        //Ações extras
     }
 
     /**
