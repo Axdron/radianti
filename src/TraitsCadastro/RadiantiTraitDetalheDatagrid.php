@@ -4,6 +4,7 @@ namespace Axdron\Radianti\TraitsCadastro;
 
 use Adianti\Widget\Datagrid\TDataGrid;
 use Adianti\Widget\Datagrid\TDataGridAction;
+use Adianti\Widget\Datagrid\TDataGridColumn;
 use Adianti\Widget\Form\TFormSeparator;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 
@@ -19,6 +20,11 @@ trait RadiantiTraitDetalheDatagrid
     protected static function getNomeDatagrid(): string
     {
         return 'datagrid_' . self::formatarNomeDetalhe(true);
+    }
+
+    protected static function getSnCriaIdUniqid(): bool
+    {
+        return true;
     }
 
     /**Cria a datagrid
@@ -38,6 +44,16 @@ trait RadiantiTraitDetalheDatagrid
         $datagrid->setHeight(250);
         $datagrid->setId(self::getNomeDatagrid());
         $datagrid->generateHiddenFields();
+
+        if (get_called_class()::getSnCriaIdUniqid()) {
+            $colunaUniqid = new TDataGridColumn(get_called_class()::getNomeCampo('uniqid'), 'Uniqid', 'center');
+            $colunaUniqid->setVisibility(false);
+            $datagrid->addColumn($colunaUniqid);
+
+            $colunaId = new TDataGridColumn(get_called_class()::getNomeCampo('id'), 'Id', 'center');
+            $colunaId->setVisibility(false);
+            $datagrid->addColumn($colunaId);
+        }
 
         self::criarColunasDatagrid($datagrid, $param);
 

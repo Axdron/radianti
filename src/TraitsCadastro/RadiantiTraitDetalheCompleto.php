@@ -2,11 +2,14 @@
 
 namespace Axdron\Radianti\TraitsCadastro;
 
+use Adianti\Control\TAction;
 use Adianti\Database\TRecord;
 use Adianti\Widget\Base\TScript;
 use Adianti\Widget\Datagrid\TDataGrid;
+use Adianti\Widget\Form\TButton;
 use Adianti\Widget\Form\TForm;
 use Adianti\Widget\Form\TFormSeparator;
+use Adianti\Widget\Form\THidden;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormBuilder;
 use Exception;
@@ -45,6 +48,20 @@ trait RadiantiTraitDetalheCompleto
     protected static function getSnDetalheObrigatorio(): bool
     {
         return false;
+    }
+
+    protected static function getSnCriaBotaoAdicionar(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Retorna o modo de exibição do detalhe.
+     * Pode ser 'horizontal' ou em abas.
+     */
+    protected static function getModoExibicao(): string
+    {
+        return 'horizontal';
     }
 
     /**
@@ -258,9 +275,41 @@ trait RadiantiTraitDetalheCompleto
      */
     static function criar(&$form, &$datagrid)
     {
-        $form->addFields([new TFormSeparator(get_called_class()::getNomeDetalhe())]);
+
+        switch (get_called_class()::getModoExibicao()) {
+            case 'horizontal':
+                $form->addFields([new TFormSeparator(get_called_class()::getNomeDetalhe())]);
+
+                break;
+
+            case 'abas':
+                $form->appendPage(get_called_class()::getNomeDetalhe());
+
+                break;
+
+            default:
+                throw new Exception('Modo de exibição inválido');
+        }
+
+
+
+        if (get_called_class()::getSnCriaIdUniqid()) {
+            $campoUniqid = new THidden(self::getNomeCampo('uniqid'));
+            $form->addFields([$campoUniqid]);
+
+            $campoId = new THidden(self::getNomeCampo('id'));
+            $form->addFields([$campoId]);
+        }
 
         get_called_class()::criarCampos($form);
+
+        if (get_called_class()::getSnCriaBotaoAdicionar()) {
+            $botaoAdicionar = new TButton('adicionar' . self::formatarNomeDetalhe());
+            $botaoAdicionar->setLabel('Adicionar');
+            $botaoAdicionar->setImage('fa:plus-circle green');
+            $botaoAdicionar->setAction(new TAction([get_called_class()::getNomeTelaPrincipal(), 'adicionar' . self::formatarNomeDetalhe()], ['static' => 1]), 'Adicionar');
+            $form->addFields([], [$botaoAdicionar]);
+        }
 
         $datagrid =  get_called_class()::criarDatagrid($datagrid);
         $form->addFields([$datagrid]);
