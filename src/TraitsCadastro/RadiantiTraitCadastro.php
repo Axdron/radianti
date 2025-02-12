@@ -109,8 +109,22 @@ trait RadiantiTraitCadastro
      */
     abstract protected function criarCamposFormularioMestre();
 
+    /**
+     * Cria os detalhes do formulário.
+     * 
+     * Este método deve ser implementado para definir os detalhes do formulário.
+     * 
+     * @see carregarDetalhes
+     */
     protected function criarDetalhes() {}
 
+    /**
+     * Carrega os detalhes do formulário.
+     * 
+     * Este método deve ser implementado para carregar os detalhes do formulário.
+     * 
+     * @see criarDetalhes
+     */
     protected function carregarDetalhes($idMestre) {}
 
 

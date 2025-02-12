@@ -19,32 +19,6 @@ trait RadiantiTraitDetalheCompleto
 
     use RadiantiTraitDetalheDatagrid;
 
-    abstract protected static function getNomeTelaPrincipal(): string;
-    abstract protected static function getNomeDetalhe(): string;
-    abstract protected static function getModel(): string;
-
-    /** Informa o nome dos campos presentes no detalhe. O primeiro deve ser o campo principal, o segundo deve ser o campo de vinculo com mestre.  
-     *  ID e Uniqid não precisam ser declarados.
-     *  Exemplo, vinculado a uma tabela de preços (principal) x produtos (detalhe), o campo principal seria o produto_id e o campo mestre seria o id da tabela_precos_id
-     * @return array ['campo1', 'campo2', ...]
-     */
-    abstract protected static function getCampos(): array;
-
-    protected static function getNomeForm(): string
-    {
-        return self::getNomeTelaPrincipal()::getNomeForm();
-    }
-
-    protected static function getNomeCampoPrincipal(): string
-    {
-        return self::getCampos()[0];
-    }
-
-    protected static function getNomeCampoVinculo(): string
-    {
-        return self::getCampos()[1];
-    }
-
     protected static function getSnDetalheObrigatorio(): bool
     {
         return false;
@@ -53,15 +27,6 @@ trait RadiantiTraitDetalheCompleto
     protected static function getSnCriaBotaoAdicionar(): bool
     {
         return true;
-    }
-
-    /**
-     * Retorna o modo de exibição do detalhe.
-     * Pode ser 'horizontal' ou em abas.
-     */
-    protected static function getModoExibicao(): string
-    {
-        return 'horizontal';
     }
 
     /**
@@ -255,17 +220,9 @@ trait RadiantiTraitDetalheCompleto
 
         $nomeCampoPrincipal = self::getNomeCampo(self::getCampos()[0]);
 
-        TScript::create("document.getElementById('{$nomeCampoPrincipal}').focus();");
+        TScript::create("document.getElementsByName('{$nomeCampoPrincipal}')[0].focus();");
     }
 
-    /**
-     * Exclui um item da datagrid
-     * @param array $param
-     */
-    public static function excluir($param)
-    {
-        TDataGrid::removeRowById(self::getNomeDatagrid(), $param[self::getNomeCampo('uniqid')]);
-    }
 
     /**
      * Cria os campos e a datagrid para serem consumidos pelo mestre
@@ -360,93 +317,6 @@ trait RadiantiTraitDetalheCompleto
         }
     }
 
-    static function carregar($mestreId, &$datagrid)
-    {
-        $model = get_called_class()::getModel();
-        $campoMestre = get_called_class()::getCampos()[1];
-        $itens = $model::where($campoMestre, '=', $mestreId)->get();
-
-        foreach ($itens as $item) {
-
-            get_called_class()::formatarCamposCarregar($item);
-
-            $itemDatagrid = [
-                self::getNomeCampo('id') => $item->id,
-            ];
-
-            foreach (get_called_class()::getCampos() as $campo) {
-                $itemDatagrid[get_called_class()::getNomeCampo($campo)] = $item->{$campo};
-            }
-            get_called_class()::adicionarItemDatagrid((object) $itemDatagrid, $datagrid);
-        }
-    }
 
     protected static function formatarCamposCarregar(TRecord &$item) {}
-
-    static function recarregarDatagrid($param, &$datagrid)
-    {
-        if (!empty($param[self::getNomeCampoDatagrid(self::getCampos()[0])])) {
-            foreach ($param[self::getNomeCampoDatagrid(self::getCampos()[0])] as $key => $campoPrincipal) {
-                $item = [
-                    self::getNomeCampo('uniqid') => $param[self::getNomeCampoDatagrid('uniqid')][$key] ?? null,
-                    self::getNomeCampo('id') => $param[self::getNomeCampoDatagrid('id')][$key]  ?? null,
-                ];
-
-                foreach (self::getCampos() as $campo) {
-                    $item[self::getNomeCampo($campo)] = $param[self::getNomeCampoDatagrid($campo)][$key] ?? null;
-                }
-
-                self::adicionarItemDatagrid((object) $item, $datagrid);
-            }
-        }
-    }
-
-    /**
-     * Adiciona um item a datagrid. Atenção: precisa ser reimplementado quando possuir item de tabela vinculado
-     * @param array $itemAdicionado
-     * @param BootstrapDatagridWrapper $datagrid
-     * @return object
-     */
-    protected static function adicionarItemDatagrid(Object $itemAdicionado, BootstrapDatagridWrapper &$datagrid)
-    {
-        $itemAdicionado = (object)$itemAdicionado;
-
-        $itemDatagrid = [
-            self::getNomeCampo('id') => $itemAdicionado->{self::getNomeCampo('id')} ?? null,
-            self::getNomeCampo('uniqid') => empty($uniqid = $itemAdicionado->{self::getNomeCampo('uniqid')} ?? null) ? uniqid() : $uniqid,
-        ];
-
-        self::prepararItemAdicionarDatagrid($itemAdicionado);
-
-        foreach (self::getCampos() as $campo) {
-            if (isset($itemAdicionado->{self::getNomeCampo($campo)}) && ($itemAdicionado->{self::getNomeCampo($campo)} !== ''))
-                $itemDatagrid[self::getNomeCampo($campo)] = $itemAdicionado->{self::getNomeCampo($campo)};
-            else
-                $itemDatagrid[self::getNomeCampo($campo)] = null;
-        }
-
-        if (empty($itemDatagrid))
-            return;
-
-        if (empty($datagrid))
-            $datagrid = self::criarDatagrid();
-
-        $linhaDatagrid = $datagrid->addItem((object) $itemDatagrid);
-        $linhaDatagrid->id = $itemDatagrid[self::getNomeCampo('uniqid')];
-
-        return $linhaDatagrid;
-    }
-
-    /**
-     * Prepara o item para ser adicionado na datagrid
-     * @param object $itemAdicionando
-     * @return void
-     * 
-     * Exemplo:
-     * 
-     * protected static function prepararItemAdicionarDatagrid(object &$itemAdicionando)
-     * {
-     *       
-     */
-    protected static function prepararItemAdicionarDatagrid(object &$itemAdicionando) {}
 }
