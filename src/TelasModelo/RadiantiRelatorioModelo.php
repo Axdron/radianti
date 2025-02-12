@@ -41,12 +41,12 @@ abstract class RadiantiRelatorioModelo extends TPage
     private $campos;
 
 
-    public function __construct()
+    public function __construct($param)
     {
         parent::__construct();
 
         $this->criarFormBusca();
-        $this->criarDataGridResultados();
+        $this->criarDataGridResultados($param);
         $panelDataGrid = $this->criarPainelDatagrid();
 
         $container = new TVBox;
@@ -119,7 +119,7 @@ abstract class RadiantiRelatorioModelo extends TPage
      * return [$vendedor, $base];
      * }
      */
-    abstract protected function criarColunasDatagrid(): array;
+    abstract protected function criarColunasDatagrid($param): array;
 
     /**
      * Efetua a busca no banco de dados
@@ -167,7 +167,7 @@ abstract class RadiantiRelatorioModelo extends TPage
      */
     protected function criarBotoesExtras() {}
 
-    private function criarDataGridResultados()
+    private function criarDataGridResultados($param)
     {
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
         $this->datagrid->datatable = 'true';
@@ -175,7 +175,7 @@ abstract class RadiantiRelatorioModelo extends TPage
         $this->datagrid->setHeight(320);
 
 
-        $colunas = $this->criarColunasDatagrid();
+        $colunas = $this->criarColunasDatagrid($param);
 
         foreach ($colunas as $coluna) {
             $this->datagrid->addColumn($coluna);
@@ -200,7 +200,7 @@ abstract class RadiantiRelatorioModelo extends TPage
 
         $arquivo = RadiantiPDFService::gerarPDFHTML(get_called_class()::getNomeRelatorio(), $conteudoDatagrid, orientacao: get_called_class()::getOrientacaoPDF());
         if ($arquivo)
-            parent::openFile($arquivo);
+            TPage::openFile($arquivo);
     }
 
     private function gerarXLSXDatagrid()
@@ -208,7 +208,7 @@ abstract class RadiantiRelatorioModelo extends TPage
         $conteudoDatagrid = $this->datagrid->getOutputData();
         $arquivo = RadiantiPlanilhaService::gerarXLSX(get_called_class()::getNomeRelatorio(), $conteudoDatagrid);
         if ($arquivo)
-            parent::openFile($arquivo);
+            TPage::openFile($arquivo);
     }
 
     function abrir() {}

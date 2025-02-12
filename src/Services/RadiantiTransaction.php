@@ -4,9 +4,45 @@ namespace Axdron\Radianti\Services;
 
 use Adianti\Database\TTransaction;
 use Adianti\Widget\Dialog\TMessage;
+use Exception;
+use PDO;
 
 class RadiantiTransaction
 {
+
+    public static function executarQueryComTransacao($query, $snEmiteTMessage = true): array
+    {
+        $resultado =  self::consultar(function () use ($query) {
+            if (strpos(strtolower($query), 'select') === false) {
+                throw new Exception('A query deve começar com select');
+            }
+
+            $conn = TTransaction::get();
+
+            if (!$conn) {
+                throw new Exception('Não há transação aberta!');
+            }
+
+            $sth = $conn->prepare($query);
+
+            $sth->execute();
+
+            $result = $sth->fetchAll(PDO::FETCH_OBJ);
+
+            if (isset($result)) {
+                return $result;
+            }
+
+            return false;
+        }, $snEmiteTMessage);
+
+        if (empty($resultado)) {
+            return [];
+        }
+
+        return (array)$resultado;
+    }
+
     public static function consultar($callback, $snEmiteTMessage = true)
     {
         return self::encapsularTransacao($callback, $snEmiteTMessage, false);
