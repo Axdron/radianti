@@ -29,6 +29,11 @@ trait RadiantiTraitCadastro
         return $snakeCaseName . '_form';
     }
 
+    protected static function getArquivoMenu(): string
+    {
+        return 'menu.xml';
+    }
+
     abstract protected static function getTitulo(): string;
     abstract protected static function getNomeTelaListagem(): string;
     abstract protected static function getModel(): string;
@@ -67,7 +72,7 @@ trait RadiantiTraitCadastro
 
         $vbox = new TVBox;
         $vbox->style = 'width: 100%';
-        $vbox->add(new TXMLBreadCrumb('menu.xml', get_called_class()::getNomeTelaListagem()));
+        $vbox->add(new TXMLBreadCrumb(get_called_class()::getArquivoMenu(), get_called_class()::getNomeTelaListagem()));
         $vbox->add($notebook);
 
         return $vbox;
@@ -127,7 +132,13 @@ trait RadiantiTraitCadastro
      */
     protected function carregarDetalhes($idMestre) {}
 
-
+    /**
+     * Adiciona ações extras ao formulário mestre.
+     * 
+     * Exemplo:
+     * 
+     * $this->formCadastro->addAction('fazerAlgo', new TAction([$this, 'fazerAlgo']), 'fa:save green');
+     */
     protected function adicionarAcoesExtrasFormularioMestre() {}
 
     protected function adicionarAcoesPadraoFormularioMestre()
