@@ -38,7 +38,7 @@ abstract class RadiantiRelatorioModelo extends TPage
     protected $form;
     protected $datagrid;
     protected $itensDatagrid;
-    private $campos;
+    protected $campos;
 
 
     public function __construct($param)
