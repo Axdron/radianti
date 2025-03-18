@@ -8,6 +8,10 @@ Esta biblioteca tem como objetivo simplificar objetos e funções frequentemente
 
 Recomendamos que você inclua a pasta `lib` em seu projeto para mapear os objetos do Adianti. Essa pasta contém as bibliotecas e componentes necessários para o correto funcionamento do framework.
 
+## Snippets
+
+No projeto há a pasta `snippets` que contém Snippets para as principais classes da biblioteca. Recomendado que faça uma cópia para o VSCode do projeto para maior otimização.
+
 ## Variáveis de ambiente cuja declaração é necessária para o funcionamento da biblioteca
 
 - RADIANTI_DB_NAME: Necessário declarar para utilizar as Transactions corretamento. Deve conter o nome do DB principal;
