@@ -50,6 +50,11 @@ abstract class RadiantiListagemModelo extends TPage
 
     protected $snPermiteCadastrarNovo = true;
 
+    protected static function getArquivoMenu(): string
+    {
+        return 'menu.xml';
+    }
+
     public function __construct($param)
     {
         parent::__construct();
@@ -61,7 +66,10 @@ abstract class RadiantiListagemModelo extends TPage
         $container->style = 'width: 100%';
 
         if ($this->snMostraBreadCrumb)
-            $container->add(new TXMLBreadCrumb('menu.xml', get_called_class()));
+            $container->add(new TXMLBreadCrumb(
+                get_called_class()::getArquivoMenu(),
+                get_called_class()
+            ));
         $container->add($this->formularioBusca);
         $container->add($panel = TPanelGroup::pack('', $this->datagrid, $this->pageNavigation));
         $panel->getBody()->style = 'overflow-x: auto';
