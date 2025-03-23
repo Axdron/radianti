@@ -103,6 +103,8 @@ trait RadiantiTraitDetalheDatagrid
 
         self::criarAcoesDatagrid($datagrid, $param);
 
+        get_called_class()::criarAcoesCustomizadasDatagrid($datagrid, $param);
+
         $datagrid->createModel();
 
         return $datagrid;
@@ -143,6 +145,8 @@ trait RadiantiTraitDetalheDatagrid
             $datagrid->addAction($acaoExclusao);
         }
     }
+
+    protected static function criarAcoesCustomizadasDatagrid(&$datagrid, $param = null) {}
 
     static function carregar($mestreId, &$datagrid)
     {
