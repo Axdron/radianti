@@ -2,6 +2,7 @@
 
 namespace Axdron\Radianti\TraitsCadastro;
 
+use Adianti\Database\TRecord;
 use Adianti\Widget\Datagrid\TDataGrid;
 use Adianti\Widget\Datagrid\TDataGridAction;
 use Adianti\Widget\Datagrid\TDataGridColumn;
@@ -299,4 +300,6 @@ trait RadiantiTraitDetalheDatagrid
     {
         TDataGrid::removeRowById(self::getNomeDatagrid(), $param[self::getNomeCampo('uniqid')]);
     }
+
+    protected static function formatarCamposCarregar(TRecord &$item) {}
 }

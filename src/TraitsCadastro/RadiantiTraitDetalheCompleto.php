@@ -316,7 +316,4 @@ trait RadiantiTraitDetalheCompleto
             }
         }
     }
-
-
-    protected static function formatarCamposCarregar(TRecord &$item) {}
 }
