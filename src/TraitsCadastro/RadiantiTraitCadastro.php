@@ -193,7 +193,7 @@ trait RadiantiTraitCadastro
 
                     $this->salvarDetalhes($objeto, $param);
 
-                    $this->executarAposSalvar($objetoOriginal, $objeto);
+                    $this->executarAposSalvar($objetoOriginal, $objeto, $param);
 
                     $this->formCadastro->setData($objeto);
 
@@ -219,9 +219,7 @@ trait RadiantiTraitCadastro
         }
     }
 
-    protected function executarAposSalvar($objetoAntesSalvar, $objetoAposSalvamento) {}
-
-
+    protected function executarAposSalvar($objetoAntesSalvar, $objetoAposSalvamento, $param) {}
 
     protected function salvarDetalhes(TRecord $objetoMestre, $param) {}
 
