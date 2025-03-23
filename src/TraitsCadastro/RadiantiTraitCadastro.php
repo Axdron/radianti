@@ -221,7 +221,7 @@ trait RadiantiTraitCadastro
 
     protected function executarAposSalvar($objetoAntesSalvar, $objetoAposSalvamento, $param) {}
 
-    protected function salvarDetalhes(TRecord $objetoMestre, $param) {}
+    protected function salvarDetalhes(TRecord &$objetoMestre, $param) {}
 
     protected function recarregarDatagridsDetalhes($param) {}
 
