@@ -62,7 +62,7 @@ trait RadiantiTraitCadastro
         $campoOcultoOrigem->setValue($param['snOrigemListagem'] ?? true);
         $this->formCadastro->addFields([$campoOcultoOrigem]);
 
-        $this->criarDetalhes();
+        $this->criarDetalhes($param);
 
         $this->adicionarAcoesPadraoFormularioMestre();
         $this->adicionarAcoesExtrasFormularioMestre();
@@ -121,7 +121,7 @@ trait RadiantiTraitCadastro
      * 
      * @see carregarDetalhes
      */
-    protected function criarDetalhes() {}
+    protected function criarDetalhes($param) {}
 
     /**
      * Carrega os detalhes do formulário.
