@@ -10,7 +10,7 @@ class RadiantiElementoTextoBloqueavel
 
     private $elemento;
 
-    private function __construct(string $nome, string $conteudo = null, $snBloqueado = false)
+    function __construct(string $nome, string|null $conteudo = null, $snBloqueado = false)
     {
         if ($snBloqueado) {
             $this->elemento = new TElement('div');

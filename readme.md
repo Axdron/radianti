@@ -41,6 +41,7 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiElementoBotaoSN: RadiantiElementoBotaoOpcoes, só que já com os campos boolenos;
 - RadiantiElementoLabelExplicativa: Cria uma label utilizada para explicar o funcionamento de alguma tela, para ser utilizada, principalmente, em relatórios;
 - RadiantiElementoBotaoCadastroForm: Cria um botão para ser utilizados em form, agilizando a abertura de outras telas, evitando do usuário ter que trocar de tela. Quando não for em uma TWindow, recomendado utilizar em combinação com uma função da classe RadiantiNavegacao, para abrir em nova aba;
+- RadiantiElementoTexto: Cria um TTextDisplay na tela, gerenciando o conteúdo de forma que seja fácil atualizá-lo;
 
 4. **Telas modelo**: Telas prontas para agilizar na criação de outras telas:
 
