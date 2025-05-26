@@ -170,7 +170,6 @@ abstract class RadiantiRelatorioModelo extends TPage
     private function criarDataGridResultados($param)
     {
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
-        $this->datagrid->datatable = 'true';
         $this->datagrid->style = 'width: 100%';
         $this->datagrid->setHeight(320);
 
