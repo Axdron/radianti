@@ -7,11 +7,11 @@ use Adianti\Registry\TSession;
 abstract class RadiantiSessaoService
 {
 
-    private static $instanciaSingleton;
-    private static $usuarioLogin;
-    private static $usuarioId;
+    protected static $instanciaSingleton;
+    protected static $usuarioLogin;
+    protected static $usuarioId;
 
-    private function __construct() {}
+    protected function __construct() {}
 
     public static function buscarInstanciaSingleton()
     {
