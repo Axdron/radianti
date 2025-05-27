@@ -40,4 +40,21 @@ class RadiantiMascaras
         $telefone = preg_replace('/\D/', '', $telefone);
         return preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $telefone);
     }
+
+    /**
+     * Formata um CPF ou CNPJ com base na quantidade de dígitos.
+     *
+     * @param string $valor O CPF ou CNPJ a ser formatado.
+     * @return string O valor formatado.
+     */
+    static function mascararCpfCnpj(string $valor): string
+    {
+        $valor = preg_replace('/\D/', '', $valor);
+
+        if (strlen($valor) <= 11) {
+            return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $valor);
+        } else {
+            return preg_replace('/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/', '$1.$2.$3/$4-$5', $valor);
+        }
+    }
 }
