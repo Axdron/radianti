@@ -16,7 +16,8 @@ abstract class RadiantiSessaoService
     public static function buscarInstanciaSingleton()
     {
         if (empty(self::$instanciaSingleton)) {
-            self::$instanciaSingleton = new RadiantiSessaoService();
+            $classe = get_called_class();
+            self::$instanciaSingleton = new $classe();
         }
         return self::$instanciaSingleton;
     }
