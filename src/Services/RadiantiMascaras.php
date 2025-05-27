@@ -28,4 +28,16 @@ class RadiantiMascaras
 			adicionarMascaraCpfCnpj(cpfCnpj);
 		");
     }
+
+    /**
+     * Formata um telefone no formato (XX) XXXXX-XXXX.
+     *
+     * @param string $telefone O telefone a ser formatado.
+     * @return string O telefone formatado.
+     */
+    static function mascararTelefone(string $telefone): string
+    {
+        $telefone = preg_replace('/\D/', '', $telefone);
+        return preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $telefone);
+    }
 }
