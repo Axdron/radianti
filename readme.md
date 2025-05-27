@@ -32,15 +32,18 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiArquivoTemporario - Cria arquivos temporários na pasta temporária, para não utilizar as pastas de output (importante quando utiliza serviços como o Google App Engine);
 - RadiantiArrayService - Funções para manipulação de arrays;
 - RadiantiGerenciadorSessoes - Para utilização de sessões armazenadas no BD;
+- RadiantiMascaras - Funções para aplicação de máscaras dinâmicas;
 - RadiantiNavegacao - Funções para abrir telas e guias novas;
 - RadiantiPDFService - Funções para geração de arquivos PDF a partir de HTMLs;
 - RadiantiPlanilhaService - Funções para criar XLSX e CSV;
 - RadiantiSessaoService - Classe abstrata que cria um singleton para gerenciar as variáveis de sessão, evitando consultas desnecessárias ao BD;
+- RadiantiValidacoes - Funções para validações específicas, como CPF e CNPJ em um mesmo campo;
 
 3. **Componentes de tela**: Atalhos para componentes com propriedades usadas com grande recorrência:
 
 - RadiantiElementoBotaoOpcoes: TRadioGroup convertido em botões;
 - RadiantiElementoBotaoSN: RadiantiElementoBotaoOpcoes, só que já com os campos boolenos;
+- RadiantiElementoCPFCNPJ: TEntry com máscara dinâmica de CPF/CNPJ ativa;
 - RadiantiElementoLabelExplicativa: Cria uma label utilizada para explicar o funcionamento de alguma tela, para ser utilizada, principalmente, em relatórios;
 - RadiantiElementoBotaoCadastroForm: Cria um botão para ser utilizados em form, agilizando a abertura de outras telas, evitando do usuário ter que trocar de tela. Quando não for em uma TWindow, recomendado utilizar em combinação com uma função da classe RadiantiNavegacao, para abrir em nova aba;
 - RadiantiElementoTexto: Cria um TTextDisplay na tela, gerenciando o conteúdo de forma que seja fácil atualizá-lo;
