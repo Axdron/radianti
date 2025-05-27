@@ -17,7 +17,7 @@ class RadiantiGerenciadorSessoes implements SessionHandlerInterface
 
     public function open(string $savePath, string $sessionName): bool
     {
-        if (TConnection::open('sample')) {
+        if (TConnection::open(self::buscarNomeBD())) {
             return true;
         }
         return false;
@@ -30,7 +30,7 @@ class RadiantiGerenciadorSessoes implements SessionHandlerInterface
 
     public function read(string $id): string | false
     {
-        TTransaction::openFake('sample');
+        TTransaction::openFake(self::buscarNomeBD());
         $conn = TTransaction::get();
         $sql = "SELECT data FROM sessions WHERE id = :id";
         $sth = $conn->prepare($sql);
@@ -49,7 +49,7 @@ class RadiantiGerenciadorSessoes implements SessionHandlerInterface
 
     public function write(string $id, string $data): bool
     {
-        TTransaction::open('sample');
+        TTransaction::open(self::buscarNomeBD());
         $conn = TTransaction::get();
         $access = time();
         $sql = "REPLACE INTO sessions VALUES (:id, :access, :data)";
@@ -70,7 +70,7 @@ class RadiantiGerenciadorSessoes implements SessionHandlerInterface
     public function destroy(string $id): bool
     {
 
-        TTransaction::open('sample');
+        TTransaction::open(self::buscarNomeBD());
         $conn = TTransaction::get();
         $sql = "DELETE FROM sessions WHERE id =  :id";
         $sth = $conn->prepare($sql);
@@ -92,7 +92,7 @@ class RadiantiGerenciadorSessoes implements SessionHandlerInterface
         $sql = "DELETE FROM sessions WHERE access < :old";
 
 
-        TTransaction::open('sample');
+        TTransaction::open(self::buscarNomeBD());
         $conn = TTransaction::get();
         $sth = $conn->prepare($sql);
         $sth->bindValue(':old', $old);
@@ -104,5 +104,14 @@ class RadiantiGerenciadorSessoes implements SessionHandlerInterface
         }
 
         return false;
+    }
+
+    private static function buscarNomeBD()
+    {
+        $nomeBD = getenv('RADIANTI_DB_NAME');
+        if (empty($nomeBD)) {
+            throw new \Exception('Variável de ambiente RADIANTI_DB_NAME não definida');
+        }
+        return $nomeBD;
     }
 }
