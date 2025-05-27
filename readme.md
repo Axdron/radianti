@@ -33,8 +33,9 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiArrayService - Funções para manipulação de arrays;
 - RadiantiGerenciadorSessoes - Para utilização de sessões armazenadas no BD;
 - RadiantiNavegacao - Funções para abrir telas e guias novas;
-- RadiantiPlanilhaService - Funções para criar XLSX e CSV;
 - RadiantiPDFService - Funções para geração de arquivos PDF a partir de HTMLs;
+- RadiantiPlanilhaService - Funções para criar XLSX e CSV;
+- RadiantiSessaoService - Classe abstrata que cria um singleton para gerenciar as variáveis de sessão, evitando consultas desnecessárias ao BD;
 
 3. **Componentes de tela**: Atalhos para componentes com propriedades usadas com grande recorrência:
 
