@@ -30,9 +30,10 @@ Aqui estão alguns dos principais recursos do Radianti:
 2. **Serviços**: Serviços de uso geral:
 
 - RadiantiArquivoTemporario - Cria arquivos temporários na pasta temporária, para não utilizar as pastas de output (importante quando utiliza serviços como o Google App Engine);
+- RadiantiArrayService - Funções para manipulação de arrays;
+- RadiantiGerenciadorSessoes - Para utilização de sessões armazenadas no BD;
 - RadiantiNavegacao - Funções para abrir telas e guias novas;
 - RadiantiPlanilhaService - Funções para criar XLSX e CSV;
-- RadiantiArrayService - Funções para manipulação de arrays;
 - RadiantiPDFService - Funções para geração de arquivos PDF a partir de HTMLs;
 
 3. **Componentes de tela**: Atalhos para componentes com propriedades usadas com grande recorrência:
