@@ -10,7 +10,7 @@ use PDO;
 class RadiantiTransaction
 {
 
-    public static function executarQueryComTransacao($query, $snEmiteTMessage = true): array
+    public static function executarQueryComTransacao($query, $snEmiteTMessage = true, $nomeBd = null): array
     {
         $resultado =  self::consultar(function () use ($query) {
             if (strpos(strtolower($query), 'select') === false) {
@@ -34,7 +34,7 @@ class RadiantiTransaction
             }
 
             return false;
-        }, $snEmiteTMessage);
+        }, $snEmiteTMessage, $nomeBd);
 
         if (empty($resultado)) {
             return [];
@@ -43,36 +43,37 @@ class RadiantiTransaction
         return (array)$resultado;
     }
 
-    public static function consultar($callback, $snEmiteTMessage = true)
+    public static function consultar($callback, $snEmiteTMessage = true, $nomeBd = null)
     {
-        return self::encapsularTransacao($callback, $snEmiteTMessage, false);
+        return self::encapsularTransacao($callback, $snEmiteTMessage, false, $nomeBd);
     }
 
-    public static function consultarAPI($callback)
+    public static function consultarAPI($callback, $nomeBd = null)
     {
-        return self::encapsularTransacao($callback, false, false);
+        return self::consultar($callback, false, $nomeBd);
     }
 
-    public static function salvarAPI($callback)
+
+    public static function salvar($callback, $snEmiteTMessage = true, $nomeBd = null)
     {
-        return self::encapsularTransacao($callback, false, true);
+        return self::encapsularTransacao($callback, $snEmiteTMessage, true, $nomeBd);
     }
 
-    public static function salvar($callback, $snEmiteTMessage = true)
+    public static function salvarAPI($callback, $nomeBd = null)
     {
-        return self::encapsularTransacao($callback, $snEmiteTMessage);
+        return self::salvar($callback, false, false, $nomeBd);
     }
 
-    public static function encapsularTransacao($callback, $snEmiteTMessage = true, $snAbrirTransacao = true)
+    public static function encapsularTransacao($callback, $snEmiteTMessage = true, $snAbrirTransacao = true, $nomeBd = null)
     {
         try {
-            if (empty(getenv('RADIANTI_DB_NAME')))
+            if (empty($nomeBd) && empty(getenv('RADIANTI_DB_NAME')))
                 throw new \Exception('Variável de ambiente RADIANTI_DB_NAME não definida');
 
             if ($snAbrirTransacao)
-                TTransaction::open(getenv('RADIANTI_DB_NAME'));
+                TTransaction::open($nomeBd ?? getenv('RADIANTI_DB_NAME'));
             else
-                TTransaction::openFake(getenv('RADIANTI_DB_NAME'));
+                TTransaction::openFake($nomeBd ?? getenv('RADIANTI_DB_NAME'));
             $retorno = $callback();
             TTransaction::close();
             return $retorno;
