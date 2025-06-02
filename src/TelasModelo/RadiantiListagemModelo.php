@@ -194,10 +194,15 @@ abstract class RadiantiListagemModelo extends TPage
     protected function criarAcoesDatagrid() {}
 
 
-    public function buscar()
+    public function buscar($param = null)
     {
         try {
-            $dadosFormulario = (array) $this->formularioBusca->getData();
+            if (!empty($param['snBuscaExterna'])) {
+                $dadosFormulario = $param;
+            } else {
+                $dadosFormulario = (array) $this->formularioBusca->getData();
+            }
+
             $this->formularioBusca->setData($dadosFormulario);
 
             $this->formularioBusca->validate();
