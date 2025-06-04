@@ -61,7 +61,7 @@ class RadiantiTransaction
 
     public static function salvarAPI($callback, $nomeBd = null)
     {
-        return self::salvar($callback, false, false, $nomeBd);
+        return self::salvar($callback, false, $nomeBd);
     }
 
     public static function encapsularTransacao($callback, $snEmiteTMessage = true, $snAbrirTransacao = true, $nomeBd = null)
