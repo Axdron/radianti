@@ -217,7 +217,6 @@ abstract class RadiantiListagemModelo extends TPage
         $datagridClone = clone $this->datagrid;
         $datagridClone->prepareForPrinting();
         $datagridClone->clear();
-        $datagridClone->outputData = [];
         $datagridClone->addItems($itens);
         return $datagridClone;
     }
