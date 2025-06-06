@@ -18,6 +18,9 @@ use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormBuilder;
 use Axdron\Radianti\Services\RadiantiTransaction;
+use Axdron\Radianti\Services\RadiantiArrayService;
+use Axdron\Radianti\Services\RadiantiPDFService;
+use Axdron\Radianti\Services\RadiantiPlanilhaService;
 
 abstract class RadiantiListagemModelo extends TPage
 {
@@ -30,6 +33,7 @@ abstract class RadiantiListagemModelo extends TPage
     protected $snMostraOpcaoEditarDatagrid = true;
     protected $snMostraBreadCrumb = true;
 
+
     /**
      * Retorna o nome da tela de cadastro ou false caso não possua
      * @return string|false
@@ -41,6 +45,16 @@ abstract class RadiantiListagemModelo extends TPage
 
     abstract protected static function getTitulo(): string;
     abstract protected static function getModel(): string;
+
+    /**
+     * Retorna se deve mostrar a opção de exportação na listagem
+     * @return bool
+     */
+    protected static function getSnMostraExportacao(): bool
+    {
+        return (bool) getenv('RADIANTI_SN_MOSTRA_EXPORTACAO_LISTAGEM') ?? false;
+    }
+
 
     /**
      * Retorna o nome da tela de cadastro ou false caso não possua
@@ -149,6 +163,11 @@ abstract class RadiantiListagemModelo extends TPage
         if (($nomeTelaCadastro = $this->getNomeTelaCadastro()) && $this->snPermiteCadastrarNovo)
             $this->formularioBusca->addActionLink('Novo', new TAction([$nomeTelaCadastro, 'abrirEdicao']), 'fa:plus green');
 
+        if (get_called_class()::getSnMostraExportacao()) {
+            $this->formularioBusca->addAction('Gerar PDF', new TAction([$this, 'buscar'], ['snGerarPDF' => 1]), 'far:file-pdf red');
+            $this->formularioBusca->addAction('Gerar XLSX', new TAction([$this, 'buscar'], ['snGerarXLSX' => 1]), 'fa:table blue');
+        }
+
         $this->criarBotoesExtras();
     }
 
@@ -158,9 +177,54 @@ abstract class RadiantiListagemModelo extends TPage
      */
     protected function criarBotoesExtras() {}
 
+    private function gerarPDF($objects)
+    {
+        try {
+            $datagridClone = $this->clonarDatagrid($objects);
+            $dadosFormulario = (array) $this->formularioBusca->getData();
+            $conteudoDatagrid = file_get_contents('app/resources/styles-print.html') . $datagridClone->getContents();
+            $conteudoDatagrid .= "<br><br>Filtros:<br>" . (RadiantiArrayService::converterEmTexto((array) $dadosFormulario));
+
+            $arquivo = RadiantiPDFService::gerarPDFHTML(
+                get_called_class()::getTitulo(),
+                $conteudoDatagrid
+            );
+            if ($arquivo)
+                TPage::openFile($arquivo);
+        } catch (\Exception $e) {
+            new TMessage('error', $e->getMessage());
+        }
+    }
+
+    private function gerarXlsx($objects)
+    {
+        try {
+            $datagridClone = $this->clonarDatagrid($objects);
+
+            $arquivo = RadiantiPlanilhaService::gerarXLSXDatagrid(
+                get_called_class()::getTitulo(),
+                $datagridClone
+            );
+            if ($arquivo)
+                TPage::openFile($arquivo);
+        } catch (\Exception $e) {
+            new TMessage('error', $e->getMessage());
+        }
+    }
+
+    private function clonarDatagrid($itens)
+    {
+        $datagridClone = clone $this->datagrid;
+        $datagridClone->prepareForPrinting();
+        $datagridClone->clear();
+        $datagridClone->outputData = [];
+        $datagridClone->addItems($itens);
+        return $datagridClone;
+    }
+
     private function criarDatagrid()
     {
-        $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid());
+        $this->datagrid = new BootstrapDatagridWrapper(new RTDataGrid());
         $this->datagrid->style = 'width: 100%';
 
         $this->criarColunasDatagrid();
@@ -204,7 +268,6 @@ abstract class RadiantiListagemModelo extends TPage
             }
 
             $this->formularioBusca->setData($dadosFormulario);
-
             $this->formularioBusca->validate();
 
             $criteria = new TCriteria;
@@ -215,7 +278,7 @@ abstract class RadiantiListagemModelo extends TPage
             TSession::setValue(get_called_class() . '_dados_formulario', (object)$dadosFormulario);
             TSession::setValue(get_called_class() . '_criteria', $criteria);
 
-            $this->carregar(['first_page' => 1]);
+            $this->carregar(['first_page' => 1, ...($param ?? [])]);
         } catch (\Throwable $th) {
             new TMessage('error', $th->getMessage());
         }
@@ -235,6 +298,7 @@ abstract class RadiantiListagemModelo extends TPage
             $criteria->setProperty('order', $this->ordenacao);
 
             $repository = new TRepository(get_called_class()::getModel());
+
             $objects = $repository->load($criteria, false);
 
             $this->datagrid->clear();
@@ -249,6 +313,20 @@ abstract class RadiantiListagemModelo extends TPage
             $this->pageNavigation->setCount($count);
             $this->pageNavigation->setProperties($param);
             $this->pageNavigation->setLimit($this->limitDatagrid);
+
+            if (!empty($param['snGerarPDF'])) {
+                $criteria->setProperty('limit', null);
+                $objects = $repository->load($criteria, false);
+                $this->gerarPDF($objects);
+                return;
+            }
+
+            if (!empty($param['snGerarXLSX'])) {
+                $criteria->setProperty('limit', null);
+                $objects = $repository->load($criteria, false);
+                $this->gerarXlsx($objects);
+                return;
+            }
         }, snAbrirTransacao: false);
     }
 
@@ -267,5 +345,20 @@ abstract class RadiantiListagemModelo extends TPage
                 $this->carregar();
             });
         }
+    }
+}
+
+/**
+ * Reimplementação necessária para corrigir o método clear do TDataGrid
+ * que não estava limpando o outputData, causando problemas na exportação
+ * de dados para PDF e XLSX.
+ */
+class RTDatagrid extends TDataGrid
+{
+
+    public function clear($preserveHeader = TRUE, $rows = 0)
+    {
+        $this->outputData = [];
+        parent::clear($preserveHeader, $rows);
     }
 }
