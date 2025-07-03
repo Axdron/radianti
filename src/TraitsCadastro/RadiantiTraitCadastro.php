@@ -9,11 +9,13 @@ use Adianti\Database\TRecord;
 use Adianti\Widget\Container\TNotebook;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Dialog\TMessage;
+use Adianti\Widget\Dialog\TQuestion;
 use Adianti\Widget\Form\THidden;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapFormBuilder;
 use Adianti\Wrapper\BootstrapNotebookWrapper;
 use Axdron\Radianti\Services\RadiantiNavegacao;
+use Axdron\Radianti\Services\RadiantiQuestionService\RadiantiQuestionService;
 use Axdron\Radianti\Services\RadiantiTransaction;
 use Exception;
 
@@ -144,7 +146,19 @@ trait RadiantiTraitCadastro
     protected function adicionarAcoesPadraoFormularioMestre()
     {
         $this->formCadastro->addAction('Salvar', new TAction([$this, 'salvar']), 'fa:save green');
-        $this->formCadastro->addActionLink('Lista', new TAction([get_called_class()::getNomeTelaListagem(), 'carregar']), 'fa:table blue');
+        $this->formCadastro->addAction('Lista', new TAction([$this, 'confirmarVoltaListagem']), 'fa:table blue');
+    }
+
+    protected function confirmarVoltaListagem($param)
+    {
+        RadiantiQuestionService::confirmar(
+            'Deseja voltar para a listagem sem salvar?',
+            new TAction([get_called_class(), 'confirmarVoltaListagem']),
+            function () {
+                RadiantiNavegacao::carregarPagina(get_called_class()::getNomeTelaListagem(), 'carregar');
+            },
+            $param
+        );
     }
 
     private function criarFormularioMestre()
