@@ -37,16 +37,19 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiNavegacao - Funções para abrir telas e guias novas;
 - RadiantiPDFService - Funções para geração de arquivos PDF a partir de HTMLs;
 - RadiantiPlanilhaService - Funções para criar XLSX e CSV;
+- RadiantiQuestionService - Funções para TQuestions próprios, como operações de confirmação ou de input de valores;
 - RadiantiSessaoService - Classe abstrata que cria um singleton para gerenciar as variáveis de sessão, evitando consultas desnecessárias ao BD;
 - RadiantiValidacoes - Funções para validações específicas, como CPF e CNPJ em um mesmo campo;
 
 3. **Componentes de tela**: Atalhos para componentes com propriedades usadas com grande recorrência:
 
+- RadiantiElementoBotaoCadastroForm: Cria um botão para ser utilizados em form, agilizando a abertura de outras telas, evitando do usuário ter que trocar de tela. Quando não for em uma TWindow, recomendado utilizar em combinação com uma função da classe RadiantiNavegacao, para abrir em nova aba;
 - RadiantiElementoBotaoOpcoes: TRadioGroup convertido em botões;
 - RadiantiElementoBotaoSN: RadiantiElementoBotaoOpcoes, só que já com os campos boolenos;
 - RadiantiElementoCPFCNPJ: TEntry com máscara dinâmica de CPF/CNPJ ativa;
+- RadiantiElementoDinheiro: Cria um TNumeric com formatação pronta para trabalhar com valores monetários (= separador de milhar e de decimais com 2 casas);
 - RadiantiElementoLabelExplicativa: Cria uma label utilizada para explicar o funcionamento de alguma tela, para ser utilizada, principalmente, em relatórios;
-- RadiantiElementoBotaoCadastroForm: Cria um botão para ser utilizados em form, agilizando a abertura de outras telas, evitando do usuário ter que trocar de tela. Quando não for em uma TWindow, recomendado utilizar em combinação com uma função da classe RadiantiNavegacao, para abrir em nova aba;
+- RadiantiElementoNumeroInteiro: Cria um TNumeric com formatação pronta para trabalhar com números inteiros (= separador de milhar);
 - RadiantiElementoTexto: Cria um TTextDisplay na tela, gerenciando o conteúdo de forma que seja fácil atualizá-lo;
 
 4. **Telas modelo**: Telas prontas para agilizar na criação de outras telas:
