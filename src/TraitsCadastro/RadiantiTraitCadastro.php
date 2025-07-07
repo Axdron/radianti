@@ -151,6 +151,9 @@ trait RadiantiTraitCadastro
 
     protected function confirmarVoltaListagem($param)
     {
+        $this->formCadastro->setData($this->formCadastro->getData());
+        $this->recarregarDatagridsDetalhes($param);
+
         RadiantiQuestionService::confirmar(
             'Deseja voltar para a listagem sem salvar?',
             new TAction([get_called_class(), 'confirmarVoltaListagem']),
