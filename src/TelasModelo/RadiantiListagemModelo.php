@@ -341,8 +341,8 @@ abstract class RadiantiListagemModelo extends TPage
                 $objeto = new $model($param['id']);
                 $objeto->delete();
                 new TMessage('info', 'Registro excluído com sucesso!');
-                $this->carregar();
             });
+            $this->carregar();
         }
     }
 }
