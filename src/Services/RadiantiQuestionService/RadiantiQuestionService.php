@@ -6,6 +6,7 @@ namespace Axdron\Radianti\Services\RadiantiQuestionService;
 use Adianti\Control\TAction;
 use Adianti\Widget\Dialog\TInputDialog;
 use Adianti\Widget\Dialog\TQuestion;
+use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\THidden;
 use Adianti\Widget\Form\TLabel;
 use Adianti\Wrapper\BootstrapFormBuilder;
@@ -51,14 +52,19 @@ class RadiantiQuestionService
             foreach ($campos as $campo) {
                 $form->addFields([new TLabel($campo->label)], [$campo->campo]);
             }
+            $form->setData($param);
 
-            $campoConfirmado = new THidden('sn_confirmado');
+            $campoId = new TEntry('id');
+            $campoId->setValue($param['id'] ?? null);
+            $campoId->setProperty('style', 'display:none');
+
+            $campoConfirmado = new TEntry('sn_confirmado');
             $campoConfirmado->setValue(1);
+            $campoConfirmado->setProperty('style', 'display:none');
 
-            $form->addField($campoConfirmado);
+            $form->addFields([$campoId, $campoConfirmado]);
 
             $form->addAction('Confirmar', $acao, 'fa:check green');
-            $form->setData($param);
             new TInputDialog($titulo, $form);
         } else {
             return call_user_func($callback, $param);
