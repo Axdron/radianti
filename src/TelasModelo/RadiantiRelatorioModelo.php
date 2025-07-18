@@ -14,6 +14,7 @@ use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormWrapper;
 use Axdron\Radianti\Componentes\RadiantiElementoLabelExplicativa;
 use Axdron\Radianti\Services\RadiantiArrayService;
+use Axdron\Radianti\Services\RadiantiNavegacao;
 use Axdron\Radianti\Services\RadiantiPDFService;
 use Axdron\Radianti\Services\RadiantiPlanilhaService;
 use Exception;
@@ -210,5 +211,8 @@ abstract class RadiantiRelatorioModelo extends TPage
             TPage::openFile($arquivo);
     }
 
-    function abrir() {}
+    static function abrir()
+    {
+        RadiantiNavegacao::abrirNovaGuia(get_called_class());
+    }
 }
