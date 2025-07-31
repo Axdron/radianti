@@ -206,10 +206,63 @@ abstract class RadiantiRelatorioModelo extends TPage
     private function gerarXLSXDatagrid()
     {
         $conteudoDatagrid = $this->datagrid->getOutputData();
+
+        $colunasParaDesformatar = $this->desformatarColunasParaXLSX();
+        if (!empty($colunasParaDesformatar)) {
+            $conteudoDatagrid = $this->aplicarDesformatacao($conteudoDatagrid, $colunasParaDesformatar);
+        }
+
         $arquivo = RadiantiPlanilhaService::gerarXLSX(get_called_class()::getNomeRelatorio(), $conteudoDatagrid);
         if ($arquivo)
             TPage::openFile($arquivo);
     }
+
+    /**
+     * Aplica desformatação nas colunas especificadas
+     * @param array $conteudoDatagrid Array com dados do datagrid
+     * @param array $colunasParaDesformatar Array com nome_coluna => funcao_desformatacao
+     * @return array Array com dados desformatados
+     */
+    private function aplicarDesformatacao(array $conteudoDatagrid, array $colunasParaDesformatar): array
+    {
+        if (empty($conteudoDatagrid)) {
+            return $conteudoDatagrid;
+        }
+
+        $cabecalho = $conteudoDatagrid[0];
+        $indicesParaDesformatar = [];
+
+        foreach ($colunasParaDesformatar as $nomeColuna => $funcaoDesformatacao) {
+            $indice = array_search($nomeColuna, $cabecalho);
+            if ($indice !== false) {
+                $indicesParaDesformatar[$indice] = $funcaoDesformatacao;
+            }
+        }
+
+        for ($linha = 1; $linha < count($conteudoDatagrid); $linha++) {
+            foreach ($indicesParaDesformatar as $indice => $funcaoDesformatacao) {
+                if (isset($conteudoDatagrid[$linha][$indice])) {
+                    $valor = $conteudoDatagrid[$linha][$indice];
+                    $conteudoDatagrid[$linha][$indice] = call_user_func($funcaoDesformatacao, $valor);
+                }
+            }
+        }
+
+        return $conteudoDatagrid;
+    }
+
+    /**
+     * Desformata as colunas para exportação em XLSX
+     * @return array O array deve conter os nomes das colunas e as funções de desformatação. Exemplo:
+     * [
+     *     'Estoque Mínimo' => fn($value) => str_replace('.', '', $value)
+     * ];
+     */
+    protected function desformatarColunasParaXLSX()
+    {
+        return [];
+    }
+
 
     static function abrir()
     {
