@@ -205,7 +205,9 @@ trait RadiantiTraitCadastro
                         throw new Exception('Objeto não é uma instância de TRecord!');
                     }
 
-                    $this->tratarDadosFormulario($dadosFormulario);
+                    if (!$this->tratarDadosFormulario($dadosFormulario)) {
+                        return false;
+                    }
 
                     $objeto->fromArray((array) $dadosFormulario);
                     $objeto->store();
@@ -244,7 +246,15 @@ trait RadiantiTraitCadastro
 
     protected function recarregarDatagridsDetalhes($param) {}
 
-    protected function tratarDadosFormulario(&$dadosFormulario) {}
+    /**
+     * Trata os dados do formulário antes de salvar.
+     * @param object $dadosFormulario Referência aos dados do formulário.
+     * @return bool Retorna true para continuar o salvamento, false para abortar.
+     */
+    protected function tratarDadosFormulario(object &$dadosFormulario): bool
+    {
+        return true;
+    }
 
     protected function tratarObjetoCarregado(&$objeto) {}
 
