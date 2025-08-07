@@ -261,17 +261,22 @@ trait RadiantiTraitDetalheCompleto
         get_called_class()::criarCampos($form);
 
         if (get_called_class()::getSnCriaBotaoAdicionar()) {
-            $botaoAdicionar = new TButton('adicionar' . self::formatarNomeDetalhe());
-            $botaoAdicionar->setLabel('Adicionar');
-            $botaoAdicionar->setImage('fa:plus-circle green');
-            $botaoAdicionar->setAction(new TAction([get_called_class()::getNomeTelaPrincipal(), 'adicionar' . self::formatarNomeDetalhe()], ['static' => 1]), 'Adicionar');
-            $form->addFields([], [$botaoAdicionar]);
+            self::criarBotaoAdicionar($form);
         }
 
         $datagrid =  get_called_class()::criarDatagrid($datagrid);
         $form->addFields([$datagrid]);
 
         return ['form' => $form, 'datagrid' => $datagrid];
+    }
+
+    protected static function criarBotaoAdicionar(&$form)
+    {
+        $botaoAdicionar = new TButton('adicionar' . self::formatarNomeDetalhe());
+        $botaoAdicionar->setLabel('Adicionar');
+        $botaoAdicionar->setImage('fa:plus-circle green');
+        $botaoAdicionar->setAction(new TAction([get_called_class()::getNomeTelaPrincipal(), 'adicionar' . self::formatarNomeDetalhe()], ['static' => 1]), 'Adicionar');
+        $form->addFields([], [$botaoAdicionar]);
     }
 
     /**
