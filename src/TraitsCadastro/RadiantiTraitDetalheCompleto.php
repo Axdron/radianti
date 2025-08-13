@@ -3,7 +3,6 @@
 namespace Axdron\Radianti\TraitsCadastro;
 
 use Adianti\Control\TAction;
-use Adianti\Database\TRecord;
 use Adianti\Widget\Base\TScript;
 use Adianti\Widget\Datagrid\TDataGrid;
 use Adianti\Widget\Form\TButton;
@@ -32,6 +31,7 @@ trait RadiantiTraitDetalheCompleto
     /**
      * Cria os campos do formulário do detalhe
      * @param BootstrapFormBuilder $form
+     * @param array $param Parâmetros adicionais que podem ser utilizados na criação dos campos
      * @return BootstrapFormBuilder
      * 
      * Exemplo:
@@ -60,7 +60,7 @@ trait RadiantiTraitDetalheCompleto
      *     ... Demais Botões ...
      *    }
      */
-    abstract protected static function criarCampos(BootstrapFormBuilder &$form);
+    abstract protected static function criarCampos(BootstrapFormBuilder &$form, $param = []);
 
     /**
      * Salva o detalhe
@@ -230,7 +230,7 @@ trait RadiantiTraitDetalheCompleto
      * @param BootstrapDatagridWrapper $datagrid
      * @return array ['form' => $form, 'datagrid' => $datagrid]
      */
-    static function criar(&$form, &$datagrid)
+    static function criar(&$form, &$datagrid, $param = [])
     {
 
         switch (get_called_class()::getModoExibicao()) {
@@ -258,13 +258,13 @@ trait RadiantiTraitDetalheCompleto
             $form->addFields([$campoId]);
         }
 
-        get_called_class()::criarCampos($form);
+        get_called_class()::criarCampos($form, $param);
 
         if (get_called_class()::getSnCriaBotaoAdicionar()) {
             self::criarBotaoAdicionar($form);
         }
 
-        $datagrid =  get_called_class()::criarDatagrid($datagrid);
+        $datagrid =  get_called_class()::criarDatagrid($param);
         $form->addFields([$datagrid]);
 
         return ['form' => $form, 'datagrid' => $datagrid];
