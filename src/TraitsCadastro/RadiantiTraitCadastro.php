@@ -151,6 +151,8 @@ trait RadiantiTraitCadastro
 
     protected function confirmarVoltaListagem($param)
     {
+        $novoParam = ['sn_confirmado' => $param['sn_confirmado'] ?? false];
+
         if (empty($param['sn_confirmado'])) {
             $this->formCadastro->setData($this->formCadastro->getData());
             $this->recarregarDatagridsDetalhes($param);
@@ -162,7 +164,7 @@ trait RadiantiTraitCadastro
             function () {
                 RadiantiNavegacao::carregarPagina(get_called_class()::getNomeTelaListagem(), 'carregar');
             },
-            $param
+            $novoParam
         );
     }
 
