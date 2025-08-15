@@ -20,9 +20,24 @@ class RadiantiEngineService
     {
         $this->maxInputVars = ini_get('max_input_vars');
         $this->totalRequest = self::contarInputVars($_REQUEST);
-        if ($this->maxInputVars && $this->totalRequest > (int)$this->maxInputVars) {
+        $this->validarMaxInputVars();
+    }
+
+    /**
+     * Valida se o total de variáveis está dentro do limite configurado em `max_input_vars`.
+     * Atualiza a propriedade `snMaxInputVarsValido` e retorna o resultado.
+     *
+     * @return bool
+     */
+    public function validarMaxInputVars(): bool
+    {
+        $this->snMaxInputVarsValido = true;
+
+        if ($this->maxInputVars && $this->totalRequest > (int) $this->maxInputVars) {
             $this->snMaxInputVarsValido = false;
         }
+
+        return $this->snMaxInputVarsValido;
     }
 
     /**

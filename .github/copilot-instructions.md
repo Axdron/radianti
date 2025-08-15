@@ -45,10 +45,15 @@ Regras e boas práticas (resumo objetivo)
     3. Commit e push;
     4. Criar tag com o mesmo valor do campo `version`.
 
-- Testes e arquivo `todo.md`
+- Testes
 
-  - Atualmente não há testes automatizados (ver `todo.md`). Antes de iniciar implementações, revisar `todo.md` para evitar duplicação de esforço e para registrar tarefas já planejadas.
-  - Criar testes automatizados com PHPUnit e documentar o comando para executá-los.
+  - Criar testes automatizados com PHPUnit.
+
+- Arquivo `TODO.md`
+
+  - Manter o arquivo `TODO.md` atualizado com tarefas pendentes, melhorias e sugestões de implementação.
+  - Revisar periodicamente para garantir que as tarefas estejam sendo concluídas e documentadas.
+  - Quando desenvolver uma ação nova, validar se já não existe uma tarefa correspondente em `TODO.md` para evitar duplicação de esforço.
 
 - Política de contribuição
 
