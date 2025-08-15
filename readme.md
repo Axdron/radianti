@@ -32,6 +32,9 @@ Aqui estão alguns dos principais recursos do Radianti:
 
 - RadiantiArquivoTemporario - Cria arquivos temporários na pasta temporária, para não utilizar as pastas de output (importante quando utiliza serviços como o Google App Engine);
 - RadiantiArrayService - Funções para manipulação de arrays;
+- RadiantiConnectionService - Prepara conexões MySQL com suporte a unix_socket (para uso por Adianti\\Database\\TConnection);
+- RadiantiDiscordService - Serviço para envio de notificações ao Discord via webhooks (mensagens, exceptions e arquivos);
+- RadiantiEngineService - Validações de segurança para engine.php (verifica total de variáveis frente a max_input_vars);
 - RadiantiGerenciadorSessoes - Para utilização de sessões armazenadas no BD;
 - RadiantiMascaras - Funções para aplicação de máscaras dinâmicas;
 - RadiantiNavegacao - Funções para abrir telas e guias novas;
