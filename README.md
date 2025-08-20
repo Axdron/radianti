@@ -50,6 +50,7 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiElementoBotaoOpcoes: TRadioGroup convertido em botões;
 - RadiantiElementoBotaoSN: RadiantiElementoBotaoOpcoes, só que já com os campos boolenos;
 - RadiantiElementoCPFCNPJ: TEntry com máscara dinâmica de CPF/CNPJ ativa;
+- RadiantiElementoDataHora: Componente baseado em TDateTime com máscara pronta (dd/mm/yyyy hh:ii) e métodos utilitários `definirValorComoHoje()` e `definirValorComoPrimeiroDiaMes()` para facilitar preenchimentos comuns;
 - RadiantiElementoDinheiro: Cria um TNumeric com formatação pronta para trabalhar com valores monetários (= separador de milhar e de decimais com 2 casas);
 - RadiantiElementoLabelExplicativa: Cria uma label utilizada para explicar o funcionamento de alguma tela, para ser utilizada, principalmente, em relatórios;
 - RadiantiElementoNumeroInteiro: Cria um TNumeric com formatação pronta para trabalhar com números inteiros (= separador de milhar);
