@@ -32,6 +32,9 @@ Aqui estão alguns dos principais recursos do Radianti:
 
 - RadiantiArquivoTemporario - Cria arquivos temporários na pasta temporária, para não utilizar as pastas de output (importante quando utiliza serviços como o Google App Engine);
 - RadiantiArrayService - Funções para manipulação de arrays;
+- RadiantiConnectionService - Prepara conexões MySQL com suporte a unix_socket (para uso por Adianti\\Database\\TConnection);
+- RadiantiDiscordService - Serviço para envio de notificações ao Discord via webhooks (mensagens, exceptions e arquivos);
+- RadiantiEngineService - Validações de segurança para engine.php (verifica total de variáveis frente a max_input_vars);
 - RadiantiGerenciadorSessoes - Para utilização de sessões armazenadas no BD;
 - RadiantiMascaras - Funções para aplicação de máscaras dinâmicas;
 - RadiantiNavegacao - Funções para abrir telas e guias novas;
@@ -47,6 +50,7 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiElementoBotaoOpcoes: TRadioGroup convertido em botões;
 - RadiantiElementoBotaoSN: RadiantiElementoBotaoOpcoes, só que já com os campos boolenos;
 - RadiantiElementoCPFCNPJ: TEntry com máscara dinâmica de CPF/CNPJ ativa;
+- RadiantiElementoDataHora: Componente baseado em TDateTime com máscara pronta (dd/mm/yyyy hh:ii) e métodos utilitários `definirValorComoHoje()` e `definirValorComoPrimeiroDiaMes()` para facilitar preenchimentos comuns;
 - RadiantiElementoDinheiro: Cria um TNumeric com formatação pronta para trabalhar com valores monetários (= separador de milhar e de decimais com 2 casas);
 - RadiantiElementoLabelExplicativa: Cria uma label utilizada para explicar o funcionamento de alguma tela, para ser utilizada, principalmente, em relatórios;
 - RadiantiElementoNumeroInteiro: Cria um TNumeric com formatação pronta para trabalhar com números inteiros (= separador de milhar);

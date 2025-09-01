@@ -29,7 +29,7 @@ trait RadiantiTraitFormatacaoDetalhes
         return 'detalhe_' . self::formatarNomeDetalhe(true) . '_';
     }
 
-    protected static function getNomeCampo(string $nomeCampo)
+    static function getNomeCampo(string $nomeCampo)
     {
         return self::getPrefixoDetalhe() . $nomeCampo;
     }

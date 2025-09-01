@@ -62,6 +62,11 @@ trait RadiantiTraitDetalheDatagrid
         return true;
     }
 
+    protected static function getSnCriarAcoesPadroesDatagrid(): bool
+    {
+        return true;
+    }
+
     /**
      * Retorna o modo de exibição do detalhe.
      * Pode ser 'horizontal' ou em abas.
@@ -80,7 +85,7 @@ trait RadiantiTraitDetalheDatagrid
      *     
      * 
      */
-    protected static function criarDatagrid($param = null): BootstrapDatagridWrapper
+    protected static function criarDatagrid($param = []): BootstrapDatagridWrapper
     {
 
         $datagrid = new BootstrapDatagridWrapper(new TDataGrid);
@@ -101,7 +106,8 @@ trait RadiantiTraitDetalheDatagrid
 
         self::criarColunasDatagrid($datagrid, $param);
 
-        self::criarAcoesDatagrid($datagrid, $param);
+        if (get_called_class()::getSnCriarAcoesPadroesDatagrid())
+            get_called_class()::criarAcoesPadraoDatagrid($datagrid);
 
         get_called_class()::criarAcoesCustomizadasDatagrid($datagrid, $param);
 
@@ -129,26 +135,61 @@ trait RadiantiTraitDetalheDatagrid
      */
     abstract protected static function criarColunasDatagrid(&$datagrid, $param);
 
-    protected static function criarAcoesDatagrid(&$datagrid, $param = null)
+    /**
+     * Cria as ações padrão da datagrid, editar e excluir, conforme os métodos getSnMostraAcaoEditar() e getSnMostraAcaoExcluir()
+     * @param BootstrapDatagridWrapper $datagrid
+     */
+    protected static function criarAcoesPadraoDatagrid(&$datagrid)
     {
         if (get_called_class()::getSnMostraAcaoEditar()) {
-            $acaoEdicao = new TDataGridAction([self::getNomeTelaPrincipal(), 'editar' . self::formatarNomeDetalhe()], ['static' => 1]);
-            $acaoEdicao->setFields([self::getNomeCampo('uniqid'), '*']);
-            $acaoEdicao->setImage('fa:edit blue fa-lg');
-            $datagrid->addAction($acaoEdicao);
+            self::criarBotaoEditarDatagrid($datagrid);
         }
 
         if (get_called_class()::getSnMostraAcaoExcluir()) {
-            $acaoExclusao = new TDataGridAction([self::getNomeTelaPrincipal(), 'excluir' . self::formatarNomeDetalhe()], ['static' => 1]);
-            $acaoExclusao->setField(self::getNomeCampo('uniqid'));
-            $acaoExclusao->setImage('fa:trash red fa-lg');
-            $datagrid->addAction($acaoExclusao);
+            self::criarBotaoExcluirDatagrid($datagrid);
         }
     }
 
-    protected static function criarAcoesCustomizadasDatagrid(&$datagrid, $param = null) {}
+    /**
+     * Cria o botão padrão de edição na datagrid
+     * @param BootstrapDatagridWrapper $datagrid
+     */
+    protected static function criarBotaoEditarDatagrid(&$datagrid)
+    {
+        $acaoEdicao = new TDataGridAction([self::getNomeTelaPrincipal(), 'editar' . self::formatarNomeDetalhe()], ['static' => 1]);
+        $acaoEdicao->setFields([self::getNomeCampo('uniqid'), '*']);
+        $acaoEdicao->setImage('fa:edit blue fa-lg');
+        $datagrid->addAction($acaoEdicao);
+    }
 
-    static function carregar($mestreId, &$datagrid)
+    /**
+     * Cria o botão padrão de exclusão na datagrid
+     * @param BootstrapDatagridWrapper $datagrid
+     */
+    protected static function criarBotaoExcluirDatagrid(&$datagrid)
+    {
+        $acaoExclusao = new TDataGridAction([self::getNomeTelaPrincipal(), 'excluir' . self::formatarNomeDetalhe()], ['static' => 1]);
+        $acaoExclusao->setField(self::getNomeCampo('uniqid'));
+        $acaoExclusao->setImage('fa:trash red fa-lg');
+        $datagrid->addAction($acaoExclusao);
+    }
+
+    /**
+     * Cria ações customizadas na datagrid
+     * @param BootstrapDatagridWrapper $datagrid
+     * @param array $param Parâmetros adicionais que podem ser utilizados na criação das ações
+     * 
+     * Exemplo:
+     * protected static function criarAcoesCustomizadasDatagrid(&$datagrid, $param = []){
+     *  $acaoCustomizada = new TDataGridAction([self::getNomeTelaPrincipal(), 'acaoCustomizada' . self::formatarNomeDetalhe()], ['static' => 1]);
+     *  $acaoCustomizada->setFields([self::getNomeCampo('uniqid'), '*']);
+     *  $acaoCustomizada->setImage('fa:custom-icon custom-color fa-lg');
+     *  $datagrid->addAction($acaoCustomizada);
+     * }
+     */
+    protected static function criarAcoesCustomizadasDatagrid(&$datagrid, $param = []) {}
+
+    static function carregar($mestreId, &$datagrid, $param = [])
     {
         $model = get_called_class()::getModel();
         $campoMestre = get_called_class()::getCampos()[1];
@@ -157,7 +198,7 @@ trait RadiantiTraitDetalheDatagrid
         foreach ($itens as $item) {
             get_called_class()::formatarCamposCarregar($item);
             $itemDatagrid = get_called_class()::converterCamposDBParaItemDatagrid($item);
-            get_called_class()::adicionarItemDatagrid($itemDatagrid, $datagrid);
+            get_called_class()::adicionarItemDatagrid($itemDatagrid, $datagrid, $param);
         }
     }
 
@@ -174,20 +215,20 @@ trait RadiantiTraitDetalheDatagrid
         return (object) $itemDatagrid;
     }
 
-    static function recarregarDatagrid($param, &$datagrid)
+    static function recarregarDatagrid($dadosForm, &$datagrid, $param = [])
     {
-        if (!empty($param[self::getNomeCampoDatagrid(self::getCampos()[0])])) {
-            foreach ($param[self::getNomeCampoDatagrid(self::getCampos()[0])] as $key => $campoPrincipal) {
+        if (!empty($dadosForm[self::getNomeCampoDatagrid(self::getCampos()[0])])) {
+            foreach ($dadosForm[self::getNomeCampoDatagrid(self::getCampos()[0])] as $key => $campoPrincipal) {
                 $item = [
-                    self::getNomeCampo('uniqid') => $param[self::getNomeCampoDatagrid('uniqid')][$key] ?? null,
-                    self::getNomeCampo('id') => $param[self::getNomeCampoDatagrid('id')][$key]  ?? null,
+                    self::getNomeCampo('uniqid') => $dadosForm[self::getNomeCampoDatagrid('uniqid')][$key] ?? null,
+                    self::getNomeCampo('id') => $dadosForm[self::getNomeCampoDatagrid('id')][$key]  ?? null,
                 ];
 
                 foreach (self::getCampos() as $campo) {
-                    $item[self::getNomeCampo($campo)] = $param[self::getNomeCampoDatagrid($campo)][$key] ?? null;
+                    $item[self::getNomeCampo($campo)] = $dadosForm[self::getNomeCampoDatagrid($campo)][$key] ?? null;
                 }
 
-                self::adicionarItemDatagrid((object) $item, $datagrid);
+                self::adicionarItemDatagrid((object) $item, $datagrid, $param);
             }
         }
     }
@@ -198,7 +239,7 @@ trait RadiantiTraitDetalheDatagrid
      * @param BootstrapDatagridWrapper $datagrid
      * @return array ['form' => $form, 'datagrid' => $datagrid]
      */
-    static function criar(&$form, &$datagrid)
+    static function criar(&$form, &$datagrid, $param = [])
     {
         switch (get_called_class()::getModoExibicao()) {
             case 'horizontal':
@@ -217,7 +258,7 @@ trait RadiantiTraitDetalheDatagrid
 
         self::adicionarElementosAntesDatagrid($form);
 
-        $datagrid =  get_called_class()::criarDatagrid($datagrid);
+        $datagrid =  get_called_class()::criarDatagrid($datagrid, $param);
         $form->addFields([$datagrid]);
 
         self::adicionarElementosDepoisDatagrid($form);
@@ -252,7 +293,7 @@ trait RadiantiTraitDetalheDatagrid
      * @param BootstrapDatagridWrapper $datagrid
      * @return object
      */
-    protected static function adicionarItemDatagrid(Object $itemAdicionado, BootstrapDatagridWrapper &$datagrid)
+    protected static function adicionarItemDatagrid(Object $itemAdicionado, BootstrapDatagridWrapper &$datagrid, $param = [])
     {
         $itemAdicionado = (object)$itemAdicionado;
 
@@ -274,7 +315,7 @@ trait RadiantiTraitDetalheDatagrid
             return;
 
         if (empty($datagrid))
-            $datagrid = self::criarDatagrid();
+            $datagrid = self::criarDatagrid($param);
 
         $linhaDatagrid = $datagrid->addItem((object) $itemDatagrid);
         $linhaDatagrid->id = $itemDatagrid[self::getNomeCampo('uniqid')];

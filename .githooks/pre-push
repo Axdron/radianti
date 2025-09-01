@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Hook template para ser instalado como core.hooksPath = .githooks
+# Executa PHPUnit antes do push para impedir pushes com testes quebrando.
+
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null || echo "$(cd "$(dirname "$0")/../.." && pwd)")"
+cd "$repo_root" || exit 1
+
+echo "Running PHPUnit tests before push..."
+
+# Detecta phpunit instalado via composer ou global
+if [ -x "./vendor/bin/phpunit" ]; then
+  CMD=("./vendor/bin/phpunit" "-c" "phpunit.xml" "--testdox")
+elif command -v php >/dev/null && [ -f "vendor/bin/phpunit" ]; then
+  CMD=("php" "vendor/bin/phpunit" "-c" "phpunit.xml" "--testdox")
+elif command -v phpunit >/dev/null; then
+  CMD=("phpunit" "-c" "phpunit.xml" "--testdox")
+else
+  echo "PHPUnit não encontrado. Execute 'composer install' para instalar as dependências de desenvolvimento." >&2
+  exit 1
+fi
+
+"${CMD[@]}"
+RC=$?
+if [ $RC -ne 0 ]; then
+  echo "PHPUnit tests failed (exit code $RC). Aborting push." >&2
+  exit $RC
+fi
+
+echo "PHPUnit tests passed. Proceeding with push."
