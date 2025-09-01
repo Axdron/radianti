@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.15.1] - 2025-09-01
+
+### Added
+
+- Service `RadiantiNavegacao` atualizado para informar o id além da key quando necessário.
+
 ## [3.15.0] - 2025-08-20
 
 ### Added

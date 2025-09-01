@@ -6,7 +6,7 @@ use Adianti\Core\AdiantiCoreApplication;
 
 class RadiantiNavegacao
 {
-    static function carregarPagina(string $classe, string $metodo = null, array $parametros = null)
+    static function carregarPagina(string $classe, string|null $metodo = null, array|null $parametros = null)
     {
         AdiantiCoreApplication::loadPage($classe, $metodo, $parametros);
     }
@@ -18,7 +18,7 @@ class RadiantiNavegacao
             $endereco .= "&method={$method}";
         }
         if ($key) {
-            $endereco .= "&key={$key}";
+            $endereco .= "&key={$key}&id={$key}";
         }
         echo "<script>window.open('$endereco', '_blank');</script>";
     }
