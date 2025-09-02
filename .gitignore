@@ -1,2 +1,4 @@
 /lib
 /vendor
+/.phpunit.cache
+/.phpunit.result.cache
