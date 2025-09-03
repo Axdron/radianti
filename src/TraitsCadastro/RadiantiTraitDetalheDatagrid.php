@@ -266,7 +266,10 @@ trait RadiantiTraitDetalheDatagrid
         return ['form' => $form, 'datagrid' => $datagrid];
     }
 
-    protected static function getNomeCampoDatagrid(string $nomeCampo)
+    /**
+     * Retorna o nome do campo na datagrid, formatado de acordo com o detalhe
+     */
+    static function getNomeCampoDatagrid(string $nomeCampo)
     {
         return get_called_class()::getNomeDatagrid() . '_' . get_called_class()::getNomeCampo($nomeCampo);
     }
