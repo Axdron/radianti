@@ -7,6 +7,7 @@ use Adianti\Control\TPage;
 use Adianti\Database\TCriteria;
 use Adianti\Database\TRepository;
 use Adianti\Registry\TSession;
+use Adianti\Widget\Base\TScript;
 use Adianti\Widget\Container\TPanelGroup;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Datagrid\TDataGrid;
@@ -345,6 +346,16 @@ abstract class RadiantiListagemModelo extends TPage
             $this->carregar();
         }
     }
+
+    /**
+     * Clica no botão buscar de forma estática
+     * Usado para atualizar a lista após ações como confirmar ou cancelar
+     * @return void
+     */
+    static function clicarNoBotaoBuscarEstaticamente()
+    {
+        TScript::create("document.querySelector('#tbutton_btn_buscar').click();");
+    }
 }
 
 /**
@@ -352,7 +363,7 @@ abstract class RadiantiListagemModelo extends TPage
  * que não estava limpando o outputData, causando problemas na exportação
  * de dados para PDF e XLSX.
  */
-class RTDatagrid extends TDataGrid
+class RTDataGrid extends TDataGrid
 {
 
     public function clear($preserveHeader = TRUE, $rows = 0)
