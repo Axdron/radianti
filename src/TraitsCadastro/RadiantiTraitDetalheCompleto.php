@@ -106,7 +106,24 @@ trait RadiantiTraitDetalheCompleto
     }
 
     /**
-     * Aplica algum tratamento especial em valores do item
+     * Aplica tratamento especial aos valores do item antes do salvamento.
+     *
+     * Este método pode ser utilizado para realizar conversões de valores financeiros,
+     * datas ou outros ajustes necessários nos dados do item antes de persistí-los.
+     * 
+     * Exemplo prático:
+     * ```php
+     * protected static function tratarItemSalvamento(&$item)
+     * {
+     *     // Converte valor monetário para padrão americano
+     *     $item->valor = str_replace(['.', ','], ['', '.'], $item->valor);
+     *     // Converte data para formato americano
+     *     $item->data = TDate::date2us($item->data);
+     * }
+     * ```
+     *
+     * @param object $item Referência ao objeto item que será tratado.
+     * @return void
      */
     protected static function tratarItemSalvamento(&$item) {}
 

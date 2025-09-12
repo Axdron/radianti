@@ -349,5 +349,23 @@ trait RadiantiTraitDetalheDatagrid
         TDataGrid::removeRowById(self::getNomeDatagrid(), $param[self::getNomeCampo('uniqid')]);
     }
 
+    /**
+     * Formata os campos do item carregado do banco, antes de ser adicionado na datagrid
+     * 
+     * Esse método pode ser utilizado para formatar datas, valores monetários, etc. bem como evitar excesso de transações
+     * ao carregar informações referentes a um mesmo relacionamento.
+     * 
+     * Exemplo prático:
+     * ```php
+     * protected static function formatarCamposCarregar(TRecord &$item)
+     * {
+     *     // Formata a data para o formato brasileiro
+     *     $item->data = TDate::date2br($item->data);
+     *    // Formata o valor para o formato monetário brasileiro
+     *     $item->valor = number_format($item->valor, 2, ',', '.');
+     * }
+     * ```
+     * @param TRecord $item
+     */
     protected static function formatarCamposCarregar(TRecord &$item) {}
 }
