@@ -46,7 +46,7 @@ abstract class RadiantiRelatorioModelo extends TPage
     {
         parent::__construct();
 
-        $this->criarFormBusca();
+        $this->criarFormBusca($param);
         $this->criarDataGridResultados($param);
         $panelDataGrid = $this->criarPainelDatagrid();
 
@@ -138,8 +138,12 @@ abstract class RadiantiRelatorioModelo extends TPage
         return $resultado;
     }
 
-
-    private function criarFormBusca()
+    /**
+     * Cria o formulário de busca
+     * @param array $param Parâmetros para preencher os campos do formulário
+     * @return TQuickForm
+     */
+    private function criarFormBusca($param = [])
     {
         $this->form = new TQuickForm(get_called_class()::getNomeForm());
         $this->form->class = 'tform';
@@ -150,8 +154,12 @@ abstract class RadiantiRelatorioModelo extends TPage
         $this->campos = $this->criarCampos();
 
         foreach ($this->campos as $campo) {
-            if (!empty($campo['label']))
+            if (!empty($campo['label'])) {
+                if (isset($param[$campo['campo']->getName()])) {
+                    $campo['campo']->setValue($param[$campo['campo']->getName()]);
+                }
                 $this->form->addQuickField($campo['label'], $campo['campo'], $campo['tamanho'] ?? '100%');
+            }
         }
 
         $this->form->addQuickAction("Buscar", new TAction(array($this, 'validarFormulario')), 'fa:search');
@@ -263,9 +271,18 @@ abstract class RadiantiRelatorioModelo extends TPage
         return [];
     }
 
-
-    static function abrir()
+    /**
+     * Abre o relatório em uma nova guia do navegador
+     * @param array $param Parâmetros para filtros iniciais
+     * Exemplo: ['filtros' => ['data_inicial' => '2023-01-01', 'data_final' => '2023-12-31']]
+     */
+    static function abrir($param = [])
     {
-        RadiantiNavegacao::abrirNovaGuia(get_called_class());
+        $stringClasse = get_called_class();
+        if (isset($param['filtros'])) {
+            $stringParametros = http_build_query($param['filtros']);
+            $stringClasse .= "&{$stringParametros}";
+        }
+        RadiantiNavegacao::abrirNovaGuia($stringClasse);
     }
 }
