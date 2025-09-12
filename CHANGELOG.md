@@ -9,6 +9,7 @@
 ### Added
 
 - Criado o método estático `clicarNoBotaoBuscarEstaticamente()` em `RadiantiListagemModelo` para permitir clicar no botão de busca da listagem via código, útil para cenários onde se deseja disparar a ação de busca programaticamente, como atualizar a listagem após uma ação da datagrid, preservando os filtros.
+- Possibilidade de passar parâmetros iniciais para o formulário de busca em `RadiantiRelatorioModelo::abrir($param)`, permitindo pré-preencher filtros ao abrir o relatório.
 
 ## [3.15.1] - 2025-09-01
 
