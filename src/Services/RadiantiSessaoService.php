@@ -4,15 +4,31 @@ namespace Axdron\Radianti\Services;
 
 use Adianti\Registry\TSession;
 
+/**
+ * Classe abstrata para gerenciamento de variáveis de sessão do usuário.
+ * Utiliza o padrão singleton para garantir uma única instância.
+ * Ideal para ser utilizada em conjunto com o RadiantiGerenciadorSessoes, reduzindo a necessidade de múltiplas consultas ao banco de dados.
+ * Exemplo de uso:
+ * ```
+ * RadiantiSessaoService::salvarUsuarioId(1);
+ * $usuarioId = RadiantiSessaoService::buscarUsuarioId();
+ * RadiantiSessaoService::salvarUsuarioLogin('admin');
+ * $usuarioLogin = RadiantiSessaoService::buscarUsuarioLogin();
+ * ```
+ */
 abstract class RadiantiSessaoService
 {
 
     protected static $instanciaSingleton;
-    protected static $usuarioLogin;
-    protected static $usuarioId;
+    protected $usuarioLogin;
+    protected $usuarioId;
 
     protected function __construct() {}
 
+    /**
+     * Retorna a instância singleton da classe.
+     * @return static A instância singleton da classe.
+     */
     public static function buscarInstanciaSingleton()
     {
         if (empty(self::$instanciaSingleton)) {
