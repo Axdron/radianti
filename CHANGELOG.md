@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.15.4] - 2025-10-07
+
+### Added
+
+- Documentada a classe `RadiantiTransaction` com PHPDoc, incluindo o método `executarQueryComTransacao()`, detalhando parâmetros, retorno e exceções.
+- Documentada a classe `RadiantiSessaoService` com PHPDoc, incluindo o método `buscarInstanciaSingleton()`, detalhando o retorno.
+
+### Fixed
+
+- Corrigido o acesso aos atributos `usuarioLogin` e `usuarioId` na classe `RadiantiSessaoService` para serem acessados como atributos de instância (`$this->usuarioLogin` e `$this->usuarioId`) em vez de atributos estáticos (`self::$usuarioLogin` e `self::$usuarioId`).
+
 ## [3.15.3] - 2025-09-12
 
 ### Fixed
