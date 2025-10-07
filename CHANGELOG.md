@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.15.4] - 2025-10-07
+
+### Added
+
+- Documentada a classe `RadiantiTransaction` com PHPDoc, incluindo o método `executarQueryComTransacao()`, detalhando parâmetros, retorno e exceções.
+
 ## [3.15.3] - 2025-09-12
 
 ### Fixed

@@ -10,6 +10,15 @@ use PDO;
 class RadiantiTransaction
 {
 
+    /**
+     * Executa uma query SQL de consulta dentro de uma transação aberta.
+     * A query deve começar com SELECT, caso contrário, uma exceção será lançada. 
+     * @param string $query A query SQL a ser executada.
+     * @param bool $snEmiteTMessage Indica se deve emitir uma mensagem de erro usando TMessage.
+     * @param string|null $nomeBd O nome do banco de dados a ser usado.
+     * @return array O resultado da query como um array de objetos.
+     * @throws \Throwable Se ocorrer um erro e $snEmiteTMessage for false. 
+     */
     public static function executarQueryComTransacao($query, $snEmiteTMessage = true, $nomeBd = null): array
     {
         $resultado =  self::consultar(function () use ($query) {
@@ -43,27 +52,75 @@ class RadiantiTransaction
         return (array)$resultado;
     }
 
+    /**
+     * Executa um callback dentro de uma transação fake.
+     * Abre uma transação fake, executa o callback e fecha a transação.
+     * Em caso de erro, encerra a transação fake e opcionalmente emite uma mensagem de erro.
+     * Essa função é um facilitador para operações de consulta de dados.
+     * @param callable $callback A função a ser executada dentro da transação.
+     * @param bool $snEmiteTMessage Indica se deve emitir uma mensagem de erro usando TMessage.
+     * @param string|null $nomeBd O nome do banco de dados a ser usado. Se nulo, usa a variável de ambiente RADIANTI_DB_NAME.
+     * @return mixed O resultado do callback, se bem-sucedido. 
+     * @throws \Throwable Se ocorrer um erro e $snEmiteTMessage for false.
+     */
     public static function consultar($callback, $snEmiteTMessage = true, $nomeBd = null)
     {
         return self::encapsularTransacao($callback, $snEmiteTMessage, false, $nomeBd);
     }
 
+    /**
+     * Versão de consultar que não emite mensagens de erro.
+     * Usado em APIs para retornar erros via JSON.
+     * @param callable $callback A função a ser executada dentro da transação.
+     * @param string|null $nomeBd O nome do banco de dados a ser usado. Se nulo, usa a variável de ambiente RADIANTI_DB_NAME.
+     * @return mixed O resultado do callback, se bem-sucedido. 
+     * @throws \Throwable Se ocorrer um erro.
+     */
     public static function consultarAPI($callback, $nomeBd = null)
     {
         return self::consultar($callback, false, $nomeBd);
     }
 
-
+    /**
+     * Executa um callback dentro de uma transação.
+     * Abre uma transação, executa o callback e fecha a transação.
+     * Em caso de erro, faz rollback da transação e opcionalmente emite uma mensagem de erro.
+     * Essa função é um facilitador para operações de salvar/atualizar/excluir dados.
+     * @param callable $callback A função a ser executada dentro da transação.
+     * @param bool $snEmiteTMessage Indica se deve emitir uma mensagem de erro usando TMessage.
+     * @param string|null $nomeBd O nome do banco de dados a ser usado. Se nulo, usa a variável de ambiente RADIANTI_DB_NAME.
+     * @return mixed O resultado do callback, se bem-sucedido. 
+     * @throws \Throwable Se ocorrer um erro e $snEmiteTMessage for false.
+     */
     public static function salvar($callback, $snEmiteTMessage = true, $nomeBd = null)
     {
         return self::encapsularTransacao($callback, $snEmiteTMessage, true, $nomeBd);
     }
 
+    /**
+     * Versão de salvar que não emite mensagens de erro.
+     * Usado em APIs para retornar erros via JSON.
+     * @param callable $callback A função a ser executada dentro da transação.
+     * @param string|null $nomeBd O nome do banco de dados a ser usado. Se nulo, usa a variável de ambiente RADIANTI_DB_NAME.
+     * @return mixed O resultado do callback, se bem-sucedido. 
+     * @throws \Throwable Se ocorrer um erro.
+     */
     public static function salvarAPI($callback, $nomeBd = null)
     {
         return self::salvar($callback, false, $nomeBd);
     }
 
+    /**
+     * Encapsula a execução de um callback dentro de uma transação.
+     * Abre uma transação, executa o callback e fecha a transação.
+     * Em caso de erro, faz rollback da transação e opcionalmente emite uma mensagem de erro.
+     * @param callable $callback A função a ser executada dentro da transação.
+     * @param bool $snEmiteTMessage Indica se deve emitir uma mensagem de erro usando TMessage.
+     * @param bool $snAbrirTransacao Indica se deve abrir uma transação real ou fake.
+     * @param string|null $nomeBd O nome do banco de dados a ser usado. Se nulo, usa a variável de ambiente RADIANTI_DB_NAME.
+     * @return mixed O resultado do callback, se bem-sucedido. 
+     * @throws \Throwable Se ocorrer um erro e $snEmiteTMessage for false.
+     */
     public static function encapsularTransacao($callback, $snEmiteTMessage = true, $snAbrirTransacao = true, $nomeBd = null)
     {
         try {
