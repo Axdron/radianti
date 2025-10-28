@@ -9,7 +9,6 @@ use Adianti\Database\TRecord;
 use Adianti\Widget\Container\TNotebook;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Dialog\TMessage;
-use Adianti\Widget\Dialog\TQuestion;
 use Adianti\Widget\Form\THidden;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapFormBuilder;
@@ -262,6 +261,23 @@ trait RadiantiTraitCadastro
 
     protected function tratarObjetoCarregado(&$objeto) {}
 
+    /**
+     * Abre o cadastro em uma janela avulsa.
+     * @param array $param Parâmetros para abrir o cadastro.
+     * Exemplos de uso:
+     * 
+     * 1) Abrir cadastro para edição de um registro existente:
+     * ```php
+     * RadiantiNavegacao::carregarPagina(CadastroPessoas::class, 'abrirJanelaAvulsa', ['campoId' => 'meu_campo_id', 'meu_campo_id' => 123]);
+     * ```
+     * 
+     * 2) Abrir cadastro para um novo registro:
+     * ```php
+     * RadiantiNavegacao::carregarPagina(CadastroPessoas::class, 'abrirJanelaAvulsa', ['campoId' => 'somenteCadastro']);
+     * ```
+     * 
+     * Atenção: o parâmetro 'campoId' é obrigatório e deve indicar o nome do campo que contém o ID do registro a ser editado. Não é recomendado chamá-lo de id diretamente para evitar conflitos.
+     */
     public static function abrirJanelaAvulsa($param)
     {
         $campoId = $param['campoId'];
