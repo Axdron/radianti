@@ -4,11 +4,11 @@
 
 ### Deprecated
 
-- Método `RadiantiTransaction::executarQueryComTransacao()` foi marcado como deprecated em favor de `RadiantiTransaction::executarQueryBruta()`. O novo método tem um nome mais descritivo que representa corretamente o comportamento da função (executa queries SQL brutas sem gerenciar transações). O método antigo continuará funcionando como um wrapper para manter compatibilidade com código existente, mas será removido em uma versão futura.
+- Método `RadiantiTransaction::executarQueryComTransacao()` foi marcado como deprecated em favor de `RadiantiTransaction::executarConsultaBruta()`. O novo método tem um nome mais descritivo que representa corretamente o comportamento da função (executa queries SQL brutas sem gerenciar transações). O método antigo continuará funcionando como um wrapper para manter compatibilidade com código existente, mas será removido em uma versão futura.
 
 ### Added
 
-- Novo método `RadiantiTransaction::executarQueryBruta()` para executar queries SQL brutas de forma explícita, com melhor clareza do que a função realmente faz.
+- Novo método `RadiantiTransaction::executarConsultaBruta()` para executar queries SQL brutas de forma explícita, com melhor clareza do que a função realmente faz.
 - Método `getArquivoMenu()` adicionado em `RadiantiRelatorioModelo` para permitir customizar o arquivo de menu por relatório, similar à classe `RadiantiListagemModelo`. Valor padrão: `'menu.xml'`.
 - Método `montarConsulta()` adicionado em `RadiantiRelatorioModelo` (não abstrato) para construir a query SQL. Deve ser implementado nas classes filhas e retorna uma string com o SQL. Lança exceção se não for implementado.
 - Método `processarRetornoConsulta()` adicionado em `RadiantiRelatorioModelo` (opcional) para processar/transformar os dados retornados da consulta. Por padrão, retorna os dados sem modificações.
