@@ -11,17 +11,18 @@ class RadiantiTransaction
 {
 
     /**
-     * Executa uma query SQL de consulta dentro de uma transação aberta.
-     * A query deve começar com SELECT, caso contrário, uma exceção será lançada. 
+     * Executa uma query SQL bruta dentro de uma transação fake.
+     * A query deve começar com SELECT, caso contrário, uma exceção será lançada.
+     * 
      * @param string $query A query SQL a ser executada.
      * @param bool $snEmiteTMessage Indica se deve emitir uma mensagem de erro usando TMessage.
      * @param string|null $nomeBd O nome do banco de dados a ser usado.
      * @return array O resultado da query como um array de objetos.
-     * @throws \Throwable Se ocorrer um erro e $snEmiteTMessage for false. 
+     * @throws \Throwable Se ocorrer um erro e $snEmiteTMessage for false.
      */
-    public static function executarQueryComTransacao($query, $snEmiteTMessage = true, $nomeBd = null): array
+    public static function executarConsultaBruta($query, $snEmiteTMessage = true, $nomeBd = null): array
     {
-        $resultado =  self::consultar(function () use ($query) {
+        $resultado = self::consultar(function () use ($query) {
             if (strpos(strtolower($query), 'select') === false) {
                 throw new Exception('A query deve começar com select');
             }
@@ -50,6 +51,24 @@ class RadiantiTransaction
         }
 
         return (array)$resultado;
+    }
+
+    /**
+     * @deprecated Desde v3.14.0. Use {@link executarConsultaBruta()} em seu lugar.
+     * Esta função será removida em uma versão futura. O nome atual não representa corretamente
+     * o comportamento da função, que executa queries SQL brutas sem gerenciar transações.
+     * 
+     * Executa uma query SQL de consulta dentro de uma transação aberta.
+     * A query deve começar com SELECT, caso contrário, uma exceção será lançada. 
+     * @param string $query A query SQL a ser executada.
+     * @param bool $snEmiteTMessage Indica se deve emitir uma mensagem de erro usando TMessage.
+     * @param string|null $nomeBd O nome do banco de dados a ser usado.
+     * @return array O resultado da query como um array de objetos.
+     * @throws \Throwable Se ocorrer um erro e $snEmiteTMessage for false. 
+     */
+    public static function executarQueryComTransacao($query, $snEmiteTMessage = true, $nomeBd = null): array
+    {
+        return self::executarConsultaBruta($query, $snEmiteTMessage, $nomeBd);
     }
 
     /**

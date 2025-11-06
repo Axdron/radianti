@@ -17,6 +17,7 @@ use Axdron\Radianti\Services\RadiantiArrayService;
 use Axdron\Radianti\Services\RadiantiNavegacao;
 use Axdron\Radianti\Services\RadiantiPDFService;
 use Axdron\Radianti\Services\RadiantiPlanilhaService;
+use Axdron\Radianti\Services\RadiantiTransaction;
 use Exception;
 
 abstract class RadiantiRelatorioModelo extends TPage
@@ -36,6 +37,11 @@ abstract class RadiantiRelatorioModelo extends TPage
         return get_called_class() . 'Form';
     }
 
+    protected static function getArquivoMenu(): string
+    {
+        return 'menu.xml';
+    }
+
     protected $form;
     protected $datagrid;
     protected $itensDatagrid;
@@ -52,7 +58,7 @@ abstract class RadiantiRelatorioModelo extends TPage
 
         $container = new TVBox;
         $container->style = 'width: 100%';
-        $container->add(new TXMLBreadCrumb('menu.xml', get_class($this)));
+        $container->add(new TXMLBreadCrumb(get_called_class()::getArquivoMenu(), get_class($this)));
         $container->add(new RadiantiElementoLabelExplicativa(get_called_class()::getExplicacao()));
         $container->add(TPanelGroup::pack(get_called_class()::getNomeRelatorio(), $this->form));
         $container->add($panelDataGrid);
@@ -85,11 +91,60 @@ abstract class RadiantiRelatorioModelo extends TPage
     }
 
     /**
-     * Monta a query para efetuar a busca no banco de dados
-     * @param object $dadosFormulario
-     * @return array retorna a query para a consulta
+     * Executa a consulta chamando o método montarConsulta e opcionalmente processarRetornoConsulta
+     * @param object $dadosFormulario Dados do formulário contendo os filtros
+     * @return array Resultado da consulta
+     * @throws Exception Se montarConsulta não for implementado
      */
-    abstract protected function executarConsulta(object $dadosFormulario): array;
+    protected function executarConsulta(object $dadosFormulario): array
+    {
+        $sql = $this->montarConsulta($dadosFormulario);
+        $resultado = RadiantiTransaction::executarConsultaBruta($sql);
+        return $this->processarRetornoConsulta($resultado);
+    }
+
+    /**
+     * Monta a query SQL para efetuar a busca no banco de dados
+     * Deve ser implementado nas classes filhas
+     * @param object $dadosFormulario Dados do formulário contendo os filtros
+     * @return string Retorna a query SQL
+     * @throws Exception Se não for implementado
+     * 
+     * Exemplo:
+     * protected function montarConsulta(object $dadosFormulario): string {
+     *     $sql = "SELECT id, nome, valor FROM vendas WHERE 1=1";
+     *     if (!empty($dadosFormulario->data_inicial)) {
+     *         $sql .= " AND data_venda >= '{$dadosFormulario->data_inicial}'";
+     *     }
+     *     if (!empty($dadosFormulario->data_final)) {
+     *         $sql .= " AND data_venda <= '{$dadosFormulario->data_final}'";
+     *     }
+     *     return $sql;
+     * }
+     */
+    protected function montarConsulta(object $dadosFormulario): string
+    {
+        throw new Exception('O método montarConsulta deve ser implementado na classe ' . get_called_class());
+    }
+
+    /**
+     * Processa o retorno da consulta (método opcional para transformação de dados)
+     * Por padrão, retorna os dados sem modificações
+     * @param array $resultado Resultado da consulta
+     * @return array Resultado processado
+     * 
+     * Exemplo de uso:
+     * protected function processarRetornoConsulta(array $resultado): array {
+     *     return array_map(function($item) {
+     *         $item->valor_formatado = 'R$ ' . number_format($item->valor, 2, ',', '.');
+     *         return $item;
+     *     }, $resultado);
+     * }
+     */
+    protected function processarRetornoConsulta(array $resultado): array
+    {
+        return $resultado;
+    }
 
     /**
      * Cria os campos do formulário
