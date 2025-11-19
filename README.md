@@ -56,6 +56,10 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiElementoNumeroInteiro: Cria um TNumeric com formatação pronta para trabalhar com números inteiros (= separador de milhar);
 - RadiantiElementoTexto: Cria um TTextDisplay na tela, gerenciando o conteúdo de forma que seja fácil atualizá-lo;
 
-4. **Telas modelo**: Telas prontas para agilizar na criação de outras telas:
+4. **Interfaces**: Interfaces e janelas para interação com o usuário:
+
+- RadiantiJanelaPergunta: Cria uma janela de pergunta com suporte completo a close action (botão X). Diferente do `TQuestion`, gerencia adequadamente o comportamento ao fechar a janela.
+
+5. **Telas modelo**: Telas prontas para agilizar na criação de outras telas:
 
 - RadiantiRelatorioModelo: Relatório contendo filtros, datagrid de dados, geração de XLSX e PDF;

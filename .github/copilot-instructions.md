@@ -15,7 +15,8 @@ Regras e boas práticas (resumo objetivo)
 - Documentação e PHPDocs
 
   - Toda classe deve conter PHPDoc para classe, propriedades e métodos.
-  - Toda nova classe deve constar no `README.md` (descrição curta e exemplo de uso quando aplicável).
+  - Toda nova classe deve constar no `README.md` (descrição curta).
+  - Cada namespace/pasta deve ter um README.md explicando o propósito e exemplos de uso das classes contidas.
 
 - Requisitos mínimos de ambiente
 
@@ -48,6 +49,7 @@ Regras e boas práticas (resumo objetivo)
 - Testes
 
   - Criar testes automatizados com PHPUnit.
+  - Toda classe ou função nova deve ter cobertura de testes.
 
 - Arquivo `TODO.md`
 

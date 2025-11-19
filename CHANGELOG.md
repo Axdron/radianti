@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.15.6] - 2025-11-19
+
+### Added
+
+- Nova interface `RadiantiJanelaPergunta` adicionada em `src/Interfaces/` para criar janelas de pergunta com suporte completo a close action (botão X). Diferente do `TQuestion`, gerencia adequadamente o comportamento ao fechar a janela. Exemplo: criar uma confirmação com ações personalizadas para "Sim" e "Não", ambas acionadas também pelo botão de fechar.
+- Testes unitários para `RadiantiJanelaPergunta` em `tests/Interfaces/RadiantiJanelaPerguntaTest.php` com cobertura de instanciação, tipagem de parâmetros, PHPDoc, strict_types e comportamento geral.
+- Documentação: README atualizado incluindo seção de Interfaces e exemplo de uso de `RadiantiJanelaPergunta`.
+
 ## [3.15.5] - 2025-11-06
 
 ### Deprecated
