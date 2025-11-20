@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.15.7] - 2025-11-20
+
+### Added
+
+- Hook `adicionarFiltrosCarregamento()` adicionado em `RadiantiTraitDetalheDatagrid` para permitir filtros customizados na query de carregamento de itens dependentes. Implementar este método nas classes filhas para adicionar filtros específicos sem necessidade de sobrescrever o método `carregar()` completo.
+
 ## [3.15.6] - 2025-11-19
 
 ### Added

@@ -189,11 +189,33 @@ trait RadiantiTraitDetalheDatagrid
      */
     protected static function criarAcoesCustomizadasDatagrid(&$datagrid, $param = []) {}
 
+    /**
+     * Carrega os itens dependentes do mestre da datagrid
+     * 
+     * Busca todos os itens relacionados ao mestre através do campo de vínculo,
+     * aplica filtros customizados via hook e adiciona cada item à datagrid.
+     * 
+     * Exemplo:
+     * ```php
+     * $datagrid = null;
+     * get_called_class()::carregar($mestreId, $datagrid, ['filtro' => 'ativo']);
+     * ```
+     * 
+     * @param mixed $mestreId ID do registro mestre
+     * @param BootstrapDatagridWrapper|null $datagrid Referência à datagrid onde os itens serão adicionados
+     * @param array $param Parâmetros adicionais a passar para métodos auxiliares
+     * @return void
+     */
     static function carregar($mestreId, &$datagrid, $param = [])
     {
         $model = get_called_class()::getModel();
         $campoMestre = get_called_class()::getCampos()[1];
-        $itens = $model::where($campoMestre, '=', $mestreId)->get();
+        $query = $model::where($campoMestre, '=', $mestreId);
+
+        // Hook para adicionar filtros customizados
+        get_called_class()::adicionarFiltrosCarregamento($query);
+
+        $itens = $query->get();
 
         foreach ($itens as $item) {
             get_called_class()::formatarCamposCarregar($item);
@@ -368,4 +390,22 @@ trait RadiantiTraitDetalheDatagrid
      * @param TRecord $item
      */
     protected static function formatarCamposCarregar(TRecord &$item) {}
+
+    /**
+     * Hook para adicionar filtros customizados ao carregar dependentes
+     * Implementar este método para adicionar filtros específicos à query de carregamento
+     * 
+     * Exemplo:
+     * protected static function adicionarFiltrosCarregamento(&$query): void
+     * {
+     *     $query->where('flag_tipo_dependente', '=', ContratosDependentes::TIPO_DEPENDENTE_DIRETO);
+     * }
+     * 
+     * @param $query Query builder reference
+     * @return void
+     */
+    protected static function adicionarFiltrosCarregamento(&$query): void
+    {
+        // Implementar nas classes filhas se necessário
+    }
 }
