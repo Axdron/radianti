@@ -25,7 +25,7 @@ class RadiantiDiscordService
      * @return bool true se a chamada foi executada, false caso ocorra falha durante a execução do cURL.
      * @throws \InvalidArgumentException Se webhook estiver vazio ou não for informado.
      */
-    protected function notificarWebhook(string $mensagem, string $webhook): bool
+    protected static function notificarWebhook(string $mensagem, string $webhook): bool
     {
         if (empty($webhook)) {
             throw new \InvalidArgumentException('Webhook não foi informado. Por favor, forneça uma URL válida do webhook do Discord.');
@@ -68,7 +68,7 @@ class RadiantiDiscordService
      * @return bool true em caso de sucesso, false em falha.
      * @throws \InvalidArgumentException Se webhook estiver vazio ou não for informado.
      */
-    public function enviarMensagem(string|array|object $mensagem, string $webhook): bool
+    public static function enviarMensagem(string|array|object $mensagem, string $webhook): bool
     {
         if (empty($webhook)) {
             throw new \InvalidArgumentException('Webhook não foi informado. Por favor, forneça uma URL válida do webhook do Discord.');
@@ -95,10 +95,10 @@ class RadiantiDiscordService
             $texto = (string)$mensagem;
         }
 
-        $partes = $this->segmentarMensagem($texto);
+        $partes = self::segmentarMensagem($texto);
         foreach ($partes as $parte) {
             try {
-                $this->notificarWebhook($parte, $webhook);
+                self::notificarWebhook($parte, $webhook);
             } catch (\Throwable $th) {
                 return false;
             }
@@ -116,7 +116,7 @@ class RadiantiDiscordService
      * @return bool true em caso de envio bem sucedido, false caso contrário.
      * @throws \InvalidArgumentException Se webhook estiver vazio ou não for informado.
      */
-    public function enviarException(\Throwable $exception, ?string $webhook = null, ?array $request = null, bool $incluirStack = false): bool
+    public static function enviarException(\Throwable $exception, ?string $webhook = null, ?array $request = null, bool $incluirStack = false): bool
     {
         if (empty($webhook)) {
             throw new \InvalidArgumentException('Webhook não foi informado. Por favor, forneça uma URL válida do webhook do Discord.');
@@ -138,7 +138,7 @@ class RadiantiDiscordService
             $dados->stack = $exception->getTraceAsString();
         }
 
-        return $this->enviarMensagem($dados, $webhook);
+        return self::enviarMensagem($dados, $webhook);
     }
 
     /**
@@ -149,7 +149,7 @@ class RadiantiDiscordService
      * @return bool true em caso de sucesso, false caso ocorra erro.
      * @throws \InvalidArgumentException Se webhook estiver vazio ou não for informado.
      */
-    public function enviarArquivo(string $caminhoArquivo, string $webhook): bool
+    public static function enviarArquivo(string $caminhoArquivo, string $webhook): bool
     {
         if (empty($webhook)) {
             throw new \InvalidArgumentException('Webhook não foi informado. Por favor, forneça uma URL válida do webhook do Discord.');
@@ -189,7 +189,7 @@ class RadiantiDiscordService
      * @param int $maxLen Comprimento máximo por segmento (padrão 1500).
      * @return array Lista de segmentos de string.
      */
-    protected function segmentarMensagem(string $mensagem, int $maxLen = 1500): array
+    protected static function segmentarMensagem(string $mensagem, int $maxLen = 1500): array
     {
         if (mb_strlen($mensagem) <= $maxLen) {
             return [$mensagem];
