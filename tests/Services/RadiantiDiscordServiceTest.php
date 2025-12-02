@@ -130,7 +130,7 @@ class RadiantiDiscordServiceTest extends TestCase
         $mockService = $this->createPartialMock(RadiantiDiscordService::class, ['notificarWebhook']);
         $mockService->expects($this->once())
             ->method('notificarWebhook')
-            ->willThrowException(new Exception('Erro na comunicação'));
+            ->willThrowException(new \Exception('Erro na comunicação'));
 
         $resultado = $mockService->enviarMensagem('Teste', $this->webhookUrl);
         $this->assertFalse($resultado);
@@ -145,7 +145,7 @@ class RadiantiDiscordServiceTest extends TestCase
         $this->expectExceptionMessage('Webhook não foi informado');
 
         try {
-            throw new Exception('Erro de teste');
+            throw new \Exception('Erro de teste');
         } catch (\Throwable $e) {
             $this->service->enviarException($e, '');
         }
@@ -162,7 +162,7 @@ class RadiantiDiscordServiceTest extends TestCase
             ->willReturn(true);
 
         try {
-            throw new Exception('Erro de teste');
+            throw new \Exception('Erro de teste');
         } catch (\Throwable $e) {
             $resultado = $mockService->enviarException($e, $this->webhookUrl);
             $this->assertTrue($resultado);
@@ -182,7 +182,7 @@ class RadiantiDiscordServiceTest extends TestCase
         $request = ['class' => 'MinhaClasse', 'method' => 'meuMetodo'];
 
         try {
-            throw new Exception('Erro de teste');
+            throw new \Exception('Erro de teste');
         } catch (\Throwable $e) {
             $resultado = $mockService->enviarException($e, $this->webhookUrl, $request);
             $this->assertTrue($resultado);
@@ -200,7 +200,7 @@ class RadiantiDiscordServiceTest extends TestCase
             ->willReturn(true);
 
         try {
-            throw new Exception('Erro de teste');
+            throw new \Exception('Erro de teste');
         } catch (\Throwable $e) {
             $resultado = $mockService->enviarException($e, $this->webhookUrl, null, true);
             $this->assertTrue($resultado);
@@ -312,7 +312,7 @@ class RadiantiDiscordServiceTest extends TestCase
             });
 
         try {
-            throw new Exception('Teste');
+            throw new \Exception('Teste');
         } catch (\Throwable $e) {
             $mockService->enviarException($e, $this->webhookUrl);
         }
