@@ -1,9 +1,10 @@
 <?php
 
+namespace Tests\Services;
+
 use PHPUnit\Framework\TestCase;
 use Axdron\Radianti\Services\RadiantiDiscordService;
 
-namespace Tests\Services;
 class RadiantiDiscordServiceTest extends TestCase
 {
     private RadiantiDiscordService $service;
