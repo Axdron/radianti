@@ -22,7 +22,7 @@ No projeto há a pasta `snippets` que contém Snippets para as principais classe
 
 ### Opcionais
 
-- AMBIENTE: Define o ambiente da aplicação (desenvolvimento, produção, homologação, etc). No momento está sendo utilizado apenas para o serviço de Discord, para identificar o ambiente na mensagem enviada;
+- AMBIENTE: Define o ambiente da aplicação (desenvolvimento, produção, homologação, etc). Exemplos de valores aceitos: `DEV`, `PROD`, `HOM`. No momento está sendo utilizado apenas para o serviço de Discord, para identificar o ambiente na mensagem enviada;
 
 ## Componentes Principais
 
