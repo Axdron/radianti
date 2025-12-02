@@ -20,14 +20,22 @@ class RadiantiDiscordService
     /**
      * Envia o conteúdo já formatado para o webhook do Discord.
      *
-     * @param string $webhook URL do webhook do Discord (ex: https://discord.com/api/webhooks/...).
      * @param string $mensagem Conteúdo a ser enviado (já pode conter markdown/code blocks).
+     * @param string $webhook URL do webhook do Discord (ex: https://discord.com/api/webhooks/...).
      * @return bool true se a chamada foi executada, false caso ocorra falha durante a execução do cURL.
+     * @throws \InvalidArgumentException Se webhook estiver vazio ou não for informado.
      */
-    protected function notificarCanal(string $webhook, string $mensagem): bool
+    protected function notificarWebhook(string $mensagem, string $webhook): bool
     {
+        if (empty($webhook)) {
+            throw new \InvalidArgumentException('Webhook não foi informado. Por favor, forneça uma URL válida do webhook do Discord.');
+        }
+
+        $ambiente = getenv('AMBIENTE') ?: 'DEV';
+        $conteudo = "[{$ambiente}] {$mensagem}";
+
         $json_data = json_encode([
-            'content' => $mensagem,
+            'content' => $conteudo,
             'tts' => false,
         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
@@ -56,13 +64,14 @@ class RadiantiDiscordService
      * será enviada como bloco de código JSON (```json ... ```). Caso contrário, será enviada como texto simples.
      *
      * @param string|array|object $mensagem Mensagem ou payload a ser enviado.
-     * @param string $canal URL do webhook do Discord.
+     * @param string $webhook URL do webhook do Discord.
      * @return bool true em caso de sucesso, false em falha.
+     * @throws \InvalidArgumentException Se webhook estiver vazio ou não for informado.
      */
-    public function enviarMensagem(string|array|object $mensagem, string $canal): bool
+    public function enviarMensagem(string|array|object $mensagem, string $webhook): bool
     {
-        if (empty($canal)) {
-            return false;
+        if (empty($webhook)) {
+            throw new \InvalidArgumentException('Webhook não foi informado. Por favor, forneça uma URL válida do webhook do Discord.');
         }
 
         $snJson = false;
@@ -89,7 +98,7 @@ class RadiantiDiscordService
         $partes = $this->segmentarMensagem($texto);
         foreach ($partes as $parte) {
             try {
-                $this->notificarCanal($canal, $parte);
+                $this->notificarWebhook($parte, $webhook);
             } catch (\Throwable $th) {
                 return false;
             }
@@ -101,13 +110,17 @@ class RadiantiDiscordService
      * Envia informações sobre uma exception para o canal especificado.
      *
      * @param \Throwable $exception A exception a ser reportada.
+     * @param string|null $webhook URL do webhook do Discord.
      * @param array|null $request Dados opcionais do request (ex: ['class' => '', 'method' => '']).
      * @param bool $incluirStack Se true inclui a stack trace no payload.
-     * @param string|null $canal URL do webhook do Discord.
      * @return bool true em caso de envio bem sucedido, false caso contrário.
+     * @throws \InvalidArgumentException Se webhook estiver vazio ou não for informado.
      */
-    public function enviarException(\Throwable $exception, ?array $request = null, bool $incluirStack = false, ?string $canal = null): bool
+    public function enviarException(\Throwable $exception, ?string $webhook = null, ?array $request = null, bool $incluirStack = false): bool
     {
+        if (empty($webhook)) {
+            throw new \InvalidArgumentException('Webhook não foi informado. Por favor, forneça uma URL válida do webhook do Discord.');
+        }
 
         $dados = new \stdClass();
         $dados->erro = substr($exception->getMessage(), 0, 100);
@@ -125,28 +138,31 @@ class RadiantiDiscordService
             $dados->stack = $exception->getTraceAsString();
         }
 
-        return $this->enviarMensagem($dados, $canal);
+        return $this->enviarMensagem($dados, $webhook);
     }
 
     /**
      * Envia um arquivo ao canal especificado via multipart/form-data.
      *
      * @param string $caminhoArquivo Caminho local do arquivo a enviar.
-     * @param string $canal URL do webhook do Discord.
+     * @param string $webhook URL do webhook do Discord.
      * @return bool true em caso de sucesso, false caso ocorra erro.
+     * @throws \InvalidArgumentException Se webhook estiver vazio ou não for informado.
      */
-    public function enviarArquivo(string $caminhoArquivo, string $canal): bool
+    public function enviarArquivo(string $caminhoArquivo, string $webhook): bool
     {
+        if (empty($webhook)) {
+            throw new \InvalidArgumentException('Webhook não foi informado. Por favor, forneça uma URL válida do webhook do Discord.');
+        }
 
         if (!file_exists($caminhoArquivo) || !is_readable($caminhoArquivo)) {
             return false;
         }
 
-        $webhook = $canal;
-        $texto = getenv('AMBIENTE') ?: 'DEV';
+        $ambiente = getenv('AMBIENTE') ?: 'DEV';
 
         $mensagem = [
-            'content' => $texto,
+            'content' => $ambiente,
             'file' => new \CURLFile($caminhoArquivo),
         ];
 

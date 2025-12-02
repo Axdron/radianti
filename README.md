@@ -12,11 +12,17 @@ Recomendamos que você inclua a pasta `lib` em seu projeto para mapear os objeto
 
 No projeto há a pasta `snippets` que contém Snippets para as principais classes da biblioteca. Recomendado que faça uma cópia para o VSCode do projeto para maior otimização.
 
-## Variáveis de ambiente cuja declaração é necessária para o funcionamento da biblioteca
+## Variáveis de Ambiente
+
+### Obrigatórias para o funcionamento da biblioteca
 
 - RADIANTI_DB_NAME: Necessário declarar para utilizar as Transactions corretamento. Deve conter o nome do DB principal;
 - RADIANTI_VARIAVEL_LOGIN: Necessário declarar para que o serviço de PDF saiba qual usuário informar no rodapé;
 - RADIANTI_SN_MOSTRA_EXPORTACAO_LISTAGEM: Declaração opcional para definir se mostra os botões de exportação nas listagens. Caso não declarado, o valor default é false, sendo necessário configurar em cada listagem;
+
+### Opcionais
+
+- AMBIENTE: Define o ambiente da aplicação (desenvolvimento, produção, homologação, etc). No momento está sendo utilizado apenas para o serviço de Discord, para identificar o ambiente na mensagem enviada;
 
 ## Componentes Principais
 

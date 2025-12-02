@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.15.8] - 2025-12-02
+
+### Changed
+
+- Otimizações em `RadiantiDiscordService`: renomeado método `notificarCanal()` para `notificarWebhook()`, reordenação de parâmetros (conteúdo/mensagem primeiro), adicionado suporte a identificação de ambiente nas notificações, implementado validação com exceção `InvalidArgumentException` quando webhook não é informado.
+
 ## [3.15.7] - 2025-11-20
 
 ### Added
