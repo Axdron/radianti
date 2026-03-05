@@ -260,10 +260,10 @@ abstract class RadiantiRelatorioModelo extends TPage
      * Formata os filtros para exibição no PDF
      * Pode ser sobrescrito nas classes filhas para customizar a exibição
      * Deve ser utilizado quando utiliza TCombos, TDCombos, campos de data ou outros campos que precisam de formatação para exibição legível no PDF
-     * @param object $dadosFormulario Dados do formulário contendo os filtros
+     * @param array|object $dadosFormulario Dados do formulário contendo os filtros
      * @return string HTML formatado com os filtros
      */
-    protected function formatarFiltrosPDF(object $dadosFormulario): string
+    protected function formatarFiltrosPDF(array|object $dadosFormulario): string
     {
         return RadiantiArrayService::converterEmTexto((array) $dadosFormulario);
     }
