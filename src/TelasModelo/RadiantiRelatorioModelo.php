@@ -256,10 +256,22 @@ abstract class RadiantiRelatorioModelo extends TPage
         return $panelDataGrid;
     }
 
+    /**
+     * Formata os filtros para exibição no PDF
+     * Pode ser sobrescrito nas classes filhas para customizar a exibição
+     * Deve ser utilizado quando utiliza TCombos, TDCombos, campos de data ou outros campos que precisam de formatação para exibição legível no PDF
+     * @param object $dadosFormulario Dados do formulário contendo os filtros
+     * @return string HTML formatado com os filtros
+     */
+    protected function formatarFiltrosPDF(object $dadosFormulario): string
+    {
+        return RadiantiArrayService::converterEmTexto((array) $dadosFormulario);
+    }
+
     private function gerarPDFDatagrid($dadosFormulario)
     {
         $conteudoDatagrid = file_get_contents('app/resources/styles-print.html') . $this->datagrid->getContents();
-        $conteudoDatagrid .= "<br><br>Filtros:<br>" . RadiantiArrayService::converterEmTexto((array) $dadosFormulario);
+        $conteudoDatagrid .= "<br><br>Filtros:<br>" . $this->formatarFiltrosPDF($dadosFormulario);
 
         $arquivo = RadiantiPDFService::gerarPDFHTML(get_called_class()::getNomeRelatorio(), $conteudoDatagrid, orientacao: get_called_class()::getOrientacaoPDF());
         if ($arquivo)

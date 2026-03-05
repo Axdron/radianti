@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.15.10] - 2026-03-05
+
+### Added
+
+- Novo método `formatarFiltrosPDF()` adicionado em `RadiantiRelatorioModelo` para permitir customização da formatação dos filtros exibidos no PDF gerado. Método protected que pode ser sobrescrito nas classes filhas para formatar campos específicos (TCombos, TDCombos, campos de data, competências, etc.) de forma legível. Por padrão, utiliza `RadiantiArrayService::converterEmTexto()` para exibir os filtros no formato `chave: valor`.
+- Testes unitários completos para `RadiantiArrayService` em `tests/Services/RadiantiArrayServiceTest.php` validando o método `converterEmTexto()` com diferentes tipos de dados (strings, números, booleanos, null, arrays vazios, caracteres especiais).
+
+### Changed
+
+- Método `gerarPDFDatagrid()` em `RadiantiRelatorioModelo` refatorado para chamar `formatarFiltrosPDF()` em vez de chamar diretamente `RadiantiArrayService::converterEmTexto()`, permitindo maior flexibilidade na formatação dos filtros nas classes filhas.
+
 ## [3.15.8] - 2025-12-02
 
 ### Changed
