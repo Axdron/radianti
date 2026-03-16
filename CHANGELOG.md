@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.15.12] - 2026-03-16
+
+### Changed
+
+- Método `gerarXLSXDatagrid()` em `RadiantiRelatorioModelo` alterado de `private` para `protected`, permitindo sobrescrita nas classes filhas para comportamentos customizados de geração de planilhas.
+- Adicionado parâmetro opcional `bool $snAbrirArquivo = true` em `gerarXLSXDatagrid()` para controlar se o arquivo XLSX deve ser aberto automaticamente no navegador ou apenas gerado e retornado.
+- Método `gerarXLSXDatagrid()` agora retorna `string|null`: retorna o caminho do arquivo gerado quando bem-sucedido ou `null` em caso de erro, permitindo que código externo capture o caminho do arquivo para processamento adicional.
+- Adicionado PHPDoc completo para `gerarXLSXDatagrid()` documentando parâmetros, retorno e comportamento.
+
 ## [3.15.11] - 2026-03-16
 
 ### Changed

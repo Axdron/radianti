@@ -291,7 +291,12 @@ abstract class RadiantiRelatorioModelo extends TPage
         return null;
     }
 
-    private function gerarXLSXDatagrid()
+    /**
+     * Gera XLSX do datagrid
+     * @param bool $snAbrirArquivo Se true, abre o arquivo automaticamente. Se false, apenas retorna o caminho
+     * @return string|null Caminho do arquivo gerado ou null em caso de erro
+     */
+    protected function gerarXLSXDatagrid(bool $snAbrirArquivo = true)
     {
         $conteudoDatagrid = $this->datagrid->getOutputData();
 
@@ -301,8 +306,15 @@ abstract class RadiantiRelatorioModelo extends TPage
         }
 
         $arquivo = RadiantiPlanilhaService::gerarXLSX(get_called_class()::getNomeRelatorio(), $conteudoDatagrid);
-        if ($arquivo)
-            TPage::openFile($arquivo);
+        
+        if ($arquivo) {
+            if ($snAbrirArquivo) {
+                TPage::openFile($arquivo);
+            }
+            return $arquivo;
+        }
+        
+        return null;
     }
 
     /**
