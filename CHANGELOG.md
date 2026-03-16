@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.15.11] - 2026-03-16
+
+### Changed
+
+- Método `gerarPDFDatagrid()` em `RadiantiRelatorioModelo` alterado de `private` para `protected`, permitindo sobrescrita nas classes filhas para comportamentos customizados de geração de PDF.
+- Adicionado segundo parâmetro opcional `bool $snAbrirArquivo = true` em `gerarPDFDatagrid()` para controlar se o arquivo PDF deve ser aberto automaticamente no navegador ou apenas gerado e retornado.
+- Método `gerarPDFDatagrid()` agora retorna `string|null`: retorna o caminho do arquivo gerado quando bem-sucedido ou `null` em caso de erro, permitindo que código externo capture o caminho do arquivo para processamento adicional.
+- Adicionado PHPDoc completo para `gerarPDFDatagrid()` documentando parâmetros, retorno e comportamento.
+
 ## [3.15.10] - 2026-03-05
 
 ### Added

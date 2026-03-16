@@ -268,14 +268,27 @@ abstract class RadiantiRelatorioModelo extends TPage
         return RadiantiArrayService::converterEmTexto((array) $dadosFormulario);
     }
 
-    private function gerarPDFDatagrid($dadosFormulario)
+    /**
+     * Gera PDF do datagrid
+     * @param object $dadosFormulario Dados do formulário para exibir no rodapé
+     * @param bool $snAbrirArquivo Se true, abre o arquivo automaticamente. Se false, apenas retorna o caminho
+     * @return string|null Caminho do arquivo gerado ou null em caso de erro
+     */
+    protected function gerarPDFDatagrid($dadosFormulario, bool $snAbrirArquivo = true)
     {
         $conteudoDatagrid = file_get_contents('app/resources/styles-print.html') . $this->datagrid->getContents();
         $conteudoDatagrid .= "<br><br>Filtros:<br>" . $this->formatarFiltrosPDF($dadosFormulario);
 
         $arquivo = RadiantiPDFService::gerarPDFHTML(get_called_class()::getNomeRelatorio(), $conteudoDatagrid, orientacao: get_called_class()::getOrientacaoPDF());
-        if ($arquivo)
-            TPage::openFile($arquivo);
+        
+        if ($arquivo) {
+            if ($snAbrirArquivo) {
+                TPage::openFile($arquivo);
+            }
+            return $arquivo;
+        }
+        
+        return null;
     }
 
     private function gerarXLSXDatagrid()
