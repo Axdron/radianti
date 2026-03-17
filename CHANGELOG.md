@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.15.13] - 2026-03-17
+
+### Changed
+
+- Adicionado primeiro parâmetro `$dadosFormulario` em `gerarXLSXDatagrid()` do `RadiantiRelatorioModelo` para receber os dados do formulário, mantendo consistência com `gerarPDFDatagrid()` e permitindo uso futuro dos filtros na geração da planilha (ex.: incluir filtros como aba extra, rodapé, etc.).
+
 ## [3.15.12] - 2026-03-16
 
 ### Changed

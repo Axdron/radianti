@@ -293,10 +293,11 @@ abstract class RadiantiRelatorioModelo extends TPage
 
     /**
      * Gera XLSX do datagrid
+     * @param object $dadosFormulario Dados do formulário contendo os filtros (disponível para uso futuro)
      * @param bool $snAbrirArquivo Se true, abre o arquivo automaticamente. Se false, apenas retorna o caminho
      * @return string|null Caminho do arquivo gerado ou null em caso de erro
      */
-    protected function gerarXLSXDatagrid(bool $snAbrirArquivo = true)
+    protected function gerarXLSXDatagrid($dadosFormulario, bool $snAbrirArquivo = true)
     {
         $conteudoDatagrid = $this->datagrid->getOutputData();
 
