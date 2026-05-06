@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.15.14] - 2026-05-06
+
+### Changed
+
+- Adicionados type hints nas propriedades `$form`, `$datagrid`, `$itensDatagrid` e `$campos` da classe `RadiantiRelatorioModelo` para melhor type safety e documentação.
+- Adicionados type hints `array` em parâmetros de métodos: `__construct()`, `validarFormulario()`, `criarColunasDatagrid()` e `criarDataGridResultados()`.
+- Refatorado método `criarFormBusca()` para instanciar `BootstrapFormWrapper` diretamente com `TQuickForm`, eliminando atribuições intermediárias desnecessárias.
+- Limpeza de espaços em branco desnecessários.
+
 ## [3.15.13] - 2026-03-17
 
 ### Changed

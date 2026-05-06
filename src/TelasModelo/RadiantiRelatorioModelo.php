@@ -8,6 +8,7 @@ use Adianti\Widget\Container\TPanelGroup;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Datagrid\TDataGrid;
 use Adianti\Widget\Dialog\TMessage;
+use Adianti\Widget\Form\TForm;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Widget\Wrapper\TQuickForm;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
@@ -42,13 +43,13 @@ abstract class RadiantiRelatorioModelo extends TPage
         return 'menu.xml';
     }
 
-    protected $form;
-    protected $datagrid;
-    protected $itensDatagrid;
-    protected $campos;
+    protected BootstrapFormWrapper $form;
+    protected BootstrapDatagridWrapper $datagrid;
+    protected array $itensDatagrid;
+    protected array $campos;
 
 
-    public function __construct($param)
+    public function __construct(array $param)
     {
         parent::__construct();
 
@@ -66,10 +67,10 @@ abstract class RadiantiRelatorioModelo extends TPage
         parent::add($container);
     }
 
-    public function validarFormulario($param)
+    public function validarFormulario(array $param)
     {
+        $dadosFormulario = $this->form->getData();
         try {
-            $dadosFormulario = $this->form->getData();
             $this->form->validate();
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
@@ -175,7 +176,7 @@ abstract class RadiantiRelatorioModelo extends TPage
      * return [$vendedor, $base];
      * }
      */
-    abstract protected function criarColunasDatagrid($param): array;
+    abstract protected function criarColunasDatagrid(array $param): array;
 
     /**
      * Efetua a busca no banco de dados
@@ -200,9 +201,7 @@ abstract class RadiantiRelatorioModelo extends TPage
      */
     private function criarFormBusca($param = [])
     {
-        $this->form = new TQuickForm(get_called_class()::getNomeForm());
-        $this->form->class = 'tform';
-        $this->form = new BootstrapFormWrapper($this->form);
+        $this->form = new BootstrapFormWrapper(new TQuickForm(get_called_class()::getNomeForm()));
         $this->form->style = 'display: table;width:100%';
         $this->form->setFieldsByRow($this->numeroColunaRelatorio ?? 2);
 
@@ -231,7 +230,7 @@ abstract class RadiantiRelatorioModelo extends TPage
      */
     protected function criarBotoesExtras() {}
 
-    private function criarDataGridResultados($param)
+    private function criarDataGridResultados(array $param)
     {
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
         $this->datagrid->style = 'width: 100%';
@@ -280,14 +279,14 @@ abstract class RadiantiRelatorioModelo extends TPage
         $conteudoDatagrid .= "<br><br>Filtros:<br>" . $this->formatarFiltrosPDF($dadosFormulario);
 
         $arquivo = RadiantiPDFService::gerarPDFHTML(get_called_class()::getNomeRelatorio(), $conteudoDatagrid, orientacao: get_called_class()::getOrientacaoPDF());
-        
+
         if ($arquivo) {
             if ($snAbrirArquivo) {
                 TPage::openFile($arquivo);
             }
             return $arquivo;
         }
-        
+
         return null;
     }
 
@@ -307,14 +306,14 @@ abstract class RadiantiRelatorioModelo extends TPage
         }
 
         $arquivo = RadiantiPlanilhaService::gerarXLSX(get_called_class()::getNomeRelatorio(), $conteudoDatagrid);
-        
+
         if ($arquivo) {
             if ($snAbrirArquivo) {
                 TPage::openFile($arquivo);
             }
             return $arquivo;
         }
-        
+
         return null;
     }
 
