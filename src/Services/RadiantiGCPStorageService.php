@@ -1,8 +1,11 @@
 <?php
 
+namespace Axdron\Radianti\Services;
+
 use Google\Cloud\Storage\Bucket;
 use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Storage\StorageObject;
+
 
 class RadiantiGCPStorageService
 {
@@ -41,7 +44,7 @@ class RadiantiGCPStorageService
             $object->delete();
 
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
