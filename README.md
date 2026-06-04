@@ -41,6 +41,7 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiConnectionService - Prepara conexões MySQL com suporte a unix_socket (para uso por Adianti\\Database\\TConnection);
 - RadiantiDiscordService - Serviço para envio de notificações ao Discord via webhooks (mensagens, exceptions e arquivos);
 - RadiantiEngineService - Validações de segurança para engine.php (verifica total de variáveis frente a max_input_vars);
+- RadiantiGCPStorageService - Integração com Google Cloud Storage para upload, download e gerenciamento de arquivos em buckets do GCP;
 - RadiantiGerenciadorSessoes - Para utilização de sessões armazenadas no BD;
 - RadiantiMascaras - Funções para aplicação de máscaras dinâmicas;
 - RadiantiNavegacao - Funções para abrir telas e guias novas;

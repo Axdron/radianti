@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.16.0] - 2026-06-10
+
+### Added
+
+- Novo serviço `RadiantiGCPStorageService` para integração com Google Cloud Storage, permitindo upload, download e gerenciamento de arquivos em buckets do GCP. Utiliza a biblioteca oficial `google/cloud-storage` e suporta autenticação via chave de serviço JSON. Documentação e exemplos de uso incluídos no README.
+
 ## [3.15.14] - 2026-05-06
 
 ### Changed
