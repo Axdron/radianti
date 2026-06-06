@@ -7,6 +7,17 @@ use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Storage\StorageObject;
 
 
+/**
+ * Serviço para integração com o Google Cloud Storage, permitindo upload, download e exclusão de arquivos em buckets do GCP.
+ * 
+ * Atenção: a autenticação em ambiente local pode ser feita em duas formas:
+ * 1. Passando o caminho do arquivo de credenciais JSON como parâmetro nos métodos (recomendado para desenvolvimento local).
+ * 2. Executando o comando `gcloud auth application-default login` para configurar as credenciais de forma global, o que é útil para testes locais sem precisar passar o caminho do arquivo a cada chamada. 
+ * 
+ * Em ambiente de produção na GCP, as credenciais da própria instância serão utilizadas automaticamente.
+ * 
+ * @package Axdron\Radianti\Services
+ */
 class RadiantiGCPStorageService
 {
 
@@ -38,15 +49,11 @@ class RadiantiGCPStorageService
             return false;
         }
 
-        try {
-            $bucket = self::obterBucket($nomeBucket, $enderecoKeyFile);
-            $object = $bucket->object($nomeArquivo);
-            $object->delete();
+        $bucket = self::obterBucket($nomeBucket, $enderecoKeyFile);
+        $object = $bucket->object($nomeArquivo);
+        $object->delete();
 
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
+        return true;
     }
 
     /**
@@ -60,14 +67,10 @@ class RadiantiGCPStorageService
      */
     public static function baixarArquivoPara(string $nomeArquivo, string $nomeBucket, string $destino, ?string $enderecoKeyFile = null): bool
     {
-        try {
-            $bucket = self::obterBucket($nomeBucket, $enderecoKeyFile);
-            $object = $bucket->object($nomeArquivo);
-            $object->downloadToFile($destino);
-            return is_file($destino) && filesize($destino) > 0;
-        } catch (\Throwable $e) {
-            return false;
-        }
+        $bucket = self::obterBucket($nomeBucket, $enderecoKeyFile);
+        $object = $bucket->object($nomeArquivo);
+        $object->downloadToFile($destino);
+        return is_file($destino) && filesize($destino) > 0;
     }
 
     /**

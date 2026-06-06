@@ -1,6 +1,12 @@
 # Changelog
 
-## [3.16.0] - 2026-06-10
+## [3.16.2] - 2026-06-06
+
+### Fixed
+
+- Removido os try/catch genéricos dos métodos `deletarArquivo()` e `baixarArquivoPara()` do `RadiantiGCPStorageService` para permitir que exceções sejam propagadas e tratadas adequadamente pelo código chamador, em vez de simplesmente retornar false em caso de erro. Isso melhora a capacidade de depuração e permite que erros sejam tratados de forma mais granular.
+
+## [3.16.0] - 2026-06-05
 
 ### Added
 
