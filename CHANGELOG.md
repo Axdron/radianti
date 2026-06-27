@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.17.0] - 2026-06-27
+
+### Added
+
+- Novo serviço RadiantiMailService para envio de e-mails integrado com SendGrid.
+
 ## [3.16.2] - 2026-06-06
 
 ### Fixed

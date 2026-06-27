@@ -43,6 +43,7 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiEngineService - Validações de segurança para engine.php (verifica total de variáveis frente a max_input_vars);
 - RadiantiGCPStorageService - Integração com Google Cloud Storage para upload, download e gerenciamento de arquivos em buckets do GCP;
 - RadiantiGerenciadorSessoes - Para utilização de sessões armazenadas no BD;
+- RadiantiMailService - Serviço para envio de e-mails integrado com SendGrid, com suporte a simulação em ambiente de homologação (mensagens com anexos, validação de e-mails, pré-visualização);
 - RadiantiMascaras - Funções para aplicação de máscaras dinâmicas;
 - RadiantiNavegacao - Funções para abrir telas e guias novas;
 - RadiantiPDFService - Funções para geração de arquivos PDF a partir de HTMLs;
