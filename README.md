@@ -71,3 +71,7 @@ Aqui estão alguns dos principais recursos do Radianti:
 5. **Telas modelo**: Telas prontas para agilizar na criação de outras telas:
 
 - RadiantiRelatorioModelo: Relatório contendo filtros, datagrid de dados, geração de XLSX e PDF;
+- RadiantiListagemModelo: Listagem com filtros, datagrid e operações de CRUD;
+- RadiantiDashboardModelo: Dashboard com filtros dinâmicos, indicadores visuais (cards com ícones, cores e formatações), suporte a crescimento/decrescimento e métodos auxiliares de formatação;
+
+Para mais detalhes sobre implementação, consulte [Documentação de Telas Modelo](src/TelasModelo/README.md);

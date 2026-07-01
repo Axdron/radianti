@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.18.0] - 2026-07-01
+
+### Added
+
+- Nova classe `RadiantiDashboardModelo` como tela modelo para criação de dashboards com filtros, indicadores visuais e cards informativos. Inclui métodos auxiliares para formatação (valores, números, percentuais), determinação de cores e ícones baseados em crescimento/decrescimento. Documentação completa com exemplos de uso em [TelasModelo/README.md](src/TelasModelo/README.md).
+
 ## [3.17.0] - 2026-06-27
 
 ### Added
