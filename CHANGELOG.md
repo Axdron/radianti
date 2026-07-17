@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.19.0] - 2026-07-17
+
+### Added
+
+- Nova classe `RadiantiJanelaMultiOpcoes` na pasta `Interfaces` para criação de janelas com múltiplas opções de botões. Diferente do `TQuestion` que permite apenas 2 opções, esta classe é escalável para qualquer quantidade de botões, com suporte a ícones e estilos customizados. Inclui validação de parâmetros obrigatórios e testes automatizados. Documentação completa em [Interfaces/README.md](src/Interfaces/README.md).
+
 ## [3.18.0] - 2026-07-01
 
 ### Added

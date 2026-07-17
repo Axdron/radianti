@@ -67,6 +67,7 @@ Aqui estão alguns dos principais recursos do Radianti:
 4. **Interfaces**: Interfaces e janelas para interação com o usuário:
 
 - RadiantiJanelaPergunta: Cria uma janela de pergunta com suporte completo a close action (botão X). Diferente do `TQuestion`, gerencia adequadamente o comportamento ao fechar a janela.
+- RadiantiJanelaMultiOpcoes: Cria uma janela com múltiplas opções de botões, cada uma disparando uma ação específica. Escalável para qualquer quantidade de botões, com suporte a ícones e estilos customizados.
 
 5. **Telas modelo**: Telas prontas para agilizar na criação de outras telas:
 
