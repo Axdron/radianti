@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.20.0] - 2026-07-18
+
+### Added
+
+- Nova classe `RadiantiElementoNumericoPeso` para criar campos de entrada numéricos formatados para trabalhar com pesos. Inclui 3 casas decimais com separador brasileiro (vírgula para decimais e ponto para milhar).
+- Nova classe `RadiantiElementoNumericoPorcentagem` para criar campos de entrada numéricos formatados para trabalhar com percentuais. Inclui 2 casas decimais com separador brasileiro (vírgula para decimais e ponto para milhar).
+
 ## [3.19.0] - 2026-07-17
 
 ### Added

@@ -62,6 +62,8 @@ Aqui estão alguns dos principais recursos do Radianti:
 - RadiantiElementoDinheiro: Cria um TNumeric com formatação pronta para trabalhar com valores monetários (= separador de milhar e de decimais com 2 casas);
 - RadiantiElementoLabelExplicativa: Cria uma label utilizada para explicar o funcionamento de alguma tela, para ser utilizada, principalmente, em relatórios;
 - RadiantiElementoNumeroInteiro: Cria um TNumeric com formatação pronta para trabalhar com números inteiros (= separador de milhar);
+- RadiantiElementoNumericoPeso: Cria um TNumeric com formatação pronta para trabalhar com pesos (3 casas decimais com separador brasileiro);
+- RadiantiElementoNumericoPorcentagem: Cria um TNumeric com formatação pronta para trabalhar com percentuais (2 casas decimais com separador brasileiro);
 - RadiantiElementoTexto: Cria um TTextDisplay na tela, gerenciando o conteúdo de forma que seja fácil atualizá-lo;
 
 4. **Interfaces**: Interfaces e janelas para interação com o usuário:
