@@ -39,7 +39,7 @@ trait RadiantiTraitCadastro
     abstract protected static function getNomeTelaListagem(): string;
     abstract protected static function getModel(): string;
 
-    public function __construct($param)
+    public function __construct(array $param)
     {
         parent::__construct();
 
@@ -51,13 +51,13 @@ trait RadiantiTraitCadastro
         parent::add($this->criarTela($param));
     }
 
-    public function criarTela($param)
+    public function criarTela(array $param)
     {
         if (!empty($param['id'])) {
             $this->carregarObjetoEdicao($param['id']);
         }
 
-        $this->criarFormularioMestre();
+        $this->criarFormularioMestre($param);
 
         $campoOcultoOrigem = new THidden('snOrigemListagem');
         $campoOcultoOrigem->setValue($param['snOrigemListagem'] ?? true);
@@ -79,7 +79,7 @@ trait RadiantiTraitCadastro
         return $vbox;
     }
 
-    private function carregarObjetoEdicao($id)
+    private function carregarObjetoEdicao(int|string $id)
     {
         $this->objetoEdicao = RadiantiTransaction::encapsularTransacao(function () use ($id) {
             $model = get_called_class()::getModel();
@@ -113,7 +113,7 @@ trait RadiantiTraitCadastro
      * 
      * $this->formCadastro->addFields([new TLabel('ID')], [$id], [new TLabel('Fornecedor')], [$fornecedor]);
      */
-    abstract protected function criarCamposFormularioMestre();
+    abstract protected function criarCamposFormularioMestre(array $param);
 
     /**
      * Cria os detalhes do formulário.
@@ -122,7 +122,7 @@ trait RadiantiTraitCadastro
      * 
      * @see carregarDetalhes
      */
-    protected function criarDetalhes($param) {}
+    protected function criarDetalhes(array $param) {}
 
     /**
      * Carrega os detalhes do formulário.
@@ -148,7 +148,7 @@ trait RadiantiTraitCadastro
         $this->formCadastro->addAction('Lista', new TAction([$this, 'confirmarVoltaListagem']), 'fa:table blue');
     }
 
-    protected function confirmarVoltaListagem($param)
+    protected function confirmarVoltaListagem(array $param)
     {
         $novoParam = ['sn_confirmado' => $param['sn_confirmado'] ?? false];
 
@@ -167,7 +167,7 @@ trait RadiantiTraitCadastro
         );
     }
 
-    private function criarFormularioMestre()
+    private function criarFormularioMestre(array $param)
     {
         $this->formCadastro = new BootstrapFormBuilder(get_called_class()::getNomeForm());
 
@@ -175,10 +175,10 @@ trait RadiantiTraitCadastro
             $this->formCadastro->setFormTitle(get_called_class()::getTitulo());
         }
 
-        $this->criarCamposFormularioMestre();
+        $this->criarCamposFormularioMestre($param);
     }
 
-    function abrirEdicao($param)
+    function abrirEdicao(array $param)
     {
         if (empty($param['id'])) {
             return null;
@@ -190,7 +190,7 @@ trait RadiantiTraitCadastro
         }, snAbrirTransacao: false);
     }
 
-    public function salvar($param, $snEmiteMensagemSalvou = true, $snRedirecionaListagem = true)
+    public function salvar(array $param, $snEmiteMensagemSalvou = true, $snRedirecionaListagem = true)
     {
         try {
             return RadiantiTransaction::encapsularTransacao(
