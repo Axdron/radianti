@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.20.2] - 2026-07-19
+
+- Adicionada tipagem na `RadiantiTraitCadastro`, bem como a transferência de parâmetros para os métodos `criarCamposFormularioMestre()` e `criarDetalhes()`, permitindo que as classes filhas recebam os parâmetros necessários para a criação dos campos do formulário e detalhes, respectivamente. Isso melhora a flexibilidade e a capacidade de personalização das classes que utilizam essa trait.
+
 ## [3.20.1] - 2026-07-19
 
 ### Added
