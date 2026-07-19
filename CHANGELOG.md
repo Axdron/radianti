@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.20.1] - 2026-07-19
+
+### Added
+
+- Nova classe `RadiantiElementoDinheiro` para criar campos de entrada numéricos formatados como valores monetários. Estende `RadiantiElementoNumerico` para simplificar a criação de campos com 2 casas decimais e separador brasileiro (vírgula para decimais e ponto para milhar).
+
 ## [3.20.0] - 2026-07-18
 
 ### Added

@@ -2,7 +2,9 @@
 
 namespace Axdron\Radianti\Componentes;
 
-class RadiantiElementoDinheiro extends RadiantiElementoNumerico
+use Adianti\Widget\Form\TNumeric;
+
+class RadiantiElementoNumerico extends TNumeric
 {
     public function __construct(string $nome, $casasDecimais = 2, $separadorDecimais = ',', $separadorMilhares = '.', $snAtualizaAoEfetuarPost = true, $snPreenchimentoEsquerdaParaDireita = false, $snPermiteNegativo = false)
     {

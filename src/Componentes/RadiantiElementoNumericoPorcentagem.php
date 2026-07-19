@@ -2,16 +2,14 @@
 
 namespace Axdron\Radianti\Componentes;
 
-use Adianti\Widget\Form\TNumeric;
-
 /**
  * Elemento Numérico para Porcentagem
  * 
  * 2 casas decimais com separador brasileiro (vírgula)
  */
-class RadiantiElementoNumericoPorcentagem extends TNumeric
+class RadiantiElementoNumericoPorcentagem extends RadiantiElementoNumerico
 {
-    public function __construct($nome, $snAtualizaAoEfetuarPost = true, $snPreenchimentoEsquerdaParaDireita = false, $snPermiteNegativo = false)
+    public function __construct(string $nome, $snAtualizaAoEfetuarPost = true, $snPreenchimentoEsquerdaParaDireita = false, $snPermiteNegativo = false)
     {
         parent::__construct(
             $nome,
