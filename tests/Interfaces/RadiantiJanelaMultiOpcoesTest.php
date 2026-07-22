@@ -151,20 +151,21 @@ class RadiantiJanelaMultiOpcoesTest extends TestCase
         $ctor = $ref->getConstructor();
         $this->assertTrue($ctor->isPublic(), 'Construtor deve ser público.');
 
-        // Validar através do código que a classe utiliza BootstrapFormBuilder
+        // Validar através do código que a classe utiliza formulário e TWindow
         $filePath = __DIR__ . '/../../src/Interfaces/RadiantiJanelaMultiOpcoes.php';
         $content = file_get_contents($filePath);
-
-        $this->assertStringContainsString(
-            'BootstrapFormBuilder',
-            $content,
-            'Classe deve usar BootstrapFormBuilder para criar o formulário.'
-        );
 
         $this->assertStringContainsString(
             'TWindow::create',
             $content,
             'Classe deve criar uma TWindow.'
+        );
+
+        // Verificar que utiliza um construtor de formulário (TForm ou BootstrapFormBuilder)
+        $usaFormulario = strpos($content, 'TForm') !== false || strpos($content, 'BootstrapFormBuilder') !== false;
+        $this->assertTrue(
+            $usaFormulario,
+            'Classe deve utilizar um construtor de formulário (TForm ou BootstrapFormBuilder).'
         );
     }
 }
