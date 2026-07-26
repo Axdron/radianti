@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.20.4] - 2026-07-26
+
+- Melhorias no `RadiantiPDFService` para gerar o texto do rodapé com contagem de páginas.
+
 ## [3.20.3] - 2026-07-22
 
 - Adicionada maneira de fechar a janela quando o usuário responder uma `RadiantiJanelaMultiOpcoes`.
