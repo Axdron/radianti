@@ -394,10 +394,10 @@ class RadiantiTransactionTest extends TestCase
 
             MockedRadiantiTransaction::consultar(function () {
                 // Consultar #2 reutiliza conexão real do salvar
-                
+
                 MockedRadiantiTransaction::salvar(function () {
                     // Salvar #2 abre OUTRA transação real
-                    
+
                     MockedRadiantiTransaction::consultar(function () {
                         // Consultar #4 reutiliza conexão real do salvar #2
                         return 'ok';
@@ -438,10 +438,10 @@ class RadiantiTransactionTest extends TestCase
 
                 MockedRadiantiTransaction::consultar(function () {
                     // Consultar #2 reutiliza conexão real do salvar
-                    
+
                     MockedRadiantiTransaction::salvar(function () {
                         // Salvar #2 abre OUTRA transação real
-                        
+
                         MockedRadiantiTransaction::salvar(function () {
                             // Salvar #3 abre OUTRA transação real
                             return 'ok';
