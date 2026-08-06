@@ -5,9 +5,6 @@
 ### Changed
 
 - Refatoração de `RadiantiTransaction`: quando houver conexão ativa, o método de consultar não abrirá uma nova transação, evitando conflitos de transações aninhadas. Se não houver conexão ativa, o método abrirá uma nova transação normalmente. Isso garante que consultas sejam executadas de forma segura e consistente, respeitando o estado atual da transação, também otimizando o desempenho ao evitar transações desnecessárias.
-
-## [3.20.4] - 2026-07-26
-
 - Melhorias no `RadiantiPDFService` para gerar o texto do rodapé com contagem de páginas.
 
 ## [3.20.3] - 2026-07-22
