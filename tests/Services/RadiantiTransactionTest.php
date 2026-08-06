@@ -145,7 +145,7 @@ class RadiantiTransactionTest extends TestCase
     /**
      * Testa se exceção é lançada quando RADIANTI_DB_NAME não está definido
      */
-    public function testExcecaoQuandoBancoDadosNaoDefined()
+    public function testExcecaoQuandoBancoDadosNaoDefinido()
     {
         // Remove a variável de ambiente temporariamente
         $original = getenv('RADIANTI_DB_NAME');
