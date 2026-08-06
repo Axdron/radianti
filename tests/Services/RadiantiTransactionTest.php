@@ -9,7 +9,9 @@ class RadiantiTransactionTest extends TestCase
 {
     protected function setUp(): void
     {
+        parent::setUp();
         putenv('RADIANTI_DB_NAME=test_db');
+        MockedRadiantiTransaction::reset();
     }
 
     // ========== Testes: Abertura de transações ==========
