@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.20.5] - 2026-08-06
+
+### Changed
+
+- Refatoração de `RadiantiTransaction`: quando houver conexão/transação ativa no mesmo banco, o método `consultar()` não abrirá uma nova transação fake, evitando conflitos de transações aninhadas. Se não houver conexão ativa (ou o banco for diferente), o método abrirá uma transação fake (`openFake`) para executar a consulta. Isso garante que consultas sejam executadas de forma segura e consistente, respeitando o estado atual da transação, também otimizando o desempenho ao evitar transações desnecessárias.
+
 ## [3.20.4] - 2026-07-26
 
 - Melhorias no `RadiantiPDFService` para gerar o texto do rodapé com contagem de páginas.

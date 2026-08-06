@@ -63,6 +63,15 @@ abstract class RadiantiDashboardModelo extends TPage
     abstract protected function aplicarValidacoesFiltros(array $param): array;
 
     /**
+     * Permite definir qual o arquivo do menu para a construção do breadcrumb. Informe '' para não exibir breadcrumb.
+     * @return string 
+     */
+    protected static function getArquivoMenu(): string
+    {
+        return 'menu.xml';
+    }
+
+    /**
      * Trata e converte tipos de filtros conforme configurado
      * 
      * @param array $filtros Filtros a tratar
@@ -120,7 +129,9 @@ abstract class RadiantiDashboardModelo extends TPage
         $this->container->style = 'width: 100%';
 
         // Breadcrumb
-        $this->container->add(new TXMLBreadCrumb('menu.xml', get_called_class()));
+        if (static::getArquivoMenu() !== '') {
+            $this->container->add(new TXMLBreadCrumb(static::getArquivoMenu(), get_called_class()));
+        }
 
         // Título
         $titulo = new TElement('h2');
@@ -138,7 +149,10 @@ abstract class RadiantiDashboardModelo extends TPage
         }
 
         // Formulário de filtros
-        $this->container->add($this->criarFormularioFiltros($param));
+        $formularioFiltros = $this->criarFormularioFiltros($param);
+        if ($formularioFiltros !== null) {
+            $this->container->add($formularioFiltros);
+        }
 
         // Seções de indicadores
         $indicadoresContainer = new TElement('div');
@@ -155,18 +169,16 @@ abstract class RadiantiDashboardModelo extends TPage
     }
 
     /**
-     * Exibe a página do dashboard quando chamada via TAction
-     */
-    public static function onShow($param = null): void
-    {
-        new static($param);
-    }
-
-    /**
      * Cria o formulário de filtros
      */
-    private function criarFormularioFiltros($param = []): TForm
+    private function criarFormularioFiltros($param = []): ?TForm
     {
+        $campos = $this->criarCamposFiltros();
+
+        if (empty($campos)) {
+            return null;
+        }
+
         $this->form = new TForm('form_filtros_' . get_called_class());
         $this->form->class = 'tform';
 
@@ -174,7 +186,6 @@ abstract class RadiantiDashboardModelo extends TPage
         $formBuilder->setFormTitle('Filtros');
 
         // Adicionar campos dinâmicos
-        $campos = $this->criarCamposFiltros();
         foreach ($campos as $campo) {
             $label = new TLabel($campo['label']);
             if (!empty($param[$campo['campo']->getName()])) {
@@ -456,6 +467,8 @@ abstract class RadiantiDashboardModelo extends TPage
     public static function abrir($param = [])
     {
         $stringClasse = get_called_class();
+        $remover = ['class', 'method', 'static']; //Evitar parâmetros que não são filtros, que poderiam direcionar para loopings infinitos
+        $param = array_diff_key($param, array_flip($remover));
         if (!empty($param)) {
             $stringParametros = http_build_query($param);
             $stringClasse .= "&{$stringParametros}";

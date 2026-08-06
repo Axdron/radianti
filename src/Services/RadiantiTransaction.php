@@ -27,17 +27,8 @@ class RadiantiTransaction
                 throw new Exception('A query deve começar com select');
             }
 
-            $conn = TTransaction::get();
 
-            if (!$conn) {
-                throw new Exception('Não há transação aberta!');
-            }
-
-            $sth = $conn->prepare($query);
-
-            $sth->execute();
-
-            $result = $sth->fetchAll(PDO::FETCH_OBJ);
+            $result = static::executarQuery($query);
 
             if (isset($result)) {
                 return $result;
@@ -142,29 +133,147 @@ class RadiantiTransaction
      */
     public static function encapsularTransacao($callback, $snEmiteTMessage = true, $snAbrirTransacao = true, $nomeBd = null)
     {
+        $snTransacaoAberta = false;
+
         try {
             if (empty($nomeBd) && empty(getenv('RADIANTI_DB_NAME')))
                 throw new \Exception('Variável de ambiente RADIANTI_DB_NAME não definida');
 
-            if ($snAbrirTransacao)
-                TTransaction::open($nomeBd ?? getenv('RADIANTI_DB_NAME'));
-            else
-                TTransaction::openFake($nomeBd ?? getenv('RADIANTI_DB_NAME'));
+            $dbSolicitado = $nomeBd ?? getenv('RADIANTI_DB_NAME');
+
+            if ($snAbrirTransacao) {
+                static::abrirTransacao($dbSolicitado);
+                $snTransacaoAberta = true;
+            } else {
+                // Verifica se já há conexão ativa no banco correto
+                $conn = static::obterConexao();
+                $dbAtivo = static::obterBancoDados();
+
+                if (!$conn || $dbAtivo !== $dbSolicitado) {
+                    static::abrirTransacaoFake($dbSolicitado);
+                    $snTransacaoAberta = true;
+                }
+            }
             $retorno = $callback();
-            TTransaction::close();
+            if ($snTransacaoAberta) {
+                static::fecharTransacao();
+            }
             return $retorno;
         } catch (\Throwable $th) {
 
-            if ($snAbrirTransacao)
-                TTransaction::rollback();
-            else
-                TTransaction::close();
+            if ($snTransacaoAberta) {
+                if ($snAbrirTransacao)
+                    static::fazerRollback();
+                else
+                    static::fecharTransacao();
+            }
 
             if ($snEmiteTMessage) {
-                new TMessage('error', $th->getMessage());
+                static::enviarMensagem('error', $th->getMessage());
                 return;
             }
             throw $th;
         }
+    }
+
+    /**
+     * Abre uma transação real.
+     * Método protegido para permitir mockagem em testes.
+     * 
+     * @param string $nomeBd O nome do banco de dados.
+     * @return void
+     */
+    protected static function abrirTransacao($nomeBd)
+    {
+        TTransaction::open($nomeBd);
+    }
+
+    /**
+     * Abre uma transação fake.
+     * Método protegido para permitir mockagem em testes.
+     * 
+     * @param string $nomeBd O nome do banco de dados.
+     * @return void
+     */
+    protected static function abrirTransacaoFake($nomeBd)
+    {
+        TTransaction::openFake($nomeBd);
+    }
+
+    /**
+     * Fecha a transação atual.
+     * Método protegido para permitir mockagem em testes.
+     * 
+     * @return void
+     */
+    protected static function fecharTransacao()
+    {
+        TTransaction::close();
+    }
+
+    /**
+     * Faz rollback da transação atual.
+     * Método protegido para permitir mockagem em testes.
+     * 
+     * @return void
+     */
+    protected static function fazerRollback()
+    {
+        TTransaction::rollback();
+    }
+
+    /**
+     * Obtém a conexão atual do TTransaction.
+     * Método protegido para permitir mockagem em testes.
+     * 
+     * @return mixed A conexão ou null se não houver.
+     */
+    protected static function obterConexao()
+    {
+        return TTransaction::get();
+    }
+
+    /**
+     * Obtém o banco de dados ativo no TTransaction.
+     * Método protegido para permitir mockagem em testes.
+     * 
+     * @return string|null O nome do banco de dados ativo.
+     */
+    protected static function obterBancoDados()
+    {
+        return TTransaction::getDatabase();
+    }
+
+    /**
+     * Envia uma mensagem usando TMessage.
+     * Método protegido para permitir mockagem em testes.
+     * 
+     * @param string $tipo O tipo da mensagem (error, info, success, etc).
+     * @param string $conteudo O conteúdo da mensagem.
+     * @return void
+     */
+    protected static function enviarMensagem($tipo, $conteudo)
+    {
+        new TMessage($tipo, $conteudo);
+    }
+
+    /**
+     * Executa uma query SQL preparada.
+     * Método protegido para permitir mockagem em testes.
+     * 
+     * @param string $query A query SQL a executar.
+     * @return array O resultado como array de objetos.
+     */
+    protected static function executarQuery($query)
+    {
+        $conn = static::obterConexao();
+
+        if (!$conn) {
+            throw new Exception('Não há transação aberta!');
+        }
+
+        $sth = $conn->prepare($query);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_OBJ);
     }
 }
