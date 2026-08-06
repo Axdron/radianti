@@ -142,23 +142,40 @@ class RadiantiTransaction
      */
     public static function encapsularTransacao($callback, $snEmiteTMessage = true, $snAbrirTransacao = true, $nomeBd = null)
     {
+        $snTransacaoAberta = false;
+
         try {
             if (empty($nomeBd) && empty(getenv('RADIANTI_DB_NAME')))
                 throw new \Exception('Variável de ambiente RADIANTI_DB_NAME não definida');
 
-            if ($snAbrirTransacao)
-                TTransaction::open($nomeBd ?? getenv('RADIANTI_DB_NAME'));
-            else
-                TTransaction::openFake($nomeBd ?? getenv('RADIANTI_DB_NAME'));
+            $dbSolicitado = $nomeBd ?? getenv('RADIANTI_DB_NAME');
+
+            if ($snAbrirTransacao) {
+                TTransaction::open($dbSolicitado);
+                $snTransacaoAberta = true;
+            } else {
+                // Verifica se já há conexão ativa no banco correto
+                $conn = TTransaction::get();
+                $dbAtivo = TTransaction::getDatabase();
+                
+                if (!$conn || $dbAtivo !== $dbSolicitado) {
+                    TTransaction::openFake($dbSolicitado);
+                    $snTransacaoAberta = true;
+                }
+            }
             $retorno = $callback();
-            TTransaction::close();
+            if ($snTransacaoAberta) {
+                TTransaction::close();
+            }
             return $retorno;
         } catch (\Throwable $th) {
 
-            if ($snAbrirTransacao)
-                TTransaction::rollback();
-            else
-                TTransaction::close();
+            if ($snTransacaoAberta) {
+                if ($snAbrirTransacao)
+                    TTransaction::rollback();
+                else
+                    TTransaction::close();
+            }
 
             if ($snEmiteTMessage) {
                 new TMessage('error', $th->getMessage());
