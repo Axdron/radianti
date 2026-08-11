@@ -39,7 +39,11 @@ trait RadiantiTraitCadastro
     abstract protected static function getNomeTelaListagem(): string;
     abstract protected static function getModel(): string;
 
-    public function __construct(array $param)
+    /**
+     * Construtor da classe.
+     * @param array $param Parâmetros para inicializar a tela de cadastro.
+     */
+    public function __construct($param)
     {
         parent::__construct();
 
@@ -51,13 +55,18 @@ trait RadiantiTraitCadastro
         parent::add($this->criarTela($param));
     }
 
-    public function criarTela(array $param)
+    /**
+     * Cria a tela de cadastro.
+     * @param array $param Parâmetros para criar a tela.
+     * @return TVBox Retorna o container da tela de cadastro.
+     */
+    public function criarTela($param)
     {
         if (!empty($param['id'])) {
             $this->carregarObjetoEdicao($param['id']);
         }
 
-        $this->criarFormularioMestre($param);
+        $this->criarFormularioMestre();
 
         $campoOcultoOrigem = new THidden('snOrigemListagem');
         $campoOcultoOrigem->setValue($param['snOrigemListagem'] ?? true);
@@ -79,7 +88,13 @@ trait RadiantiTraitCadastro
         return $vbox;
     }
 
-    private function carregarObjetoEdicao(int|string $id)
+    /**
+     * Carrega o objeto para edição com base no ID fornecido.
+     * @param int|string $id O ID do objeto a ser carregado.
+     * @return TRecord Retorna o objeto carregado para edição.
+     * @throws Exception Se o registro não for encontrado.
+     */
+    private function carregarObjetoEdicao($id)
     {
         $this->objetoEdicao = RadiantiTransaction::encapsularTransacao(function () use ($id) {
             $model = get_called_class()::getModel();
@@ -113,7 +128,7 @@ trait RadiantiTraitCadastro
      * 
      * $this->formCadastro->addFields([new TLabel('ID')], [$id], [new TLabel('Fornecedor')], [$fornecedor]);
      */
-    abstract protected function criarCamposFormularioMestre(array $param);
+    abstract protected function criarCamposFormularioMestre();
 
     /**
      * Cria os detalhes do formulário.
@@ -122,7 +137,7 @@ trait RadiantiTraitCadastro
      * 
      * @see carregarDetalhes
      */
-    protected function criarDetalhes(array $param) {}
+    protected function criarDetalhes($param) {}
 
     /**
      * Carrega os detalhes do formulário.
@@ -148,7 +163,12 @@ trait RadiantiTraitCadastro
         $this->formCadastro->addAction('Lista', new TAction([$this, 'confirmarVoltaListagem']), 'fa:table blue');
     }
 
-    protected function confirmarVoltaListagem(array $param)
+    /**
+     * Confirma a ação de voltar para a listagem sem salvar.
+     * 
+     * @param array $param Parâmetros da ação.
+     */
+    protected function confirmarVoltaListagem($param)
     {
         $novoParam = ['sn_confirmado' => $param['sn_confirmado'] ?? false];
 
@@ -167,7 +187,7 @@ trait RadiantiTraitCadastro
         );
     }
 
-    private function criarFormularioMestre(array $param)
+    private function criarFormularioMestre()
     {
         $this->formCadastro = new BootstrapFormBuilder(get_called_class()::getNomeForm());
 
@@ -175,10 +195,14 @@ trait RadiantiTraitCadastro
             $this->formCadastro->setFormTitle(get_called_class()::getTitulo());
         }
 
-        $this->criarCamposFormularioMestre($param);
+        $this->criarCamposFormularioMestre();
     }
 
-    function abrirEdicao(array $param)
+    /**
+     * Abre o cadastro para edição de um registro existente.
+     * @param array $param Parâmetros contendo o ID do registro a ser editado.
+     */
+    function abrirEdicao($param)
     {
         if (empty($param['id'])) {
             return null;
@@ -190,7 +214,14 @@ trait RadiantiTraitCadastro
         }, snAbrirTransacao: false);
     }
 
-    public function salvar(array $param, $snEmiteMensagemSalvou = true, $snRedirecionaListagem = true)
+    /**
+     * Salva os dados do formulário.
+     * @param array $param Parâmetros da ação de salvar.
+     * @param bool $snEmiteMensagemSalvou Indica se deve emitir uma mensagem de sucesso após salvar.
+     * @param bool $snRedirecionaListagem Indica se deve redirecionar para a listagem após salvar.
+     * @return TRecord|false Retorna o objeto salvo ou false em caso de erro.
+     */
+    public function salvar($param, $snEmiteMensagemSalvou = true, $snRedirecionaListagem = true)
     {
         try {
             return RadiantiTransaction::encapsularTransacao(

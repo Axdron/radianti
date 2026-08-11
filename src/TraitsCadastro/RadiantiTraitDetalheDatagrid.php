@@ -8,6 +8,7 @@ use Adianti\Widget\Datagrid\TDataGridAction;
 use Adianti\Widget\Datagrid\TDataGridColumn;
 use Adianti\Widget\Form\TFormSeparator;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
+use Adianti\Wrapper\BootstrapFormBuilder;
 use Exception;
 
 trait RadiantiTraitDetalheDatagrid
@@ -118,7 +119,8 @@ trait RadiantiTraitDetalheDatagrid
 
     /**
      * Cria as colunas da datagrid
-     * @param $datagrid 
+     * @param BootstrapDatagridWrapper $datagrid
+     * @param array $param Parâmetros adicionais que podem ser utilizados na criação das col 
      * 
      * Exemplo:
      * protected static function criarColunasDatagrid(&$datagrid, $param){
@@ -224,6 +226,11 @@ trait RadiantiTraitDetalheDatagrid
         }
     }
 
+    /**
+     * Converte os campos do item carregado do banco para o formato esperado na datagrid
+     * @param TRecord $itemDB Item carregado do banco
+     * @return object Item formatado para a datagrid
+     */
     protected static function converterCamposDBParaItemDatagrid($itemDB)
     {
         $itemDatagrid = [
@@ -237,6 +244,12 @@ trait RadiantiTraitDetalheDatagrid
         return (object) $itemDatagrid;
     }
 
+    /**
+     * Recarrega a datagrid com os dados do formulário
+     * @param array $dadosForm Dados do formulário
+     * @param BootstrapDatagridWrapper &$datagrid Referência à datagrid a ser recarregada
+     * @param array $param Parâmetros adicionais que podem ser utilizados na recarga
+     */
     static function recarregarDatagrid($dadosForm, &$datagrid, $param = [])
     {
         if (!empty($dadosForm[self::getNomeCampoDatagrid(self::getCampos()[0])])) {
@@ -298,6 +311,9 @@ trait RadiantiTraitDetalheDatagrid
 
     /**
      * Adiciona elementos no formulário antes da datagrid
+     * 
+     * @param BootstrapFormBuilder $form Referência ao formulário onde os elementos serão adicionados
+     * @return BootstrapFormBuilder Retorna o formulário com os elementos adicionados
      */
     protected static function adicionarElementosAntesDatagrid(&$form)
     {
@@ -306,6 +322,9 @@ trait RadiantiTraitDetalheDatagrid
 
     /**
      * Adiciona elementos no formulário após a datagrid
+     * 
+     * @param BootstrapFormBuilder $form Referência ao formulário onde os elementos serão adicionados
+     * @return BootstrapFormBuilder Retorna o formulário com os elementos adicionados
      */
     protected static function adicionarElementosDepoisDatagrid(&$form)
     {
@@ -314,11 +333,11 @@ trait RadiantiTraitDetalheDatagrid
 
     /**
      * Adiciona um item a datagrid. Atenção: precisa ser reimplementado quando possuir item de tabela vinculado
-     * @param array $itemAdicionado
+     * @param object|array $itemAdicionado
      * @param BootstrapDatagridWrapper $datagrid
      * @return object
      */
-    protected static function adicionarItemDatagrid(Object $itemAdicionado, BootstrapDatagridWrapper &$datagrid, $param = [])
+    protected static function adicionarItemDatagrid(object|array $itemAdicionado, BootstrapDatagridWrapper &$datagrid, $param = [])
     {
         $itemAdicionado = (object)$itemAdicionado;
 
