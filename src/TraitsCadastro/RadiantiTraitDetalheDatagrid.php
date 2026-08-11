@@ -120,7 +120,7 @@ trait RadiantiTraitDetalheDatagrid
     /**
      * Cria as colunas da datagrid
      * @param BootstrapDatagridWrapper $datagrid
-     * @param array $param Parâmetros adicionais que podem ser utilizados na criação das col 
+     * @param array $param Parâmetros adicionais que podem ser utilizados na criação das colunas da datagrid
      * 
      * Exemplo:
      * protected static function criarColunasDatagrid(&$datagrid, $param){
