@@ -66,7 +66,7 @@ trait RadiantiTraitCadastro
             $this->carregarObjetoEdicao($param['id']);
         }
 
-        $this->criarFormularioMestre();
+        $this->criarFormularioMestre($param);
 
         $campoOcultoOrigem = new THidden('snOrigemListagem');
         $campoOcultoOrigem->setValue($param['snOrigemListagem'] ?? true);
@@ -187,7 +187,14 @@ trait RadiantiTraitCadastro
         );
     }
 
-    private function criarFormularioMestre()
+    /**
+     * Cria o formulário mestre.
+     * 
+     * Este método inicializa o formulário mestre e chama o método para criar os campos do formulário.
+     * 
+     * @param array $param Parâmetros para criar o formulário.
+     */
+    private function criarFormularioMestre($param = [])
     {
         $this->formCadastro = new BootstrapFormBuilder(get_called_class()::getNomeForm());
 
