@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.20.6] - 2026-08-11
+
+### Changed
+
+- Adicionada a possibilidade de passar parâmetros durante a criação da datagrid, de modo a viabilizar a criação de ações customizadas.
+
 ## [3.20.5] - 2026-08-06
 
 ### Changed

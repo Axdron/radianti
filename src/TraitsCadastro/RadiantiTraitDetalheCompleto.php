@@ -195,6 +195,8 @@ trait RadiantiTraitDetalheCompleto
 
     protected static function zerarCampos()
     {
+        $camposZerados = [];
+
         foreach (get_called_class()::getCampos() as $campo)
             $camposZerados[self::getNomeCampo($campo)] = '';
 
@@ -287,6 +289,10 @@ trait RadiantiTraitDetalheCompleto
         return ['form' => $form, 'datagrid' => $datagrid];
     }
 
+    /**
+     * Cria o botão de adicionar item na datagrid
+     * @param BootstrapFormBuilder $form
+     */
     protected static function criarBotaoAdicionar(&$form)
     {
         $botaoAdicionar = new TButton('adicionar' . self::formatarNomeDetalhe());
@@ -298,10 +304,9 @@ trait RadiantiTraitDetalheCompleto
 
     /**
      * Valida se há duplicidade de valor na datagrid, retornando true caso for válido (sem duplicidade), e false caso contrário. 
-     * @param array $param
+     * @param object $itemAdicionado
      * @param String $campo
-     * @param $valor
-     * @return bool 
+     * @return bool
      */
     protected static function validarDuplicidadeDeValorDatagrid(object $itemAdicionado, String $campo)
     {
