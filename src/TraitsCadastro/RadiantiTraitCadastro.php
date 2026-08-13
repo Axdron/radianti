@@ -82,7 +82,9 @@ trait RadiantiTraitCadastro
 
         $vbox = new TVBox;
         $vbox->style = 'width: 100%';
-        $vbox->add(new TXMLBreadCrumb(get_called_class()::getArquivoMenu(), get_called_class()::getNomeTelaListagem()));
+        if (!empty($arquivoMenu = get_called_class()::getArquivoMenu()) && !empty($nomeTelaListagem = get_called_class()::getNomeTelaListagem())) {
+            $vbox->add(new TXMLBreadCrumb($arquivoMenu, $nomeTelaListagem));
+        }
         $vbox->add($notebook);
 
         return $vbox;
@@ -128,7 +130,7 @@ trait RadiantiTraitCadastro
      * 
      * $this->formCadastro->addFields([new TLabel('ID')], [$id], [new TLabel('Fornecedor')], [$fornecedor]);
      */
-    abstract protected function criarCamposFormularioMestre();
+    abstract protected function criarCamposFormularioMestre(array $param);
 
     /**
      * Cria os detalhes do formulário.
@@ -202,7 +204,7 @@ trait RadiantiTraitCadastro
             $this->formCadastro->setFormTitle(get_called_class()::getTitulo());
         }
 
-        $this->criarCamposFormularioMestre();
+        $this->criarCamposFormularioMestre($param);
     }
 
     /**
