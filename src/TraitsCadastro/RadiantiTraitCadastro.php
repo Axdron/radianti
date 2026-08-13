@@ -104,7 +104,7 @@ trait RadiantiTraitCadastro
             $objeto = new $model($id);
 
             if (!$objeto) {
-                AdiantiCoreApplication::loadPage(get_called_class()::getNomeTelaListagem(), 'carregar');
+                self::redirecionarParaListagem([]);
                 throw new Exception('Registro não encontrado!');
             }
 
@@ -182,8 +182,8 @@ trait RadiantiTraitCadastro
         RadiantiQuestionService::confirmar(
             'Deseja voltar para a listagem sem salvar?',
             new TAction([get_called_class(), 'confirmarVoltaListagem']),
-            function () {
-                RadiantiNavegacao::carregarPagina(get_called_class()::getNomeTelaListagem(), 'carregar');
+            function () use ($param, $novoParam) {
+                self::redirecionarParaListagem($param);
             },
             $novoParam
         );
@@ -265,7 +265,7 @@ trait RadiantiTraitCadastro
                         new TMessage('info', 'Salvou ' . get_called_class()::getTitulo() . ' com sucesso!');
 
                     if ($snRedirecionaListagem && ($param['snOrigemListagem'] ?? true))
-                        AdiantiCoreApplication::loadPage(get_called_class()::getNomeTelaListagem(), 'carregar');
+                        self::redirecionarParaListagem($param);
 
                     if ($this instanceof TWindow) {
                         parent::closeWindow();
@@ -330,5 +330,14 @@ trait RadiantiTraitCadastro
             RadiantiNavegacao::carregarPagina(get_called_class(), 'abrirEdicao', ['id' => $param[$campoId], 'snOrigemListagem' => false]);
         else
             RadiantiNavegacao::carregarPagina(get_called_class(), 'abrirEdicao', ['snOrigemListagem' => false]);
+    }
+
+    /** 
+     * Redireciona para a listagem da tela de cadastro.
+     * @param array $param Parâmetros da ação.
+     */
+    public static function redirecionarParaListagem($param)
+    {
+        RadiantiNavegacao::carregarPagina(get_called_class()::getNomeTelaListagem(), 'carregar');
     }
 }
